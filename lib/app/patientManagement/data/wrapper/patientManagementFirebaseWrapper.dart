@@ -15,8 +15,10 @@ class PatientManagementFirebaseWrapper {
         .limit(_documentBatchSize)
         .get();
 
-    querySnapshot.docs.forEach((element) =>
-        {patientsRawData.add(element.data() as Map<String, dynamic>)});
+    querySnapshot.docs.forEach((element) => {
+          patientsRawData.add(
+              {...(element.data() as Map<String, dynamic>), 'id': element.id})
+        });
 
     return patientsRawData;
   }

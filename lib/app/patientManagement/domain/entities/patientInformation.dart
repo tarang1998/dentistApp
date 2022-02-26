@@ -4,13 +4,15 @@ class PatientInformation {
   final String emailId;
   final String phoneNo;
   final DateTime createdAt;
+  final String additionalInformation;
 
   PatientInformation(
       {required this.patientMetaInformation,
       required this.address,
       required this.emailId,
       required this.phoneNo,
-      required this.createdAt});
+      required this.createdAt,
+      required this.additionalInformation});
 }
 
 class PatientMetaInformation {

@@ -6,4 +6,6 @@ abstract class PatientManagementRepository {
   Future<void> fetchPatientsData();
 
   Future<void> fetchNextBatchOfPatientsData();
+
+  PatientInformation getPatientInformation({required String patientId});
 }

@@ -7,4 +7,5 @@ class PatientManagementKeys {
   static String keyAge = 'age';
   static String keyAddress = 'address';
   static String keyCreatedAt = 'createdAt';
+  static String additionalInformation = 'additionalInformation';
 }

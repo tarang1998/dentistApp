@@ -49,4 +49,10 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
       _patientsInformation!.add(_patientInformationMapperEntity.map(element));
     });
   }
+
+  @override
+  PatientInformation getPatientInformation({required String patientId}) {
+    return _patientsInformation!.singleWhere(
+        (element) => element.patientMetaInformation.patientId == patientId);
+  }
 }

@@ -57,15 +57,33 @@ class PatientManagementPageState extends ResponsiveViewState<
       body: SafeArea(
         child: Column(
           children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              GestureDetector(
+                onTap: null,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  color: Colors.blue,
+                  child: Text('Add patient'),
+                ),
+              ),
+            ]),
             ...initializedState.patientsMetaInformation.map((patientMeta) {
-              return Container(
+              return GestureDetector(
+                onTap: () => controller.navigateToPatientInformationPage(
+                    patientId: patientMeta.patientId),
+                child: Container(
+                    child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
-                children: [
-                  Text("Name : ${patientMeta.name}"),
-                  Text("Age : ${patientMeta.age}"),
-                  Text("Sex : ${patientMeta.sex}")
-                ],
-              ));
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Name : ${patientMeta.name}"),
+                      Text("Age : ${patientMeta.age}"),
+                      Text("Sex : ${patientMeta.sex}")
+                    ],
+                  ),
+                )),
+              );
             })
           ],
         ),
@@ -75,20 +93,16 @@ class PatientManagementPageState extends ResponsiveViewState<
 
   Widget _buildLoadingStateView(PatientManagementController controller) {
     controller.fetchPatientsMeta();
-    return const CircularProgressIndicator();
+    return Scaffold(
+        body: Center(
+      child: CircularProgressIndicator(),
+    ));
   }
 
   Widget _buildErrorStateView() {
     return Scaffold(
-        body: Column(
-      children: <Widget>[
-        Text(
-          'Error',
-          style: TextStyle(
-            color: Colors.red,
-          ),
-        )
-      ],
+        body: Center(
+      child: Text('Error'),
     ));
   }
 }

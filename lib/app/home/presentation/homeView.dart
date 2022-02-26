@@ -58,11 +58,14 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
           children: <Widget>[
             GestureDetector(
               onTap: controller.navigateToPatientsManagementPage,
-              child: Container(
-                color: Colors.red,
-                height: 150,
-                width: 150,
-                child: Text('Patients'),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: Colors.red,
+                  height: 150,
+                  width: 150,
+                  child: Text('Patients'),
+                ),
               ),
             )
           ],

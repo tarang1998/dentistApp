@@ -5,7 +5,9 @@ import 'package:dentist_app/app/patientManagement/data/wrapper/patientManagement
 import 'package:dentist_app/app/patientManagement/domain/repository/patientManagementRepository.dart';
 import 'package:dentist_app/app/patientManagement/domain/usecases/fetchNextBatchOfPatientsMetaInformationUsecase.dart';
 import 'package:dentist_app/app/patientManagement/domain/usecases/fetchPatientsMetaInformationUsecase.dart';
+import 'package:dentist_app/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
 import 'package:dentist_app/app/patientManagement/domain/usecases/getPatientsMetaInformationUsecase.dart';
+import 'package:dentist_app/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentist_app/app/patientManagement/presentation/patientManagementPresenter.dart';
 import 'package:dentist_app/core/navigationService.dart';
 import 'package:get_it/get_it.dart';
@@ -27,6 +29,10 @@ Future<void> init() async {
         serviceLocator(),
       ));
 
+  serviceLocator.registerFactory(() => PatientInformationPresenter(
+        serviceLocator(),
+      ));
+
   ///Domain - usecases
   serviceLocator.registerFactory(
       () => FetchNextBatchOfPatientsMetaUsecase(serviceLocator()));
@@ -34,6 +40,8 @@ Future<void> init() async {
       .registerFactory(() => FetchPatientsMetaUsecase(serviceLocator()));
   serviceLocator.registerFactory(
       () => GetPatientsMetaInformationUsecase(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => GetPatientInformationUsecase(serviceLocator()));
 
   ///Data
   serviceLocator.registerFactory(() => PatientInformationMapperEntity());
