@@ -72,7 +72,7 @@ class PatientInformationPageState extends ResponsiveViewState<
               Text(
                   "Name : ${initializedState.patientInformation.patientMetaInformation.name}"),
               Text(
-                  "Age : ${initializedState.patientInformation.patientMetaInformation.age}"),
+                  "Age : ${initializedState.patientInformation.patientMetaInformation.dob}"),
               Text(
                   "Sex : ${initializedState.patientInformation.patientMetaInformation.sex}"),
               Text(

@@ -5,6 +5,7 @@ import 'package:dentist_app/app/patientManagement/presentation/patientManagement
 import 'package:dentist_app/core/injectionContainer.dart';
 import 'package:dentist_app/core/navigationService.dart';
 import 'package:dentist_app/core/presentation/observer.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 class PatientManagementController extends Controller {
@@ -14,18 +15,39 @@ class PatientManagementController extends Controller {
   final PatientManagementStateMachine _stateMachine =
       PatientManagementStateMachine();
 
+  final ScrollController scrollController = ScrollController();
+
+  //Variable to control the scroll controller
+  bool isFetchingNextPage = false;
+
   PatientManagementController()
       : _presenter = serviceLocator<PatientManagementPresenter>(),
         _navigationService = serviceLocator<NavigationService>(),
         super();
 
   @override
-  void initListeners() {}
+  void initListeners() {
+    scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void onDisposed() {
+    _presenter.dispose();
+    super.onDisposed();
+  }
+
+  void _scrollListener() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      fetchNextBatchOfPatientsMeta();
+    }
+  }
 
   PatientManagementState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
+  //Function called whenever the user enters the patient Tab
   void fetchPatientsMeta() {
     _presenter.getPatientsMetaInformation(UseCaseObserver(() {}, (error) {
       _stateMachine.onEvent(PatientManagementErrorEvent());
@@ -37,9 +59,48 @@ class PatientManagementController extends Controller {
     }));
   }
 
+  //Function to be called on Pagination
+  void fetchNextBatchOfPatientsMeta() {
+    if (isFetchingNextPage) return;
+    isFetchingNextPage = true;
+    refreshUI();
+    _presenter.fetchNextBatchOfPatientsMetaInformation(UseCaseObserver(() {
+      isFetchingNextPage = false;
+      fetchPatientsMeta();
+    }, (error) {
+      isFetchingNextPage = false;
+      _stateMachine.onEvent(PatientManagementErrorEvent());
+      refreshUI();
+    }));
+  }
+
   void navigateToPatientInformationPage({required String patientId}) {
     _navigationService.navigateTo(NavigationService.patientInformationPage,
         shouldReplace: false,
         arguments: PatientInformationPageParams(patientId));
+  }
+
+  void navigateToAddPatientPage() {
+    _navigationService.navigateTo(NavigationService.addPatientPage,
+        shouldReplace: false, arguments: reloadPage);
+  }
+
+  //Function called on Pull to Refresh
+  Future<void> refreshPage() async {
+    _stateMachine.onEvent(PatientManagementLoadingEvent());
+    refreshUI();
+    //Deleting the cache and refetching all of the patient Data
+    _presenter.fetchPatientsMetaInformation(UseCaseObserver(() {
+      fetchPatientsMeta();
+    }, (error) {
+      _stateMachine.onEvent(PatientManagementErrorEvent());
+      refreshUI();
+    }));
+  }
+
+  //Function called to reload the page
+  ///On successfull staff addition so that added staff data is fetched too
+  void reloadPage() {
+    fetchPatientsMeta();
   }
 }

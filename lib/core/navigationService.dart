@@ -1,4 +1,5 @@
 import 'package:dentist_app/app/home/presentation/homeView.dart';
+import 'package:dentist_app/app/patientManagement/presentation/addPatient/addPatientView.dart';
 import 'package:dentist_app/app/patientManagement/presentation/patientInformation/patientInformationView.dart';
 import 'package:dentist_app/app/patientManagement/presentation/patientManagementView.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,10 @@ class AppNavigationService extends NavigationService {
         return MaterialPageRoute(
             builder: (_) => PatientInformationPage(
                 settings.arguments as PatientInformationPageParams));
+
+      case NavigationService.addPatientPage:
+        return MaterialPageRoute(
+            builder: (_) => AddPatientPage(settings.arguments as Function));
 
       case '/':
         // don't generate route on start-up
@@ -62,6 +67,7 @@ abstract class NavigationService {
   static const String homepage = '/home';
   static const String patientsManagementPage = '/patientManagementPage';
   static const String patientInformationPage = '/patientInformationPage';
+  static const String addPatientPage = '/addPatientPage';
 
   Future<void> navigateTo(String routeName,
       {bool shouldReplace = false, Object? arguments});

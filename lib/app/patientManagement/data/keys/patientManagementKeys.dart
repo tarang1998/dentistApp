@@ -4,8 +4,8 @@ class PatientManagementKeys {
   static String keyEmailId = 'emailId';
   static String keyPhoneNo = 'phoneNo';
   static String keySex = 'sex';
-  static String keyAge = 'age';
+  static String keyDOB = 'dob';
   static String keyAddress = 'address';
   static String keyCreatedAt = 'createdAt';
-  static String additionalInformation = 'additionalInformation';
+  static String keyAdditionalInformation = 'additionalInformation';
 }

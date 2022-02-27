@@ -18,13 +18,13 @@ class PatientInformation {
 class PatientMetaInformation {
   final String patientId;
   final String name;
-  final int age;
+  final DateTime dob;
   final Sex sex;
 
   PatientMetaInformation(
       {required this.patientId,
       required this.name,
-      required this.age,
+      required this.dob,
       required this.sex});
 }
 

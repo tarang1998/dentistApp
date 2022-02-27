@@ -8,7 +8,7 @@ class PatientInformationMapperEntity {
         patientMetaInformation: PatientMetaInformation(
             patientId: rawPatientData[PatientManagementKeys.keyPatientId],
             name: rawPatientData[PatientManagementKeys.keyName],
-            age: rawPatientData[PatientManagementKeys.keyAge],
+            dob: rawPatientData[PatientManagementKeys.keyDOB].toDate(),
             sex: convertStringToEnum(
                 Sex.values, rawPatientData[PatientManagementKeys.keySex])),
         address: rawPatientData[PatientManagementKeys.keyAddress],
@@ -16,6 +16,6 @@ class PatientInformationMapperEntity {
         phoneNo: rawPatientData[PatientManagementKeys.keyPhoneNo],
         createdAt: rawPatientData[PatientManagementKeys.keyCreatedAt].toDate(),
         additionalInformation:
-            rawPatientData[PatientManagementKeys.additionalInformation]);
+            rawPatientData[PatientManagementKeys.keyAdditionalInformation]);
   }
 }

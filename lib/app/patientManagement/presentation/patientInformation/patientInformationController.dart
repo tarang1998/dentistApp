@@ -18,6 +18,12 @@ class PatientInformationController extends Controller {
   @override
   void initListeners() {}
 
+  @override
+  void onDisposed() {
+    _presenter.dispose();
+    super.onDisposed();
+  }
+
   PatientInformationState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }

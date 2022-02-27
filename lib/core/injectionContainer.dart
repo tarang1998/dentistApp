@@ -1,12 +1,15 @@
 import 'package:dentist_app/app/home/presentation/homePresenter.dart';
 import 'package:dentist_app/app/patientManagement/data/mapper/patientInformationEntityMapper.dart';
 import 'package:dentist_app/app/patientManagement/data/repository/patientManagementRepositoryImpl.dart';
+import 'package:dentist_app/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
 import 'package:dentist_app/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
 import 'package:dentist_app/app/patientManagement/domain/repository/patientManagementRepository.dart';
+import 'package:dentist_app/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
 import 'package:dentist_app/app/patientManagement/domain/usecases/fetchNextBatchOfPatientsMetaInformationUsecase.dart';
 import 'package:dentist_app/app/patientManagement/domain/usecases/fetchPatientsMetaInformationUsecase.dart';
 import 'package:dentist_app/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
 import 'package:dentist_app/app/patientManagement/domain/usecases/getPatientsMetaInformationUsecase.dart';
+import 'package:dentist_app/app/patientManagement/presentation/addPatient/addPatientPresenter.dart';
 import 'package:dentist_app/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentist_app/app/patientManagement/presentation/patientManagementPresenter.dart';
 import 'package:dentist_app/core/navigationService.dart';
@@ -33,6 +36,8 @@ Future<void> init() async {
         serviceLocator(),
       ));
 
+  serviceLocator.registerFactory(() => AddPatientPresenter(serviceLocator()));
+
   ///Domain - usecases
   serviceLocator.registerFactory(
       () => FetchNextBatchOfPatientsMetaUsecase(serviceLocator()));
@@ -42,13 +47,22 @@ Future<void> init() async {
       () => GetPatientsMetaInformationUsecase(serviceLocator()));
   serviceLocator
       .registerFactory(() => GetPatientInformationUsecase(serviceLocator()));
+  serviceLocator.registerFactory(() => AddPatientDataUsecase(serviceLocator()));
 
   ///Data
+
+  ///Serializer
+  serviceLocator.registerFactory(() => AddPatientEntitySerializer());
+
+  ///Mapper
   serviceLocator.registerFactory(() => PatientInformationMapperEntity());
 
+  ///Repository
   serviceLocator.registerLazySingleton<PatientManagementRepository>(() =>
-      PatientManagementRepositoryImpl(serviceLocator(), serviceLocator()));
+      PatientManagementRepositoryImpl(
+          serviceLocator(), serviceLocator(), serviceLocator()));
 
+  ///Wrappers
   serviceLocator.registerFactory(() => PatientManagementFirebaseWrapper());
 }
 

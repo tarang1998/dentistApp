@@ -32,8 +32,11 @@ class PatientManagementPageState extends ResponsiveViewState<
               return _buildInitializedStateView(
                   patientManagementInitializedState, controller);
 
+            case PatientManagementInitializationState:
+              return _buildInitializationStateView(controller);
+
             case PatientManagementLoadingState:
-              return _buildLoadingStateView(controller);
+              return _buildLoadingStateView();
 
             case PatientManagementErrorState:
               return _buildErrorStateView();
@@ -54,44 +57,69 @@ class PatientManagementPageState extends ResponsiveViewState<
       PatientManagementInitializedState initializedState,
       PatientManagementController controller) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          controller.navigateToAddPatientPage();
+        },
+      ),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              GestureDetector(
-                onTap: null,
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  color: Colors.blue,
-                  child: Text('Add patient'),
-                ),
+        child: RefreshIndicator(
+          onRefresh: () async => controller.refreshPage(),
+          child: Container(
+            color: Colors.amber,
+            width: 300,
+            margin: const EdgeInsets.all(5),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              controller: controller.scrollController,
+              child: Column(
+                children: <Widget>[
+                  ...initializedState.patientsMetaInformation
+                      .map((patientMeta) {
+                    return GestureDetector(
+                      onTap: () => controller.navigateToPatientInformationPage(
+                          patientId: patientMeta.patientId),
+                      child: Container(
+                          child: Card(
+                        elevation: 6,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Name : ${patientMeta.name}"),
+                              Text("Age : ${patientMeta.dob}"),
+                              Text("Sex : ${patientMeta.sex}")
+                            ],
+                          ),
+                        ),
+                      )),
+                    );
+                  }),
+                  if (controller.isFetchingNextPage)
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      child: const CircularProgressIndicator(),
+                    ),
+                ],
               ),
-            ]),
-            ...initializedState.patientsMetaInformation.map((patientMeta) {
-              return GestureDetector(
-                onTap: () => controller.navigateToPatientInformationPage(
-                    patientId: patientMeta.patientId),
-                child: Container(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Name : ${patientMeta.name}"),
-                      Text("Age : ${patientMeta.age}"),
-                      Text("Sex : ${patientMeta.sex}")
-                    ],
-                  ),
-                )),
-              );
-            })
-          ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildLoadingStateView(PatientManagementController controller) {
+  Widget _buildLoadingStateView() {
+    return Scaffold(
+        body: Center(
+      child: CircularProgressIndicator(),
+    ));
+  }
+
+  Widget _buildInitializationStateView(PatientManagementController controller) {
     controller.fetchPatientsMeta();
     return Scaffold(
         body: Center(

@@ -3,7 +3,8 @@ import 'package:dentist_app/core/presentation/stateMachine.dart';
 
 class PatientManagementStateMachine
     extends StateMachine<PatientManagementState?, PatientManagementEvent> {
-  PatientManagementStateMachine() : super(PatientManagementLoadingState());
+  PatientManagementStateMachine()
+      : super(PatientManagementInitializationState());
 
   @override
   PatientManagementState? getStateOnEvent(PatientManagementEvent event) {
@@ -15,6 +16,10 @@ class PatientManagementStateMachine
             event as PatientManagementInitializedEvent;
         newState = PatientManagementInitializedState(
             initEvent.patientsMetaInformation);
+        break;
+
+      case PatientManagementLoadingEvent:
+        newState = PatientManagementLoadingState();
         break;
 
       case PatientManagementErrorEvent:
@@ -39,6 +44,8 @@ class PatientManagementInitializedEvent extends PatientManagementEvent {
 class PatientManagementLoadingEvent extends PatientManagementEvent {}
 
 abstract class PatientManagementState {}
+
+class PatientManagementInitializationState implements PatientManagementState {}
 
 class PatientManagementLoadingState implements PatientManagementState {}
 
