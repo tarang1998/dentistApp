@@ -1,5 +1,5 @@
-import 'package:dentist_app/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
-import 'package:dentist_app/core/presentation/observer.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
+import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 class PatientInformationPresenter extends Presenter {

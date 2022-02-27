@@ -1,6 +1,7 @@
-import 'package:dentist_app/app/patientManagement/domain/entities/addPatientEntity.dart';
-import 'package:dentist_app/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
-import 'package:dentist_app/core/presentation/observer.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
+import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 class AddPatientPresenter extends Presenter {

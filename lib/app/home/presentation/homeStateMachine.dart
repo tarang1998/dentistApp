@@ -1,4 +1,4 @@
-import 'package:dentist_app/core/presentation/stateMachine.dart';
+import 'package:dentalApp/core/presentation/stateMachine.dart';
 
 class HomePageStateMachine extends StateMachine<HomePageState?, HomePageEvent> {
   HomePageStateMachine() : super(new HomePageLoadingState());

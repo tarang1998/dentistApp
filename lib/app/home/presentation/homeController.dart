@@ -1,7 +1,7 @@
-import 'package:dentist_app/app/home/presentation/homePresenter.dart';
-import 'package:dentist_app/app/home/presentation/homeStateMachine.dart';
-import 'package:dentist_app/core/injectionContainer.dart';
-import 'package:dentist_app/core/navigationService.dart';
+import 'package:dentalApp/app/home/presentation/homePresenter.dart';
+import 'package:dentalApp/app/home/presentation/homeStateMachine.dart';
+import 'package:dentalApp/core/injectionContainer.dart';
+import 'package:dentalApp/core/navigationService.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 class HomePageController extends Controller {

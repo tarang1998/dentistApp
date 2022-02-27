@@ -1,5 +1,5 @@
-import 'package:dentist_app/app/patientManagement/domain/entities/patientInformation.dart';
-import 'package:dentist_app/core/presentation/stateMachine.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/core/presentation/stateMachine.dart';
 
 class PatientInformationStateMachine
     extends StateMachine<PatientInformationState?, PatientInformationEvent> {

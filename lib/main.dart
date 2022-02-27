@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'core/injectionContainer.dart' as di;
-import 'package:dentist_app/core/navigationService.dart';
+import 'package:dentalApp/core/navigationService.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

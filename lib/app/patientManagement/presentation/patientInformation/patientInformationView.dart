@@ -1,5 +1,5 @@
-import 'package:dentist_app/app/patientManagement/presentation/patientInformation/patientInformationController.dart';
-import 'package:dentist_app/app/patientManagement/presentation/patientInformation/patientInformationStateMachine.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationController.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationStateMachine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 

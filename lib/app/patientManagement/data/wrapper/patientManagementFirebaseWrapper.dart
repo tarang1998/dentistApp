@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dentist_app/app/patientManagement/data/keys/patientManagementKeys.dart';
+import 'package:dentalApp/app/patientManagement/data/keys/patientManagementKeys.dart';
 
 class PatientManagementFirebaseWrapper {
   final int _documentBatchSize = 2;

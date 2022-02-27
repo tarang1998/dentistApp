@@ -1,7 +1,7 @@
-import 'package:dentist_app/app/patientManagement/domain/entities/patientInformation.dart';
-import 'package:dentist_app/app/patientManagement/presentation/addPatient/addPatientController.dart';
-import 'package:dentist_app/app/patientManagement/presentation/addPatient/addPatientStateMachine.dart';
-import 'package:dentist_app/core/utilities/EnumStringConvertor.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientController.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientStateMachine.dart';
+import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 

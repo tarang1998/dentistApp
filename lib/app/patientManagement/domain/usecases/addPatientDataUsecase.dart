@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:dentist_app/app/patientManagement/domain/entities/addPatientEntity.dart';
-import 'package:dentist_app/app/patientManagement/domain/repository/patientManagementRepository.dart';
-import 'package:dentist_app/core/loggingWrapper.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
+import 'package:dentalApp/app/patientManagement/domain/repository/patientManagementRepository.dart';
+import 'package:dentalApp/core/loggingWrapper.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 class AddPatientDataUsecase extends CompletableUseCase<AddPatientEntity> {

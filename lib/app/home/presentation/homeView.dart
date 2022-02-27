@@ -1,5 +1,5 @@
-import 'package:dentist_app/app/home/presentation/homeController.dart';
-import 'package:dentist_app/app/home/presentation/homeStateMachine.dart';
+import 'package:dentalApp/app/home/presentation/homeController.dart';
+import 'package:dentalApp/app/home/presentation/homeStateMachine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 

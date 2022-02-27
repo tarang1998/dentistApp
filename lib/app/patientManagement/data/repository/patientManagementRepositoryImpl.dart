@@ -1,9 +1,9 @@
-import 'package:dentist_app/app/patientManagement/data/mapper/patientInformationEntityMapper.dart';
-import 'package:dentist_app/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
-import 'package:dentist_app/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
-import 'package:dentist_app/app/patientManagement/domain/entities/addPatientEntity.dart';
-import 'package:dentist_app/app/patientManagement/domain/entities/patientInformation.dart';
-import 'package:dentist_app/app/patientManagement/domain/repository/patientManagementRepository.dart';
+import 'package:dentalApp/app/patientManagement/data/mapper/patientInformationEntityMapper.dart';
+import 'package:dentalApp/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
+import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/app/patientManagement/domain/repository/patientManagementRepository.dart';
 
 class PatientManagementRepositoryImpl extends PatientManagementRepository {
   final PatientManagementFirebaseWrapper _patientManagementFirebaseWrapper;

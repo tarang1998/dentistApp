@@ -1,6 +1,6 @@
-import 'package:dentist_app/app/patientManagement/data/keys/patientManagementKeys.dart';
-import 'package:dentist_app/app/patientManagement/domain/entities/addPatientEntity.dart';
-import 'package:dentist_app/core/utilities/EnumStringConvertor.dart';
+import 'package:dentalApp/app/patientManagement/data/keys/patientManagementKeys.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
+import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 
 class AddPatientEntitySerializer {
   Map<String, dynamic> serialize(AddPatientEntity addPatientEntity) {

@@ -1,4 +1,4 @@
-import 'package:dentist_app/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
 
 class AddPatientEntity {
   final String name;

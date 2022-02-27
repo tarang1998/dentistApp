@@ -1,7 +1,7 @@
-import 'package:dentist_app/app/home/presentation/homeView.dart';
-import 'package:dentist_app/app/patientManagement/presentation/addPatient/addPatientView.dart';
-import 'package:dentist_app/app/patientManagement/presentation/patientInformation/patientInformationView.dart';
-import 'package:dentist_app/app/patientManagement/presentation/patientManagementView.dart';
+import 'package:dentalApp/app/home/presentation/homeView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientManagementView.dart';
 import 'package:flutter/material.dart';
 
 class AppNavigationService extends NavigationService {

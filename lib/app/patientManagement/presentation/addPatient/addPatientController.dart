@@ -1,10 +1,10 @@
-import 'package:dentist_app/app/patientManagement/domain/entities/addPatientEntity.dart';
-import 'package:dentist_app/app/patientManagement/domain/entities/patientInformation.dart';
-import 'package:dentist_app/app/patientManagement/presentation/addPatient/addPatientPresenter.dart';
-import 'package:dentist_app/app/patientManagement/presentation/addPatient/addPatientStateMachine.dart';
-import 'package:dentist_app/core/injectionContainer.dart';
-import 'package:dentist_app/core/navigationService.dart';
-import 'package:dentist_app/core/presentation/observer.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientPresenter.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientStateMachine.dart';
+import 'package:dentalApp/core/injectionContainer.dart';
+import 'package:dentalApp/core/navigationService.dart';
+import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';

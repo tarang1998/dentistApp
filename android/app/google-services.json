@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "196677876202",
-    "project_id": "dentistapp-dabd0",
-    "storage_bucket": "dentistapp-dabd0.appspot.com"
+    "project_number": "327116200378",
+    "project_id": "dentalapp-20797",
+    "storage_bucket": "dentalapp-20797.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196677876202:android:96400cc5f2346849b71a93",
+        "mobilesdk_app_id": "1:327116200378:android:e5b3ecb55e369b052d6583",
         "android_client_info": {
-          "package_name": "com.example.dentist_app"
+          "package_name": "com.mohotaDentalRemedies.dentalApp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "196677876202-ob9r7tgfcloh4ekbkbgqjr7fqn48rdn4.apps.googleusercontent.com",
+          "client_id": "327116200378-ql8spnf8pqao7ou0493cuorjkf4h55l0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBGxYjnD_ExOjBab5-TqF6L7jB-8WYEHGo"
+          "current_key": "AIzaSyBCderw-QfhSYeYOMqXeJWxdzx2NS80uYY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "196677876202-ob9r7tgfcloh4ekbkbgqjr7fqn48rdn4.apps.googleusercontent.com",
+              "client_id": "327116200378-ql8spnf8pqao7ou0493cuorjkf4h55l0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
