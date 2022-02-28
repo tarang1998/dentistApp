@@ -2,28 +2,34 @@
 
 An app to manage patients for a dentist
 
-Password :
+> > Sign In / Logout feature  
+> > Email - Password Authentication
 
-Personal Informarion
+> > Patient Management
+> > Search by email , name
 
-Name : Mr Mrs master
-phone 1/ phone2
-User Photo
-Additional user Images
+> > Personal Information
 
-Search by name
+Name : Mr/Mrs/Miss
+Contact : contact1 - contact 2
+User Photo : Camera enabled / Gallery
+Additional User Images : Camera Enabled / Gallary
 
-Procedures :
+> > Procedures :
 
-Tags :
-Teeth Chart : Child / adult
-estimated amount :
-paid amount :
-date :
-Photo :
-additional remarks
+Procedure Tags : [ Root Canal Treatment , Extraction / GIC Fillings / Composite Fillings / Dressing Fillings/ Scalling and Polishing / Surgery]
 
-Prescriptions
+- Can multiple of these tags be performed in a single Procedure
+  Teeth Chart : Child / Adult
+- Can the user select both the charts in one procedure
+  estimated amount :
+  paid amount :
+  date :
+  next visit :
+  Photo :
+  additional remarks :
+
+> > Prescriptions
 
 Date
 
@@ -36,4 +42,4 @@ Hot saline Gargling
 
 Proper Standard
 
-Billing
+> > Billing

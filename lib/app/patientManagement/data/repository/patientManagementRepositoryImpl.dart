@@ -1,19 +1,27 @@
 import 'package:dentalApp/app/patientManagement/data/mapper/patientInformationEntityMapper.dart';
+import 'package:dentalApp/app/patientManagement/data/mapper/patientProcedureEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
 import 'package:dentalApp/app/patientManagement/domain/repository/patientManagementRepository.dart';
 
 class PatientManagementRepositoryImpl extends PatientManagementRepository {
   final PatientManagementFirebaseWrapper _patientManagementFirebaseWrapper;
   final PatientInformationMapperEntity _patientInformationMapperEntity;
+  final PatientProcedureEntityMapper _patientProcedureEntityMapper;
   final AddPatientEntitySerializer _addPatientEntitySerializaer;
 
-  PatientManagementRepositoryImpl(this._patientManagementFirebaseWrapper,
-      this._patientInformationMapperEntity, this._addPatientEntitySerializaer);
+  PatientManagementRepositoryImpl(
+      this._patientManagementFirebaseWrapper,
+      this._patientInformationMapperEntity,
+      this._addPatientEntitySerializaer,
+      this._patientProcedureEntityMapper);
 
   List<PatientInformation>? _patientsInformation;
+
+  final Map<String, List<PatientProcedureEnity>> _patientsProcedures = {};
 
   @override
   Future<List<PatientMetaInformation>> getListOfPatientsMeta(
@@ -83,5 +91,29 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
             additionalInformation: patientEntity.additionalInformation));
 
     return patientId;
+  }
+
+  @override
+  Future<List<PatientProcedureEnity>> getPatientProcedures(
+      {required String patientId}) async {
+    if (_patientsProcedures[patientId] != null) {
+      return _patientsProcedures[patientId]!;
+    } else {
+      await fetchPatientProcedures(patientId: patientId);
+      return _patientsProcedures[patientId]!;
+    }
+  }
+
+  Future<void> fetchPatientProcedures({required String patientId}) async {
+    final List<PatientProcedureEnity> _mappedPatientProcedures = [];
+    final List<Map<String, dynamic>> _patientProceduresRawData =
+        await _patientManagementFirebaseWrapper.fetchPatientProcedures(
+            patientId: patientId);
+
+    _patientProceduresRawData.forEach((element) {
+      _mappedPatientProcedures.add(_patientProcedureEntityMapper.map(element));
+    });
+
+    _patientsProcedures[patientId] = _mappedPatientProcedures;
   }
 }

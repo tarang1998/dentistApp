@@ -11,7 +11,7 @@ class AddPatientStateMachine
     AddPatientState? newState = getCurrentState();
     switch (eventType) {
       case AddPatientInitializedEvent:
-        newState = AddPatientInitializedState(DateTime.now(), Sex.male);
+        newState = AddPatientInitializedState(DateTime.now(), Sex.MALE);
         break;
 
       case AddPatientDOBUpdatedEvent:

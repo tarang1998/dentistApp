@@ -67,7 +67,6 @@ class PatientManagementPageState extends ResponsiveViewState<
         child: RefreshIndicator(
           onRefresh: () async => controller.refreshPage(),
           child: Container(
-            color: Colors.amber,
             width: 300,
             margin: const EdgeInsets.all(5),
             child: SingleChildScrollView(
@@ -81,8 +80,7 @@ class PatientManagementPageState extends ResponsiveViewState<
                     return GestureDetector(
                       onTap: () => controller.navigateToPatientInformationPage(
                           patientId: patientMeta.patientId),
-                      child: Container(
-                          child: Card(
+                      child: Card(
                         elevation: 6,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -95,7 +93,7 @@ class PatientManagementPageState extends ResponsiveViewState<
                             ],
                           ),
                         ),
-                      )),
+                      ),
                     );
                   }),
                   if (controller.isFetchingNextPage)

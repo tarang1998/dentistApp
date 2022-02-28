@@ -83,7 +83,23 @@ class PatientInformationPageState extends ResponsiveViewState<
               Text(
                   "Created At  : ${initializedState.patientInformation.createdAt}"),
               Text(
-                  "Additional Information : ${initializedState.patientInformation.additionalInformation}")
+                  "Additional Information : ${initializedState.patientInformation.additionalInformation}"),
+              SizedBox(
+                height: 50,
+              ),
+              GestureDetector(
+                onTap: () => {
+                  controller.navigateToPateintProcedurePage(
+                      patientId: initializedState
+                          .patientInformation.patientMetaInformation.patientId)
+                },
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  color: Colors.blue,
+                  child: Center(child: Text('View Procedures')),
+                ),
+              )
             ],
           ),
         ),

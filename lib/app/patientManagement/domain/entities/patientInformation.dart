@@ -28,4 +28,4 @@ class PatientMetaInformation {
       required this.sex});
 }
 
-enum Sex { male, female, other }
+enum Sex { MALE, FEMALE, OTHER }

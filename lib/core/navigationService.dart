@@ -1,6 +1,7 @@
 import 'package:dentalApp/app/home/presentation/homeView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementView.dart';
 import 'package:flutter/material.dart';
 
@@ -13,14 +14,19 @@ class AppNavigationService extends NavigationService {
       case NavigationService.patientsManagementPage:
         return MaterialPageRoute(builder: (_) => PatientManagementPage());
 
+      case NavigationService.addPatientPage:
+        return MaterialPageRoute(
+            builder: (_) => AddPatientPage(settings.arguments as Function));
+
       case NavigationService.patientInformationPage:
         return MaterialPageRoute(
             builder: (_) => PatientInformationPage(
                 settings.arguments as PatientInformationPageParams));
 
-      case NavigationService.addPatientPage:
+      case NavigationService.patientProcedurePage:
         return MaterialPageRoute(
-            builder: (_) => AddPatientPage(settings.arguments as Function));
+            builder: (_) =>
+                PatientProcedurePage(patientId: settings.arguments as String));
 
       case '/':
         // don't generate route on start-up
@@ -65,9 +71,12 @@ abstract class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static const String homepage = '/home';
+
   static const String patientsManagementPage = '/patientManagementPage';
-  static const String patientInformationPage = '/patientInformationPage';
   static const String addPatientPage = '/addPatientPage';
+
+  static const String patientInformationPage = '/patientInformationPage';
+  static const String patientProcedurePage = '/patientProcedures';
 
   Future<void> navigateTo(String routeName,
       {bool shouldReplace = false, Object? arguments});

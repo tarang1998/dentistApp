@@ -2,17 +2,20 @@ import 'package:dentalApp/app/patientManagement/domain/entities/patientInformati
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationStateMachine.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
+import 'package:dentalApp/core/navigationService.dart';
 import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 class PatientInformationController extends Controller {
   final PatientInformationPresenter _presenter;
+  final NavigationService _navigationService;
 
   final PatientInformationStateMachine _stateMachine =
       PatientInformationStateMachine();
 
   PatientInformationController()
       : _presenter = serviceLocator<PatientInformationPresenter>(),
+        _navigationService = serviceLocator<NavigationService>(),
         super();
 
   @override
@@ -39,5 +42,10 @@ class PatientInformationController extends Controller {
           refreshUI();
         }),
         patientId);
+  }
+
+  void navigateToPateintProcedurePage({required String patientId}) {
+    _navigationService.navigateTo(NavigationService.patientProcedurePage,
+        arguments: patientId);
   }
 }
