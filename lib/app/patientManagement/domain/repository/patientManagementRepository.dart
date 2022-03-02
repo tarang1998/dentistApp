@@ -15,4 +15,8 @@ abstract class PatientManagementRepository {
 
   Future<List<PatientProcedureEnity>> getPatientProcedures(
       {required String patientId});
+
+  Future<String> addPatientPrcedure(
+      {required String patientId,
+      required PatientProcedureEnity patientProcedureEnity});
 }

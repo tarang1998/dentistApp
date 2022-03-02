@@ -1,4 +1,5 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureStateMachine.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
@@ -37,10 +38,25 @@ class PatientProcedureController extends Controller {
           _stateMachine.onEvent(PatientProcedureErrorEvent());
           refreshUI();
         }, onNextFunc: (List<PatientProcedureEnity> patientProcedures) {
-          _stateMachine
-              .onEvent(PatientProcedureInitializedEvent(patientProcedures));
+          _stateMachine.onEvent(
+              PatientProcedureInitializedEvent(patientId, patientProcedures));
           refreshUI();
         }),
         patientId: patientId);
+  }
+
+  void navigateToAddProcedurePage({required String patientId}) {
+    _navigationService.navigateTo(NavigationService.addPatientProcedure,
+        arguments: AddProcedurePageParams(
+            patientId: patientId,
+            reloadPatientProceduresPageOnSuccessfullProcedureAddition:
+                reloadPatientProceduresPageOnSuccessfullProcedureAddition));
+  }
+
+  void reloadPatientProceduresPageOnSuccessfullProcedureAddition(
+      String patientId) {
+    _stateMachine.onEvent(PatientProcedureLoadingEvent());
+    refreshUI();
+    initializePage(patientId: patientId);
   }
 }

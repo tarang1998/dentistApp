@@ -134,7 +134,7 @@ class AddPatientPageState
                 ),
               ),
               onTap: () =>
-                  _pickEndDate(controller, context, initializedState.dob),
+                  _pickDateOfBirth(controller, context, initializedState.dob),
             ),
             const SizedBox(height: 20),
             Padding(
@@ -229,7 +229,7 @@ class AddPatientPageState
     );
   }
 
-  _pickEndDate(AddPatientController controller, BuildContext context,
+  _pickDateOfBirth(AddPatientController controller, BuildContext context,
       DateTime selectedDOB) async {
     DateTime? date = await showDatePicker(
       context: context,

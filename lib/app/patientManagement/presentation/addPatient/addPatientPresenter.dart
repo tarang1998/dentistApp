@@ -1,6 +1,5 @@
 import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
-import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
 import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 

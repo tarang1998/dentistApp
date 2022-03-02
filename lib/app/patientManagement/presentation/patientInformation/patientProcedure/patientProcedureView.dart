@@ -59,12 +59,16 @@ class PatientProcedurePageState extends ResponsiveViewState<
   Widget get watchView => throw UnimplementedError();
 
   Widget _buildInitializedStateView(
-      PatientProcedureInitializedState initializedState,
-      PatientProcedureController controller) {
+    PatientProcedureInitializedState initializedState,
+    PatientProcedureController controller,
+  ) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          controller.navigateToAddProcedurePage(
+              patientId: initializedState.patientId);
+        },
       ),
       body: SafeArea(
         child: Container(

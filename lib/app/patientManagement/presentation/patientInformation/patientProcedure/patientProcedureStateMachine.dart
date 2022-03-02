@@ -13,8 +13,8 @@ class PatientProcedureStateMachine
       case PatientProcedureInitializedEvent:
         PatientProcedureInitializedEvent initEvent =
             event as PatientProcedureInitializedEvent;
-        newState =
-            PatientProcedureInitializedState(initEvent.patientProcedures);
+        newState = PatientProcedureInitializedState(
+            initEvent.patientId, initEvent.patientProcedures);
         break;
 
       case PatientProcedureLoadingEvent:
@@ -36,8 +36,9 @@ class PatientProcedureErrorEvent extends PatientProcedureEvent {
 }
 
 class PatientProcedureInitializedEvent extends PatientProcedureEvent {
+  final String patientId;
   final List<PatientProcedureEnity> patientProcedures;
-  PatientProcedureInitializedEvent(this.patientProcedures);
+  PatientProcedureInitializedEvent(this.patientId, this.patientProcedures);
 }
 
 class PatientProcedureLoadingEvent extends PatientProcedureEvent {}
@@ -49,8 +50,9 @@ class PatientProcedureInitializationState implements PatientProcedureState {}
 class PatientProcedureLoadingState implements PatientProcedureState {}
 
 class PatientProcedureInitializedState implements PatientProcedureState {
+  final String patientId;
   final List<PatientProcedureEnity> patientProcedures;
-  PatientProcedureInitializedState(this.patientProcedures);
+  PatientProcedureInitializedState(this.patientId, this.patientProcedures);
 }
 
 class PatientProcedureErrorState implements PatientProcedureState {}

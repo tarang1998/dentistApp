@@ -1,6 +1,7 @@
 import 'package:dentalApp/app/patientManagement/data/mapper/patientInformationEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/mapper/patientProcedureEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
+import 'package:dentalApp/app/patientManagement/data/serializer/addPatientProcedureSerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
@@ -12,15 +13,18 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   final PatientInformationMapperEntity _patientInformationMapperEntity;
   final PatientProcedureEntityMapper _patientProcedureEntityMapper;
   final AddPatientEntitySerializer _addPatientEntitySerializaer;
+  final AddPatientProcedureSerializer _addPatientProcedureSerializer;
 
   PatientManagementRepositoryImpl(
       this._patientManagementFirebaseWrapper,
       this._patientInformationMapperEntity,
       this._addPatientEntitySerializaer,
-      this._patientProcedureEntityMapper);
+      this._patientProcedureEntityMapper,
+      this._addPatientProcedureSerializer);
 
   List<PatientInformation>? _patientsInformation;
 
+  //key : patientId
   final Map<String, List<PatientProcedureEnity>> _patientsProcedures = {};
 
   @override
@@ -115,5 +119,32 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
     });
 
     _patientsProcedures[patientId] = _mappedPatientProcedures;
+  }
+
+  @override
+  Future<String> addPatientPrcedure(
+      {required String patientId,
+      required PatientProcedureEnity patientProcedureEnity}) async {
+    Map<String, dynamic> patientProcedureData =
+        _addPatientProcedureSerializer.serialize(patientProcedureEnity);
+
+    String procedureId =
+        await _patientManagementFirebaseWrapper.addPatientProcedureData(
+            patientId: patientId,
+            patientProcedureSerializedData: patientProcedureData);
+
+    _patientsProcedures[patientId]!.insert(
+        0,
+        PatientProcedureEnity(
+            procedureId: procedureId,
+            procedurePerformed: patientProcedureEnity.procedurePerformed,
+            estimatedCost: patientProcedureEnity.estimatedCost,
+            amountPaid: patientProcedureEnity.amountPaid,
+            performedAt: patientProcedureEnity.performedAt,
+            nextVisit: patientProcedureEnity.nextVisit,
+            additionalRemarks: patientProcedureEnity.additionalRemarks,
+            selectedTeethChart: patientProcedureEnity.selectedTeethChart));
+
+    return patientId;
   }
 }

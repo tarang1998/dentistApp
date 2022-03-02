@@ -6,4 +6,7 @@ class PatientProcedureKeys {
   static String keyProcedurePerformedAt = 'performedAt';
   static String keyNextVisit = 'nextVisit';
   static String keyAdditionalRemarks = 'additionalRemarks';
+  static String keyTeethChart = 'teethChart';
+  static String keyTeethChartType = 'type';
+  static String keyTeethChartSelectedValues = 'values';
 }

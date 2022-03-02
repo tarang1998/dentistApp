@@ -1,3 +1,5 @@
+import 'package:dentalApp/app/patientManagement/domain/entities/teethChart.dart';
+
 class PatientProcedureEnity {
   final String procedureId;
   final Procedure procedurePerformed;
@@ -6,6 +8,7 @@ class PatientProcedureEnity {
   final DateTime performedAt;
   final DateTime nextVisit;
   final String additionalRemarks;
+  final TeethChart selectedTeethChart;
 
   PatientProcedureEnity(
       {required this.procedureId,
@@ -14,7 +17,8 @@ class PatientProcedureEnity {
       required this.amountPaid,
       required this.performedAt,
       required this.nextVisit,
-      required this.additionalRemarks});
+      required this.additionalRemarks,
+      required this.selectedTeethChart});
 }
 
 enum Procedure {
@@ -26,9 +30,3 @@ enum Procedure {
   SCALING_AND_POLISHING,
   SURGERY
 }
-
-enum TeethType { ADULT, CHILD }
-
-enum AdultTeethType { LU1, LU2, RU1, RU2, LD1, LD2, RD1, RD2 }
-
-enum ChildTeethType { LUA, RUA, LDA, RDA }

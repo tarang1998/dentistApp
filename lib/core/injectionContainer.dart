@@ -3,9 +3,11 @@ import 'package:dentalApp/app/patientManagement/data/mapper/patientInformationEn
 import 'package:dentalApp/app/patientManagement/data/mapper/patientProcedureEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/repository/patientManagementRepositoryImpl.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
+import 'package:dentalApp/app/patientManagement/data/serializer/addPatientProcedureSerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
 import 'package:dentalApp/app/patientManagement/domain/repository/patientManagementRepository.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientProcedureDataUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchAllProceduresForPatientUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchNextBatchOfPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchPatientsMetaInformationUsecase.dart';
@@ -13,6 +15,7 @@ import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientInform
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementPresenter.dart';
 import 'package:dentalApp/core/navigationService.dart';
@@ -44,6 +47,9 @@ Future<void> init() async {
   serviceLocator
       .registerFactory(() => PatientProcedurePresenter(serviceLocator()));
 
+  serviceLocator.registerFactory(
+      () => AddProcedurePresenter(serviceLocator(), serviceLocator()));
+
   ///Domain - usecases
   serviceLocator.registerFactory(
       () => FetchNextBatchOfPatientsMetaUsecase(serviceLocator()));
@@ -56,11 +62,14 @@ Future<void> init() async {
   serviceLocator.registerFactory(() => AddPatientDataUsecase(serviceLocator()));
   serviceLocator.registerFactory(
       () => FetchAllProceduresForPatientUsecase(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => AddPatientProcedureDataUsecase(serviceLocator()));
 
   ///Data
 
   ///Serializer
   serviceLocator.registerFactory(() => AddPatientEntitySerializer());
+  serviceLocator.registerFactory(() => AddPatientProcedureSerializer());
 
   ///Mapper
   serviceLocator.registerFactory(() => PatientInformationMapperEntity());
@@ -69,7 +78,7 @@ Future<void> init() async {
   ///Repository
   serviceLocator.registerLazySingleton<PatientManagementRepository>(() =>
       PatientManagementRepositoryImpl(serviceLocator(), serviceLocator(),
-          serviceLocator(), serviceLocator()));
+          serviceLocator(), serviceLocator(), serviceLocator()));
 
   ///Wrappers
   serviceLocator.registerFactory(() => PatientManagementFirebaseWrapper());

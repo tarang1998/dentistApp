@@ -101,6 +101,8 @@ class PatientManagementController extends Controller {
   //Function called to reload the page
   ///On successfull staff addition so that added staff data is fetched too
   void reloadPage() {
+    _stateMachine.onEvent(PatientManagementLoadingEvent());
+    refreshUI();
     fetchPatientsMeta();
   }
 }
