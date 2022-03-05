@@ -2,6 +2,7 @@ import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedure
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureStateMachine.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureView.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
 import 'package:dentalApp/core/navigationService.dart';
 import 'package:dentalApp/core/presentation/observer.dart';
@@ -58,5 +59,12 @@ class PatientProcedureController extends Controller {
     _stateMachine.onEvent(PatientProcedureLoadingEvent());
     refreshUI();
     initializePage(patientId: patientId);
+  }
+
+  void navigateToViewPatientProcedureInformationPage(
+      {required String patientId, required String patientProcedureId}) {
+    _navigationService.navigateTo(
+        NavigationService.viewPatientProcedureInformation,
+        arguments: ViewProcedurePageParams(patientId, patientProcedureId));
   }
 }

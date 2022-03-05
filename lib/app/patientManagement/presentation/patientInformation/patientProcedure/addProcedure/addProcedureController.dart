@@ -113,6 +113,8 @@ class AddProcedureController extends Controller {
       return;
     }
 
+    //TODO : Add validation for selected teeth values
+
     _presenter.addPatientProcedure(
         UseCaseObserver(() {
           reloadPatientProceduresPageOnSuccessfullProcedureAddition(patientId);

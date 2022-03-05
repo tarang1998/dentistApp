@@ -11,11 +11,14 @@ class PatientProcedureEntityMapper {
           Procedure.values,
           patientProcedureData[PatientProcedureKeys.keyProcedure],
         ),
-        estimatedCost: patientProcedureData[PatientProcedureKeys.keyProcedure],
+        estimatedCost:
+            patientProcedureData[PatientProcedureKeys.keyEstimatedCost],
         amountPaid: patientProcedureData[PatientProcedureKeys.keyAmountPaid],
         performedAt:
-            patientProcedureData[PatientProcedureKeys.keyProcedurePerformedAt],
-        nextVisit: patientProcedureData[PatientProcedureKeys.keyNextVisit],
+            patientProcedureData[PatientProcedureKeys.keyProcedurePerformedAt]
+                .toDate(),
+        nextVisit:
+            patientProcedureData[PatientProcedureKeys.keyNextVisit].toDate(),
         additionalRemarks:
             patientProcedureData[PatientProcedureKeys.keyAdditionalRemarks],
         selectedTeethChart: _mapTeethChart(
@@ -28,24 +31,22 @@ class PatientProcedureEntityMapper {
         TeethChartType.values,
         teethChartData[PatientProcedureKeys.keyTeethChartType]);
 
-    if (teethChartData == TeethChartType.ADULT) {
+    if (teethChartType == TeethChartType.ADULT) {
       final List<AdultTeethType> selectedValues = [];
 
-      final List<String> selectedValuesRawData =
-          teethChartData[PatientProcedureKeys.keyTeethChartSelectedValues]
-              as List<String>;
+      final List<String> selectedValuesRawData = List<String>.from(
+          teethChartData[PatientProcedureKeys.keyTeethChartSelectedValues]);
 
       selectedValuesRawData.forEach((element) {
         selectedValues.add(convertStringToEnum(AdultTeethType.values, element));
       });
 
       return AdultTeethChart(selectedValues: selectedValues);
-    } else if (teethChartData == TeethChartType.CHILD) {
+    } else if (teethChartType == TeethChartType.CHILD) {
       final List<ChildTeethType> selectedValues = [];
 
-      final List<String> selectedValuesRawData =
-          teethChartData[PatientProcedureKeys.keyTeethChartSelectedValues]
-              as List<String>;
+      final List<String> selectedValuesRawData = List<String>.from(
+          teethChartData[PatientProcedureKeys.keyTeethChartSelectedValues]);
 
       selectedValuesRawData.forEach((element) {
         selectedValues.add(convertStringToEnum(ChildTeethType.values, element));

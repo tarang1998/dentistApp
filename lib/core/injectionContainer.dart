@@ -12,11 +12,13 @@ import 'package:dentalApp/app/patientManagement/domain/usecases/fetchAllProcedur
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchNextBatchOfPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientProcedureInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementPresenter.dart';
 import 'package:dentalApp/core/navigationService.dart';
 import 'package:get_it/get_it.dart';
@@ -45,6 +47,9 @@ Future<void> init() async {
   serviceLocator.registerFactory(() => AddPatientPresenter(serviceLocator()));
 
   serviceLocator
+      .registerFactory(() => ViewProcedurePresenter(serviceLocator()));
+
+  serviceLocator
       .registerFactory(() => PatientProcedurePresenter(serviceLocator()));
 
   serviceLocator.registerFactory(
@@ -64,6 +69,8 @@ Future<void> init() async {
       () => FetchAllProceduresForPatientUsecase(serviceLocator()));
   serviceLocator
       .registerFactory(() => AddPatientProcedureDataUsecase(serviceLocator()));
+  serviceLocator.registerFactory(
+      () => GetPatientProcedureInformationUsecase(serviceLocator()));
 
   ///Data
 

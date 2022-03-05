@@ -20,15 +20,13 @@ class AddPatientProcedureSerializer {
     _patientProcedureSerializedData[PatientProcedureKeys.keyAdditionalRemarks] =
         patientProcedureEntity.additionalRemarks;
 
-    _patientProcedureSerializedData[PatientProcedureKeys.keyTeethChart] = {};
+    Map<String, dynamic> teethChart = {};
 
-    if (patientProcedureEntity.selectedTeethChart.runtimeType ==
-        AdultTeethChart) {
+    if (patientProcedureEntity.selectedTeethChart is AdultTeethChart) {
       AdultTeethChart adultTeethChart =
           patientProcedureEntity.selectedTeethChart as AdultTeethChart;
 
-      _patientProcedureSerializedData[PatientProcedureKeys.keyTeethChart]
-              [PatientProcedureKeys.keyTeethChartType] =
+      teethChart[PatientProcedureKeys.keyTeethChartType] =
           enumValueToString(TeethChartType.ADULT);
 
       List<String> selectedTeethValue = [];
@@ -37,18 +35,15 @@ class AddPatientProcedureSerializer {
         selectedTeethValue.add(enumValueToString(element));
       });
 
-      _patientProcedureSerializedData[PatientProcedureKeys.keyTeethChart]
-              [PatientProcedureKeys.keyTeethChartSelectedValues] =
+      teethChart[PatientProcedureKeys.keyTeethChartSelectedValues] =
           selectedTeethValue;
     }
 
-    if (patientProcedureEntity.selectedTeethChart.runtimeType ==
-        ChildTeethType) {
+    if (patientProcedureEntity.selectedTeethChart is ChildTeethChart) {
       ChildTeethChart childTeethChart =
           patientProcedureEntity.selectedTeethChart as ChildTeethChart;
 
-      _patientProcedureSerializedData[PatientProcedureKeys.keyTeethChart]
-              [PatientProcedureKeys.keyTeethChartType] =
+      teethChart[PatientProcedureKeys.keyTeethChartType] =
           enumValueToString(TeethChartType.CHILD);
 
       List<String> selectedTeethValue = [];
@@ -57,10 +52,12 @@ class AddPatientProcedureSerializer {
         selectedTeethValue.add(enumValueToString(element));
       });
 
-      _patientProcedureSerializedData[PatientProcedureKeys.keyTeethChart]
-              [PatientProcedureKeys.keyTeethChartSelectedValues] =
+      teethChart[PatientProcedureKeys.keyTeethChartSelectedValues] =
           selectedTeethValue;
     }
+
+    _patientProcedureSerializedData[PatientProcedureKeys.keyTeethChart] =
+        teethChart;
 
     return _patientProcedureSerializedData;
   }

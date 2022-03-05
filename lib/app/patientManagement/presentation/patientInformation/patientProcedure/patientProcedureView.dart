@@ -81,7 +81,11 @@ class PatientProcedurePageState extends ResponsiveViewState<
               children: <Widget>[
                 ...initializedState.patientProcedures.map((procedure) {
                   return GestureDetector(
-                    onTap: () => {},
+                    onTap: () => {
+                      controller.navigateToViewPatientProcedureInformationPage(
+                          patientId: initializedState.patientId,
+                          patientProcedureId: procedure.procedureId)
+                    },
                     child: Card(
                       elevation: 6,
                       child: Padding(

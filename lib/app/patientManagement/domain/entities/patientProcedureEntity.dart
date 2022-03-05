@@ -8,7 +8,7 @@ class PatientProcedureEnity {
   final DateTime performedAt;
   final DateTime nextVisit;
   final String additionalRemarks;
-  final TeethChart selectedTeethChart;
+  final TeethChart? selectedTeethChart;
 
   PatientProcedureEnity(
       {required this.procedureId,

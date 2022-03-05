@@ -122,7 +122,7 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   }
 
   @override
-  Future<String> addPatientPrcedure(
+  Future<String> addPatientProcedure(
       {required String patientId,
       required PatientProcedureEnity patientProcedureEnity}) async {
     Map<String, dynamic> patientProcedureData =
@@ -146,5 +146,16 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
             selectedTeethChart: patientProcedureEnity.selectedTeethChart));
 
     return patientId;
+  }
+
+  @override
+  PatientProcedureEnity getPatientProcedureInformation(
+      {required String patientId, required String patientProcedureId}) {
+    List<PatientProcedureEnity> procedures = _patientsProcedures[patientId]!;
+
+    PatientProcedureEnity procedure = procedures
+        .singleWhere((element) => element.procedureId == patientProcedureId);
+
+    return procedure;
   }
 }

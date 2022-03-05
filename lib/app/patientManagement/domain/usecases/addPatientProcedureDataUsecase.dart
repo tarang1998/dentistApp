@@ -15,7 +15,7 @@ class AddPatientProcedureDataUsecase
     final StreamController<void> streamController = StreamController();
 
     try {
-      String procedureId = await _repository.addPatientPrcedure(
+      String procedureId = await _repository.addPatientProcedure(
           patientId: params!.patientId,
           patientProcedureEnity: params.patientProcedureEntity);
       LoggingWrapper.print(
