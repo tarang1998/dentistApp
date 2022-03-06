@@ -27,7 +27,7 @@ Widget childTeethChartWidget(final List<ChildTeethType> selectedChildTeethType,
     ChildTeethType.RDB,
     ChildTeethType.RDC,
     ChildTeethType.RDD,
-    ChildTeethType.RDA,
+    ChildTeethType.RDE,
   ];
 
   return Column(

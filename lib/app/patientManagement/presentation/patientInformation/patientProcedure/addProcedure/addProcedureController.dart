@@ -135,8 +135,9 @@ class AddProcedureController extends Controller {
 
     if (teethChartType == TeethChartType.CHILD) {
       if (selectedChildTeeth.isEmpty) {
-        //TODO : Add validation for selected child teeth values
-
+        Fluttertoast.showToast(
+            msg: 'Please select values from the teeth chart');
+        return;
       }
     }
 
