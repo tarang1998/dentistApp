@@ -1,5 +1,9 @@
 import 'package:dentalApp/app/home/presentation/homeController.dart';
 import 'package:dentalApp/app/home/presentation/homeStateMachine.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/colors.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/elevation.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
+import 'package:dentalApp/core/presentation/screenDimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -59,15 +63,56 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
             GestureDetector(
               onTap: controller.navigateToPatientsManagementPage,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  color: Colors.red,
-                  height: 150,
-                  width: 150,
-                  child: Text('Patients'),
+                padding: const EdgeInsets.all(RawSpacing.medium),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: RawElevation.high,
+                  child: ClipPath(
+                    clipper: ShapeBorderClipper(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    child: SizedBox(
+                        width: getScreenWidth(context) * 0.4,
+                        height: getScreenHeight(context) * 0.2,
+                        child: Column(
+                          children: [
+                            const Expanded(
+                              child: IconButton(
+                                onPressed: null,
+                                iconSize: 85,
+                                icon: Icon(
+                                  Icons.person,
+                                  color: RawColors.grey100,
+                                ),
+                              ),
+                              flex: 3,
+                            ),
+                            Expanded(
+                              child: Container(
+                                color: Colors.red[300],
+                                height: getScreenHeight(context) * 0.2,
+                                child: const Center(
+                                  child: Text(
+                                    'Patients',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      letterSpacing: 1,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              flex: 2,
+                            )
+                          ],
+                        )),
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
