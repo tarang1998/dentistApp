@@ -1,5 +1,8 @@
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementController.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementStateMachine.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/elevation.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
+import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -58,6 +61,7 @@ class PatientManagementPageState extends ResponsiveViewState<
       PatientManagementController controller) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red[300],
         child: const Icon(Icons.add),
         onPressed: () {
           controller.navigateToAddPatientPage();
@@ -66,45 +70,77 @@ class PatientManagementPageState extends ResponsiveViewState<
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async => controller.refreshPage(),
-          child: Container(
-            width: 300,
-            margin: const EdgeInsets.all(5),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-              controller: controller.scrollController,
-              child: Column(
-                children: <Widget>[
-                  ...initializedState.patientsMetaInformation
-                      .map((patientMeta) {
-                    return GestureDetector(
-                      onTap: () => controller.navigateToPatientInformationPage(
-                          patientId: patientMeta.patientId),
-                      child: Card(
-                        elevation: 6,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Name : ${patientMeta.name}"),
-                              Text("Age : ${patientMeta.dob}"),
-                              Text("Sex : ${patientMeta.sex}")
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                  if (controller.isFetchingNextPage)
-                    Container(
-                      margin: const EdgeInsets.all(10),
-                      child: const CircularProgressIndicator(),
+          child: Column(children: [
+            Container(
+              margin: const EdgeInsets.all(RawSpacing.extraSmall),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 25,
                     ),
+                    onPressed: () => controller.navigateBack(),
+                  ),
+                  Text(
+                    'Patient List',
+                    style: const TextStyle(
+                      fontSize: 22,
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              controller: controller.scrollController,
+              child: Container(
+                padding: const EdgeInsets.all(RawSpacing.extraSmall),
+                child: Column(
+                  children: <Widget>[
+                    ...initializedState.patientsMetaInformation
+                        .map((patientMeta) {
+                      return Container(
+                        margin: const EdgeInsets.all(RawSpacing.extraSmall),
+                        child: Card(
+                          elevation: RawElevation.high,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(18),
+                            hoverColor: Colors.white,
+                            onTap: () =>
+                                controller.navigateToPatientInformationPage(
+                                    patientId: patientMeta.patientId),
+                            leading: const Icon(
+                              Icons.account_circle,
+                              size: 45,
+                            ),
+                            title: Text(
+                              '${patientMeta.name}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            isThreeLine: true,
+                            subtitle: Text(
+                                'Email : ${patientMeta.emailId}\nGender : ${enumValueToString(patientMeta.sex)}\nAge : ${DateTime.now().year - patientMeta.dob.year}'),
+                          ),
+                        ),
+                      );
+                    }),
+                    if (controller.isFetchingNextPage)
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: const CircularProgressIndicator(),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ]),
         ),
       ),
     );

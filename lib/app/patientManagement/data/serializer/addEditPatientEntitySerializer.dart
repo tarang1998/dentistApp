@@ -13,7 +13,7 @@ class AddEditPatientEntitySerializer {
     _addPatientSerializedData[PatientManagementKeys.keyPhoneNo] =
         patientInformation.phoneNo;
     _addPatientSerializedData[PatientManagementKeys.keyEmailId] =
-        patientInformation.emailId;
+        patientInformation.patientMetaInformation.emailId;
     _addPatientSerializedData[PatientManagementKeys.keyCreatedAt] =
         patientInformation.createdAt;
     _addPatientSerializedData[PatientManagementKeys.keyDOB] =

@@ -86,9 +86,9 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
                 patientId: patientId,
                 name: patientInformation.patientMetaInformation.name,
                 dob: patientInformation.patientMetaInformation.dob,
+                emailId: patientInformation.patientMetaInformation.emailId,
                 sex: patientInformation.patientMetaInformation.sex),
             address: patientInformation.address,
-            emailId: patientInformation.emailId,
             phoneNo: patientInformation.phoneNo,
             createdAt: patientInformation.createdAt,
             additionalInformation: patientInformation.additionalInformation));
@@ -118,9 +118,9 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
                 patientId: patientInformation.patientMetaInformation.patientId,
                 name: patientInformation.patientMetaInformation.name,
                 dob: patientInformation.patientMetaInformation.dob,
+                emailId: patientInformation.patientMetaInformation.emailId,
                 sex: patientInformation.patientMetaInformation.sex),
             address: patientInformation.address,
-            emailId: patientInformation.emailId,
             phoneNo: patientInformation.phoneNo,
             createdAt: patientInformation.createdAt,
             additionalInformation: patientInformation.additionalInformation));

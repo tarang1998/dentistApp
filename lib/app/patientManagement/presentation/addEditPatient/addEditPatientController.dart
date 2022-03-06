@@ -52,7 +52,8 @@ class AddEditPatientController extends Controller {
           }, onNextFunc: (final PatientInformation patientInformation) {
             nameTextEditingController.text =
                 patientInformation.patientMetaInformation.name;
-            emailTextEditingController.text = patientInformation.emailId;
+            emailTextEditingController.text =
+                patientInformation.patientMetaInformation.emailId;
             phoneNoTextEditingController.text = patientInformation.phoneNo;
             addressTextEditingController.text = patientInformation.address;
             additionalInformationTextEditingController.text =
@@ -122,10 +123,10 @@ class AddEditPatientController extends Controller {
                   patientId: patientId!,
                   name: nameTextEditingController.text,
                   dob: dob,
+                  emailId: emailTextEditingController.text,
                   sex: sex),
               address: addressTextEditingController.text,
               phoneNo: phoneNoTextEditingController.text,
-              emailId: emailTextEditingController.text,
               additionalInformation:
                   additionalInformationTextEditingController.text,
               createdAt: createdAt));
@@ -147,10 +148,10 @@ class AddEditPatientController extends Controller {
                   patientId: 'id',
                   name: nameTextEditingController.text,
                   dob: dob,
+                  emailId: emailTextEditingController.text,
                   sex: sex),
               address: addressTextEditingController.text,
               phoneNo: phoneNoTextEditingController.text,
-              emailId: emailTextEditingController.text,
               additionalInformation:
                   additionalInformationTextEditingController.text,
               createdAt: DateTime.now()));

@@ -76,7 +76,7 @@ class PatientInformationPageState extends ResponsiveViewState<
               Text(
                   "Sex : ${initializedState.patientInformation.patientMetaInformation.sex}"),
               Text(
-                  "Email Id  : ${initializedState.patientInformation.emailId}"),
+                  "Email Id  : ${initializedState.patientInformation.patientMetaInformation.emailId}"),
               Text(
                   "Phone No  : ${initializedState.patientInformation.phoneNo}"),
               Text("Address  : ${initializedState.patientInformation.address}"),

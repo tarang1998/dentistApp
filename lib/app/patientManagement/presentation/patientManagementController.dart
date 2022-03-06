@@ -96,6 +96,10 @@ class PatientManagementController extends Controller {
             LoggingWrapper.print('Navigated Back to Patient management Page'));
   }
 
+  void navigateBack() {
+    _navigationService.navigateBack();
+  }
+
   //Function called on Pull to Refresh
   Future<void> refreshPage() async {
     _stateMachine.onEvent(PatientManagementLoadingEvent());

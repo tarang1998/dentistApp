@@ -7,12 +7,12 @@ class PatientInformationMapperEntity {
     return PatientInformation(
         patientMetaInformation: PatientMetaInformation(
             patientId: rawPatientData[PatientManagementKeys.keyPatientId],
+            emailId: rawPatientData[PatientManagementKeys.keyEmailId],
             name: rawPatientData[PatientManagementKeys.keyName],
             dob: rawPatientData[PatientManagementKeys.keyDOB].toDate(),
             sex: convertStringToEnum(
                 Sex.values, rawPatientData[PatientManagementKeys.keySex])),
         address: rawPatientData[PatientManagementKeys.keyAddress],
-        emailId: rawPatientData[PatientManagementKeys.keyEmailId],
         phoneNo: rawPatientData[PatientManagementKeys.keyPhoneNo],
         createdAt: rawPatientData[PatientManagementKeys.keyCreatedAt].toDate(),
         additionalInformation:
