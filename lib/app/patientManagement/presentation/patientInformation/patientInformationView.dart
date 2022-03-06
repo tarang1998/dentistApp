@@ -89,7 +89,25 @@ class PatientInformationPageState extends ResponsiveViewState<
               ),
               GestureDetector(
                 onTap: () => {
-                  controller.navigateToPateintProcedurePage(
+                  controller.navigateToEditPatientPage(
+                      widget.params
+                          .reloadPatientMetaPageOnPatientInformationEdition,
+                      initializedState
+                          .patientInformation.patientMetaInformation.patientId)
+                },
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  color: Colors.blue,
+                  child: Center(child: Text('Edit Patient Information')),
+                ),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              GestureDetector(
+                onTap: () => {
+                  controller.navigateToPatientProcedurePage(
                       patientId: initializedState
                           .patientInformation.patientMetaInformation.patientId)
                 },
@@ -133,6 +151,8 @@ class PatientInformationPageState extends ResponsiveViewState<
 
 class PatientInformationPageParams {
   final String patientId;
+  final Function reloadPatientMetaPageOnPatientInformationEdition;
 
-  PatientInformationPageParams(this.patientId);
+  PatientInformationPageParams(
+      this.patientId, this.reloadPatientMetaPageOnPatientInformationEdition);
 }

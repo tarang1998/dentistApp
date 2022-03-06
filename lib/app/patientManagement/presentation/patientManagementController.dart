@@ -1,8 +1,10 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementStateMachine.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
+import 'package:dentalApp/core/loggingWrapper.dart';
 import 'package:dentalApp/core/navigationService.dart';
 import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter/widgets.dart';
@@ -77,12 +79,21 @@ class PatientManagementController extends Controller {
   void navigateToPatientInformationPage({required String patientId}) {
     _navigationService.navigateTo(NavigationService.patientInformationPage,
         shouldReplace: false,
-        arguments: PatientInformationPageParams(patientId));
+        arguments: PatientInformationPageParams(patientId, reloadPage));
+
+    //TODO : Using the .then operator to reload the page on navigation back
   }
 
   void navigateToAddPatientPage() {
-    _navigationService.navigateTo(NavigationService.addPatientPage,
-        shouldReplace: false, arguments: reloadPage);
+    _navigationService
+        .navigateTo(NavigationService.addEditPatientPage,
+            shouldReplace: false,
+            arguments: AddEditPatientPageParams(
+                reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition:
+                    reloadPage,
+                inEditMode: false))
+        .then((value) =>
+            LoggingWrapper.print('Navigated Back to Patient management Page'));
   }
 
   //Function called on Pull to Refresh

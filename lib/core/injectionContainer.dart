@@ -2,19 +2,20 @@ import 'package:dentalApp/app/home/presentation/homePresenter.dart';
 import 'package:dentalApp/app/patientManagement/data/mapper/patientInformationEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/mapper/patientProcedureEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/repository/patientManagementRepositoryImpl.dart';
-import 'package:dentalApp/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
+import 'package:dentalApp/app/patientManagement/data/serializer/addEditPatientEntitySerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addPatientProcedureSerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
 import 'package:dentalApp/app/patientManagement/domain/repository/patientManagementRepository.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientProcedureDataUsecase.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/editPatientDataUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchAllProceduresForPatientUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchNextBatchOfPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/fetchPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientProcedureInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientsMetaInformationUsecase.dart';
-import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientPresenter.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
@@ -44,7 +45,8 @@ Future<void> init() async {
         serviceLocator(),
       ));
 
-  serviceLocator.registerFactory(() => AddPatientPresenter(serviceLocator()));
+  serviceLocator.registerFactory(() => AddEditPatientPresenter(
+      serviceLocator(), serviceLocator(), serviceLocator()));
 
   serviceLocator
       .registerFactory(() => ViewProcedurePresenter(serviceLocator()));
@@ -71,11 +73,13 @@ Future<void> init() async {
       .registerFactory(() => AddPatientProcedureDataUsecase(serviceLocator()));
   serviceLocator.registerFactory(
       () => GetPatientProcedureInformationUsecase(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => EditPatientDataUsecase(serviceLocator()));
 
   ///Data
 
   ///Serializer
-  serviceLocator.registerFactory(() => AddPatientEntitySerializer());
+  serviceLocator.registerFactory(() => AddEditPatientEntitySerializer());
   serviceLocator.registerFactory(() => AddPatientProcedureSerializer());
 
   ///Mapper

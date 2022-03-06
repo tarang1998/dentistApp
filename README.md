@@ -13,7 +13,7 @@ An app to manage patients for a dentist
 Name : Mr/Mrs/Miss
 Contact : contact1 - contact 2
 User Photo : Camera enabled / Gallery
-Additional User Images : Camera Enabled / Gallary
+Additional User Images : Camera Enabled / Gallery
 
 > > Procedures :
 

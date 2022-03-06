@@ -1,27 +1,27 @@
 import 'package:dentalApp/app/patientManagement/data/keys/patientManagementKeys.dart';
-import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
+import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
 import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 
-class AddPatientEntitySerializer {
-  Map<String, dynamic> serialize(AddPatientEntity addPatientEntity) {
+class AddEditPatientEntitySerializer {
+  Map<String, dynamic> serialize(PatientInformation patientInformation) {
     Map<String, dynamic> _addPatientSerializedData = {};
 
     _addPatientSerializedData[PatientManagementKeys.keyName] =
-        addPatientEntity.name;
+        patientInformation.patientMetaInformation.name;
     _addPatientSerializedData[PatientManagementKeys.keyAddress] =
-        addPatientEntity.address;
+        patientInformation.address;
     _addPatientSerializedData[PatientManagementKeys.keyPhoneNo] =
-        addPatientEntity.phoneNo;
+        patientInformation.phoneNo;
     _addPatientSerializedData[PatientManagementKeys.keyEmailId] =
-        addPatientEntity.emailId;
+        patientInformation.emailId;
     _addPatientSerializedData[PatientManagementKeys.keyCreatedAt] =
-        addPatientEntity.createdAt;
+        patientInformation.createdAt;
     _addPatientSerializedData[PatientManagementKeys.keyDOB] =
-        addPatientEntity.dob;
+        patientInformation.patientMetaInformation.dob;
     _addPatientSerializedData[PatientManagementKeys.keySex] =
-        enumValueToString(addPatientEntity.sex);
+        enumValueToString(patientInformation.patientMetaInformation.sex);
     _addPatientSerializedData[PatientManagementKeys.keyAdditionalInformation] =
-        enumValueToString(addPatientEntity.sex);
+        enumValueToString(patientInformation.additionalInformation);
 
     return _addPatientSerializedData;
   }

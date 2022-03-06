@@ -1,5 +1,5 @@
 import 'package:dentalApp/app/home/presentation/homeView.dart';
-import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureView.dart';
@@ -16,9 +16,10 @@ class AppNavigationService extends NavigationService {
       case NavigationService.patientsManagementPage:
         return MaterialPageRoute(builder: (_) => PatientManagementPage());
 
-      case NavigationService.addPatientPage:
+      case NavigationService.addEditPatientPage:
         return MaterialPageRoute(
-            builder: (_) => AddPatientPage(settings.arguments as Function));
+            builder: (_) => AddEditPatientPage(
+                settings.arguments as AddEditPatientPageParams));
 
       case NavigationService.patientInformationPage:
         return MaterialPageRoute(
@@ -65,6 +66,12 @@ class AppNavigationService extends NavigationService {
   }
 
   @override
+  Future<void> navigateBackUntilAndPush(String newRoute, String untilRoute) {
+    return navigatorKey.currentState!.pushNamedAndRemoveUntil(
+        newRoute, (route) => route.settings.name == untilRoute);
+  }
+
+  @override
   void navigateBack() {
     return navigatorKey.currentState!.pop();
   }
@@ -85,7 +92,7 @@ abstract class NavigationService {
   static const String homepage = '/home';
 
   static const String patientsManagementPage = '/patientManagementPage';
-  static const String addPatientPage = '/addPatientPage';
+  static const String addEditPatientPage = '/addEditPatientPage';
 
   static const String patientInformationPage = '/patientInformationPage';
 
@@ -100,6 +107,8 @@ abstract class NavigationService {
       {bool shouldReplace = false, Object? arguments});
 
   Future<void> navigateBackUntil(String untilRoute, {Object? arguments});
+
+  Future<void> navigateBackUntilAndPush(String newRoute, String untilRoute);
 
   void popUntil(String popUntilRoute);
 

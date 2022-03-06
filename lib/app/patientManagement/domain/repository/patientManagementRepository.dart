@@ -1,4 +1,3 @@
-import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
 
@@ -11,7 +10,11 @@ abstract class PatientManagementRepository {
 
   PatientInformation getPatientInformation({required String patientId});
 
-  Future<String> addPatientData({required AddPatientEntity patientEntity});
+  Future<String> addPatientData(
+      {required PatientInformation patientInformation});
+
+  Future<void> editPatientData(
+      {required PatientInformation patientInformation});
 
   Future<List<PatientProcedureEnity>> getPatientProcedures(
       {required String patientId});

@@ -1,53 +1,54 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
-import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientController.dart';
-import 'package:dentalApp/app/patientManagement/presentation/addPatient/addPatientStateMachine.dart';
+import 'package:dentalApp/app/patientManagement/presentation/AddEditPatient/AddEditPatientController.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientStateMachine.dart';
 import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-class AddPatientPage extends View {
-  final Function reloadPatientsMetaPageOnSuccessFullPatientAddition;
-  AddPatientPage(this.reloadPatientsMetaPageOnSuccessFullPatientAddition);
+class AddEditPatientPage extends View {
+  final AddEditPatientPageParams params;
+  AddEditPatientPage(this.params);
 
   @override
-  State<StatefulWidget> createState() => AddPatientPageState();
+  State<StatefulWidget> createState() => AddEditPatientPageState();
 }
 
-class AddPatientPageState
-    extends ResponsiveViewState<AddPatientPage, AddPatientController> {
-  AddPatientPageState() : super(AddPatientController());
+class AddEditPatientPageState
+    extends ResponsiveViewState<AddEditPatientPage, AddEditPatientController> {
+  AddEditPatientPageState() : super(AddEditPatientController());
 
   @override
   Widget get desktopView => throw UnimplementedError();
 
   @override
-  Widget get mobileView => ControlledWidgetBuilder<AddPatientController>(
+  Widget get mobileView => ControlledWidgetBuilder<AddEditPatientController>(
         builder: (context, controller) {
           final currentState = controller.getCurrentState();
           final currentStateType = controller.getCurrentState().runtimeType;
 
           print(
-              "BuildMobileView of AddPatientPage called with state $currentStateType");
+              "BuildMobileView of AddEditPatientPage called with state $currentStateType");
 
           switch (currentStateType) {
-            case AddPatientInitializedState:
-              AddPatientInitializedState addPatientInitializedState =
-                  currentState as AddPatientInitializedState;
+            case AddEditPatientInitializedState:
+              AddEditPatientInitializedState addEditPatientInitializedState =
+                  currentState as AddEditPatientInitializedState;
               return _buildInitializedStateView(
-                  addPatientInitializedState, controller);
+                  addEditPatientInitializedState, controller);
 
-            case AddPatientLoadingState:
+            case AddEditPatientLoadingState:
               return _buildLoadingStateView(controller);
 
-            case AddPatientInitializationState:
-              return _buildInitializationStateView(controller);
+            case AddEditPatientInitializationState:
+              return _buildInitializationStateView(controller,
+                  widget.params.inEditMode, widget.params.patientId);
 
-            case AddPatientErrorState:
+            case AddEditPatientErrorState:
               return _buildErrorStateView();
           }
 
           throw Exception(
-              "Unrecognized state $currentStateType encountered in AddPatientPage");
+              "Unrecognized state $currentStateType encountered in AddEditPatientPage");
         },
       );
 
@@ -58,8 +59,8 @@ class AddPatientPageState
   Widget get watchView => throw UnimplementedError();
 
   Widget _buildInitializedStateView(
-    AddPatientInitializedState initializedState,
-    AddPatientController controller,
+    AddEditPatientInitializedState initializedState,
+    AddEditPatientController controller,
   ) {
     return Scaffold(
       body: SafeArea(
@@ -213,7 +214,11 @@ class AddPatientPageState
               onTap: () => controller.validateUserData(
                   initializedState.dob,
                   initializedState.sex,
-                  widget.reloadPatientsMetaPageOnSuccessFullPatientAddition),
+                  initializedState.createdAt,
+                  widget.params.inEditMode,
+                  widget.params
+                      .reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition,
+                  widget.params.patientId),
               child: Container(
                 height: 50,
                 color: Colors.blue,
@@ -229,7 +234,7 @@ class AddPatientPageState
     );
   }
 
-  _pickDateOfBirth(AddPatientController controller, BuildContext context,
+  _pickDateOfBirth(AddEditPatientController controller, BuildContext context,
       DateTime selectedDOB) async {
     DateTime? date = await showDatePicker(
       context: context,
@@ -240,16 +245,17 @@ class AddPatientPageState
     if (date != null) controller.handleDOBUpdation(date);
   }
 
-  Widget _buildLoadingStateView(AddPatientController controller) {
+  Widget _buildLoadingStateView(AddEditPatientController controller) {
     return Scaffold(
         body: Center(
       child: CircularProgressIndicator(),
     ));
   }
 
-  Widget _buildInitializationStateView(AddPatientController controller) {
-    WidgetsBinding.instance!
-        .addPostFrameCallback((_) => controller.initializePage());
+  Widget _buildInitializationStateView(AddEditPatientController controller,
+      bool isInEditMode, String? patientId) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) => controller
+        .initializePage(isInEditMode: isInEditMode, patientId: patientId));
     return Scaffold(
         body: Center(
       child: CircularProgressIndicator(),
@@ -262,4 +268,14 @@ class AddPatientPageState
       child: Text('Error'),
     ));
   }
+}
+
+class AddEditPatientPageParams {
+  Function reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition;
+  bool inEditMode;
+  String? patientId;
+  AddEditPatientPageParams(
+      {required this.reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition,
+      required this.inEditMode,
+      this.patientId});
 }

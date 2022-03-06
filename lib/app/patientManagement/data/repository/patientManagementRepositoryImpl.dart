@@ -1,9 +1,8 @@
 import 'package:dentalApp/app/patientManagement/data/mapper/patientInformationEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/mapper/patientProcedureEntityMapper.dart';
-import 'package:dentalApp/app/patientManagement/data/serializer/addPatientEntitySerializer.dart';
+import 'package:dentalApp/app/patientManagement/data/serializer/addEditPatientEntitySerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addPatientProcedureSerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
-import 'package:dentalApp/app/patientManagement/domain/entities/addPatientEntity.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
 import 'package:dentalApp/app/patientManagement/domain/repository/patientManagementRepository.dart';
@@ -12,13 +11,13 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   final PatientManagementFirebaseWrapper _patientManagementFirebaseWrapper;
   final PatientInformationMapperEntity _patientInformationMapperEntity;
   final PatientProcedureEntityMapper _patientProcedureEntityMapper;
-  final AddPatientEntitySerializer _addPatientEntitySerializaer;
+  final AddEditPatientEntitySerializer _addEditPatientEntitySerializer;
   final AddPatientProcedureSerializer _addPatientProcedureSerializer;
 
   PatientManagementRepositoryImpl(
       this._patientManagementFirebaseWrapper,
       this._patientInformationMapperEntity,
-      this._addPatientEntitySerializaer,
+      this._addEditPatientEntitySerializer,
       this._patientProcedureEntityMapper,
       this._addPatientProcedureSerializer);
 
@@ -73,9 +72,9 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
 
   @override
   Future<String> addPatientData(
-      {required AddPatientEntity patientEntity}) async {
+      {required PatientInformation patientInformation}) async {
     Map<String, dynamic> _addPatientSerializedData =
-        _addPatientEntitySerializaer.serialize(patientEntity);
+        _addEditPatientEntitySerializer.serialize(patientInformation);
     final String patientId = await _patientManagementFirebaseWrapper
         .addPatientData(addPatientSerializedData: _addPatientSerializedData);
 
@@ -85,16 +84,46 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
         PatientInformation(
             patientMetaInformation: PatientMetaInformation(
                 patientId: patientId,
-                name: patientEntity.name,
-                dob: patientEntity.dob,
-                sex: patientEntity.sex),
-            address: patientEntity.address,
-            emailId: patientEntity.emailId,
-            phoneNo: patientEntity.phoneNo,
-            createdAt: patientEntity.createdAt,
-            additionalInformation: patientEntity.additionalInformation));
+                name: patientInformation.patientMetaInformation.name,
+                dob: patientInformation.patientMetaInformation.dob,
+                sex: patientInformation.patientMetaInformation.sex),
+            address: patientInformation.address,
+            emailId: patientInformation.emailId,
+            phoneNo: patientInformation.phoneNo,
+            createdAt: patientInformation.createdAt,
+            additionalInformation: patientInformation.additionalInformation));
 
     return patientId;
+  }
+
+  @override
+  Future<void> editPatientData(
+      {required PatientInformation patientInformation}) async {
+    Map<String, dynamic> _editPatientSerializedData =
+        _addEditPatientEntitySerializer.serialize(patientInformation);
+    await _patientManagementFirebaseWrapper.editPatientData(
+        patientId: patientInformation.patientMetaInformation.patientId,
+        editPatientSerializedData: _editPatientSerializedData);
+
+    //Editing the patient data from the cached patient data's List
+
+    final int index = _patientsInformation!.indexWhere((element) =>
+        element.patientMetaInformation.patientId ==
+        patientInformation.patientMetaInformation.patientId);
+    _patientsInformation!.removeAt(index);
+    _patientsInformation!.insert(
+        index,
+        PatientInformation(
+            patientMetaInformation: PatientMetaInformation(
+                patientId: patientInformation.patientMetaInformation.patientId,
+                name: patientInformation.patientMetaInformation.name,
+                dob: patientInformation.patientMetaInformation.dob,
+                sex: patientInformation.patientMetaInformation.sex),
+            address: patientInformation.address,
+            emailId: patientInformation.emailId,
+            phoneNo: patientInformation.phoneNo,
+            createdAt: patientInformation.createdAt,
+            additionalInformation: patientInformation.additionalInformation));
   }
 
   @override

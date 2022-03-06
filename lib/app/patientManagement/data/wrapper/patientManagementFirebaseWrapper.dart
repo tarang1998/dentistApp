@@ -51,6 +51,12 @@ class PatientManagementFirebaseWrapper {
     return docReference.id;
   }
 
+  Future<void> editPatientData(
+      {required String patientId,
+      required Map<String, dynamic> editPatientSerializedData}) async {
+    await patientsCollection.doc(patientId).update(editPatientSerializedData);
+  }
+
   Future<List<Map<String, dynamic>>> fetchPatientProcedures(
       {required String patientId}) async {
     final List<Map<String, dynamic>> _patientProceduresRawInformation = [];

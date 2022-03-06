@@ -1,4 +1,5 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationStateMachine.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
@@ -44,8 +45,20 @@ class PatientInformationController extends Controller {
         patientId);
   }
 
-  void navigateToPateintProcedurePage({required String patientId}) {
+  void navigateToPatientProcedurePage({required String patientId}) {
     _navigationService.navigateTo(NavigationService.patientProcedurePage,
         arguments: patientId);
+  }
+
+  void navigateToEditPatientPage(
+      Function reloadPatientMetaPageOnPatientInformationEdition,
+      String patientId) {
+    _navigationService.navigateTo(NavigationService.addEditPatientPage,
+        shouldReplace: false,
+        arguments: AddEditPatientPageParams(
+            reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition:
+                reloadPatientMetaPageOnPatientInformationEdition,
+            inEditMode: true,
+            patientId: patientId));
   }
 }

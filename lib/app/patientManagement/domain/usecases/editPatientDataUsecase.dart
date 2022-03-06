@@ -4,27 +4,26 @@ import 'package:dentalApp/app/patientManagement/domain/repository/patientManagem
 import 'package:dentalApp/core/loggingWrapper.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-class AddPatientDataUsecase extends CompletableUseCase<PatientInformation> {
+class EditPatientDataUsecase extends CompletableUseCase<PatientInformation> {
   final PatientManagementRepository _repository;
 
-  AddPatientDataUsecase(this._repository);
+  EditPatientDataUsecase(this._repository);
 
   @override
   Future<Stream<void>> buildUseCaseStream(params) async {
     final StreamController<void> streamController = StreamController();
 
     try {
-      String patientId =
-          await _repository.addPatientData(patientInformation: params!);
+      await _repository.editPatientData(patientInformation: params!);
       LoggingWrapper.print(
-        "Added Patient : $patientId Data Successful",
-        name: 'AddPatientDataUsecase',
+        "Editted Patient Data Successful",
+        name: 'EditPatientDataUsecase',
       );
       streamController.close();
     } catch (error) {
       streamController.addError(error);
-      LoggingWrapper.print("Failed to add Patient Data: $error",
-          name: 'AddPatientDataUsecase', isError: true);
+      LoggingWrapper.print("Failed to edit Patient Data: $error",
+          name: 'EditPatientDataUsecase', isError: true);
     }
     return streamController.stream;
   }
