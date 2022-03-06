@@ -48,6 +48,43 @@ class AddProcedureStateMachine
             teethChartType: inputEvent.teethChartType);
         break;
 
+      case AddProcedureAdultToothSelectionInputEvent:
+        AddProcedureAdultToothSelectionInputEvent
+            adultToothSelectionInputEvent =
+            event as AddProcedureAdultToothSelectionInputEvent;
+        AddProcedureInitializedState initializedState =
+            newState as AddProcedureInitializedState;
+        List<AdultTeethType> selectedAdultTeeth = newState.selectedAdultTeeth;
+
+        if (selectedAdultTeeth
+            .contains(adultToothSelectionInputEvent.adultTooth)) {
+          selectedAdultTeeth.remove(adultToothSelectionInputEvent.adultTooth);
+        } else {
+          selectedAdultTeeth.add(adultToothSelectionInputEvent.adultTooth);
+        }
+
+        newState = AddProcedureInitializedState.clone(initializedState,
+            selectedAdultTeeth: selectedAdultTeeth);
+        break;
+
+      case AddProcedureChildToothSelectionInputEvent:
+        AddProcedureChildToothSelectionInputEvent
+            childToothSelectionInputEvent =
+            event as AddProcedureChildToothSelectionInputEvent;
+        AddProcedureInitializedState initializedState =
+            newState as AddProcedureInitializedState;
+        List<ChildTeethType> selectedChildTeeth = newState.selectedChildTeeth;
+
+        if (selectedChildTeeth
+            .contains(childToothSelectionInputEvent.childTooth)) {
+          selectedChildTeeth.remove(childToothSelectionInputEvent.childTooth);
+        } else {
+          selectedChildTeeth.add(childToothSelectionInputEvent.childTooth);
+        }
+        newState = AddProcedureInitializedState.clone(initializedState,
+            selectedChildTeeth: selectedChildTeeth);
+        break;
+
       case AddProcedureProcedurePerformedAtInputEvent:
         AddProcedureProcedurePerformedAtInputEvent inputEvent =
             event as AddProcedureProcedurePerformedAtInputEvent;
@@ -93,6 +130,16 @@ class ProcedurePerformedInputEvent extends AddProcedureEvent {
 class AddProcedureTeethChartTypeInputEvent extends AddProcedureEvent {
   final TeethChartType teethChartType;
   AddProcedureTeethChartTypeInputEvent({required this.teethChartType});
+}
+
+class AddProcedureAdultToothSelectionInputEvent extends AddProcedureEvent {
+  final AdultTeethType adultTooth;
+  AddProcedureAdultToothSelectionInputEvent({required this.adultTooth});
+}
+
+class AddProcedureChildToothSelectionInputEvent extends AddProcedureEvent {
+  final ChildTeethType childTooth;
+  AddProcedureChildToothSelectionInputEvent({required this.childTooth});
 }
 
 class AddProcedureProcedurePerformedAtInputEvent extends AddProcedureEvent {

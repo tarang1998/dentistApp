@@ -87,6 +87,18 @@ class AddProcedureController extends Controller {
     }
   }
 
+  void handleAdultToothSelectionInputEvent(AdultTeethType adultToothType) {
+    _stateMachine.onEvent(
+        AddProcedureAdultToothSelectionInputEvent(adultTooth: adultToothType));
+    refreshUI();
+  }
+
+  void handleChildToothSelectionInputEvent(ChildTeethType childToothType) {
+    _stateMachine.onEvent(
+        AddProcedureChildToothSelectionInputEvent(childTooth: childToothType));
+    refreshUI();
+  }
+
   void addProcedure(
       {required String patientId,
       required Procedure? procedurePerformed,
@@ -113,7 +125,20 @@ class AddProcedureController extends Controller {
       return;
     }
 
-    //TODO : Add validation for selected teeth values
+    if (teethChartType == TeethChartType.ADULT) {
+      if (selectedAdultTeeth.isEmpty) {
+        Fluttertoast.showToast(
+            msg: 'Please select values from the teeth chart');
+        return;
+      }
+    }
+
+    if (teethChartType == TeethChartType.CHILD) {
+      if (selectedChildTeeth.isEmpty) {
+        //TODO : Add validation for selected child teeth values
+
+      }
+    }
 
     _presenter.addPatientProcedure(
         UseCaseObserver(() {

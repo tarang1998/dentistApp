@@ -2,6 +2,8 @@ import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedure
 import 'package:dentalApp/app/patientManagement/domain/entities/teethChart.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureController.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureStateMachine.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/widgets/adultTeethChartWidget.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/widgets/childTeethChartWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -142,6 +144,15 @@ class AddProcedurePageState
                 ],
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            if (initializedState.teethChartType == TeethChartType.ADULT)
+              adultTeethChartWidget(initializedState.selectedAdultTeeth, true,
+                  controller.handleAdultToothSelectionInputEvent),
+            if (initializedState.teethChartType == TeethChartType.CHILD)
+              childTeethChartWidget(initializedState.selectedChildTeeth, true,
+                  controller.handleChildToothSelectionInputEvent),
             SizedBox(
               height: 20,
             ),

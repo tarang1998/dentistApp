@@ -1,5 +1,8 @@
+import 'package:dentalApp/app/patientManagement/domain/entities/teethChart.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureController.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureStateMachine.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/widgets/adultTeethChartWidget.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/widgets/childTeethChartWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -79,12 +82,34 @@ class ViewProcedurePageState
                   "Next Visit : ${initializedState.patientProcedureEnity.nextVisit}"),
               Text(
                   "Additional Remarks : ${initializedState.patientProcedureEnity.additionalRemarks}"),
-              Text("  TODO : Displaying Teetch Chart")
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text('Teeth Chart'),
+              ),
+              _displayTeethChart(initializedState)
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _displayTeethChart(ViewProcedureInitializedState initializedState) {
+    if (initializedState.patientProcedureEnity.selectedTeethChart
+        is AdultTeethChart) {
+      AdultTeethChart adultTeethChart = initializedState
+          .patientProcedureEnity.selectedTeethChart as AdultTeethChart;
+
+      return adultTeethChartWidget(adultTeethChart.selectedValues, false, null);
+    } else if (initializedState.patientProcedureEnity.selectedTeethChart
+        is ChildTeethChart) {
+      ChildTeethChart childTeethChart = initializedState
+          .patientProcedureEnity.selectedTeethChart as ChildTeethChart;
+
+      return childTeethChartWidget(childTeethChart.selectedValues, false, null);
+    } else {
+      throw Exception('Unknown value of teeth Chart encountered');
+    }
   }
 
   Widget _buildLoadingStateView(ViewProcedureController controller) {
