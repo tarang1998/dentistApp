@@ -17,4 +17,6 @@ class RawColors {
   static const Color white100 = Color(0xFFFFFFFF);
 
   static const Color transparent = Colors.transparent;
+
+  static const Color red300 = Color(0xFFE57373);
 }

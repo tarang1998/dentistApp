@@ -3,7 +3,7 @@ import 'package:dentalApp/app/patientManagement/data/keys/patientManagementKeys.
 import 'package:dentalApp/app/patientManagement/data/keys/patientProcedureKeys.dart';
 
 class PatientManagementFirebaseWrapper {
-  final int _documentBatchSize = 2;
+  final int _documentBatchSize = 15;
 
   final String _keyPatientProceduresSubCollection = 'procedures';
   final CollectionReference patientsCollection =
