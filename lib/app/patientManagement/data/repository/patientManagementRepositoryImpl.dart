@@ -35,7 +35,8 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
     }
     List<PatientMetaInformation> _patientsMeta = [];
     _patientsInformation!.forEach((element) {
-      _patientsMeta.add(element.patientMetaInformation);
+      _patientsMeta
+          .add(element.patientPersonalInformation.patientMetaInformation);
     });
     return _patientsMeta;
   }
@@ -56,8 +57,8 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   Future<void> fetchNextBatchOfPatientsData() async {
     final List<Map<String, dynamic>> patientsRawData =
         await _patientManagementFirebaseWrapper.fetchNextBatchOfPatients(
-            lastDocumentId:
-                _patientsInformation!.last.patientMetaInformation.patientId);
+            lastDocumentId: _patientsInformation!.last
+                .patientPersonalInformation.patientMetaInformation.patientId);
 
     patientsRawData.forEach((element) {
       _patientsInformation!.add(_patientInformationMapperEntity.map(element));
@@ -66,8 +67,9 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
 
   @override
   PatientInformation getPatientInformation({required String patientId}) {
-    return _patientsInformation!.singleWhere(
-        (element) => element.patientMetaInformation.patientId == patientId);
+    return _patientsInformation!.singleWhere((element) =>
+        element.patientPersonalInformation.patientMetaInformation.patientId ==
+        patientId);
   }
 
   @override
@@ -82,14 +84,39 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
     _patientsInformation!.insert(
         0,
         PatientInformation(
-            patientMetaInformation: PatientMetaInformation(
-                patientId: patientId,
-                name: patientInformation.patientMetaInformation.name,
-                dob: patientInformation.patientMetaInformation.dob,
-                emailId: patientInformation.patientMetaInformation.emailId,
-                sex: patientInformation.patientMetaInformation.sex),
-            address: patientInformation.address,
-            phoneNo: patientInformation.phoneNo,
+            patientDentalInformation:
+                patientInformation.patientDentalInformation,
+            patientMedicalInformation:
+                patientInformation.patientMedicalInformation,
+            patientMedicationInformation:
+                patientInformation.patientMedicationInformation,
+            updatedAt: patientInformation.updatedAt,
+            patientPersonalInformation: PatientPersonalInformation(
+              address: patientInformation.patientPersonalInformation.address,
+              mobileNo: patientInformation.patientPersonalInformation.mobileNo,
+              bloodGroup:
+                  patientInformation.patientPersonalInformation.bloodGroup,
+              maritialStatus:
+                  patientInformation.patientPersonalInformation.maritialStatus,
+              officeInformation: patientInformation
+                  .patientPersonalInformation.officeInformation,
+              profession:
+                  patientInformation.patientPersonalInformation.profession,
+              refferedBy:
+                  patientInformation.patientPersonalInformation.refferedBy,
+              telephoneNo:
+                  patientInformation.patientPersonalInformation.telephoneNo,
+              patientMetaInformation: PatientMetaInformation(
+                  patientId: patientId,
+                  name: patientInformation
+                      .patientPersonalInformation.patientMetaInformation.name,
+                  dob: patientInformation
+                      .patientPersonalInformation.patientMetaInformation.dob,
+                  emailId: patientInformation.patientPersonalInformation
+                      .patientMetaInformation.emailId,
+                  sex: patientInformation
+                      .patientPersonalInformation.patientMetaInformation.sex),
+            ),
             createdAt: patientInformation.createdAt,
             additionalInformation: patientInformation.additionalInformation));
 
@@ -102,28 +129,18 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
     Map<String, dynamic> _editPatientSerializedData =
         _addEditPatientEntitySerializer.serialize(patientInformation);
     await _patientManagementFirebaseWrapper.editPatientData(
-        patientId: patientInformation.patientMetaInformation.patientId,
+        patientId: patientInformation
+            .patientPersonalInformation.patientMetaInformation.patientId,
         editPatientSerializedData: _editPatientSerializedData);
 
     //Editing the patient data from the cached patient data's List
 
     final int index = _patientsInformation!.indexWhere((element) =>
-        element.patientMetaInformation.patientId ==
-        patientInformation.patientMetaInformation.patientId);
+        element.patientPersonalInformation.patientMetaInformation.patientId ==
+        patientInformation
+            .patientPersonalInformation.patientMetaInformation.patientId);
     _patientsInformation!.removeAt(index);
-    _patientsInformation!.insert(
-        index,
-        PatientInformation(
-            patientMetaInformation: PatientMetaInformation(
-                patientId: patientInformation.patientMetaInformation.patientId,
-                name: patientInformation.patientMetaInformation.name,
-                dob: patientInformation.patientMetaInformation.dob,
-                emailId: patientInformation.patientMetaInformation.emailId,
-                sex: patientInformation.patientMetaInformation.sex),
-            address: patientInformation.address,
-            phoneNo: patientInformation.phoneNo,
-            createdAt: patientInformation.createdAt,
-            additionalInformation: patientInformation.additionalInformation));
+    _patientsInformation!.insert(0, patientInformation);
   }
 
   @override

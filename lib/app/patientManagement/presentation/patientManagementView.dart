@@ -2,6 +2,7 @@ import 'package:dentalApp/app/patientManagement/presentation/patientManagementCo
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementStateMachine.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/elevation.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
+import 'package:dentalApp/core/presentation/screenDimensions.dart';
 import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -72,6 +73,7 @@ class PatientManagementPageState extends ResponsiveViewState<
           onRefresh: () async => controller.refreshPage(),
           child: Column(children: [
             Container(
+              height: getScreenHeight(context) * 0.05,
               margin: const EdgeInsets.all(RawSpacing.extraSmall),
               child: Row(
                 children: [
@@ -93,12 +95,13 @@ class PatientManagementPageState extends ResponsiveViewState<
                 ],
               ),
             ),
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-              controller: controller.scrollController,
-              child: Container(
-                padding: const EdgeInsets.all(RawSpacing.extraSmall),
+            Container(
+              height: getScreenHeight(context) * 0.85,
+              padding: const EdgeInsets.all(RawSpacing.extraSmall),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                controller: controller.scrollController,
                 child: Column(
                   children: <Widget>[
                     ...initializedState.patientsMetaInformation

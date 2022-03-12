@@ -70,16 +70,17 @@ class PatientInformationPageState extends ResponsiveViewState<
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  "Name : ${initializedState.patientInformation.patientMetaInformation.name}"),
+                  "Name : ${initializedState.patientInformation.patientPersonalInformation.patientMetaInformation.name}"),
               Text(
-                  "Age : ${initializedState.patientInformation.patientMetaInformation.dob}"),
+                  "Age : ${initializedState.patientInformation.patientPersonalInformation.patientMetaInformation.dob}"),
               Text(
-                  "Sex : ${initializedState.patientInformation.patientMetaInformation.sex}"),
+                  "Sex : ${initializedState.patientInformation.patientPersonalInformation.patientMetaInformation.sex}"),
               Text(
-                  "Email Id  : ${initializedState.patientInformation.patientMetaInformation.emailId}"),
+                  "Email Id  : ${initializedState.patientInformation.patientPersonalInformation.patientMetaInformation.emailId}"),
+              // Text(
+              //     "Phone No  : ${initializedState.patientInformation.patientPersonalInformation.phoneNo}"),
               Text(
-                  "Phone No  : ${initializedState.patientInformation.phoneNo}"),
-              Text("Address  : ${initializedState.patientInformation.address}"),
+                  "Address  : ${initializedState.patientInformation.patientPersonalInformation.address}"),
               Text(
                   "Created At  : ${initializedState.patientInformation.createdAt}"),
               Text(
@@ -93,7 +94,10 @@ class PatientInformationPageState extends ResponsiveViewState<
                       widget.params
                           .reloadPatientMetaPageOnPatientInformationEdition,
                       initializedState
-                          .patientInformation.patientMetaInformation.patientId)
+                          .patientInformation
+                          .patientPersonalInformation
+                          .patientMetaInformation
+                          .patientId)
                 },
                 child: Container(
                   height: 100,
@@ -109,7 +113,10 @@ class PatientInformationPageState extends ResponsiveViewState<
                 onTap: () => {
                   controller.navigateToPatientProcedurePage(
                       patientId: initializedState
-                          .patientInformation.patientMetaInformation.patientId)
+                          .patientInformation
+                          .patientPersonalInformation
+                          .patientMetaInformation
+                          .patientId)
                 },
                 child: Container(
                   height: 100,

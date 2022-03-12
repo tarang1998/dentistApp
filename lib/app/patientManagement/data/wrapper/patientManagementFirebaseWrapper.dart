@@ -3,7 +3,7 @@ import 'package:dentalApp/app/patientManagement/data/keys/patientManagementKeys.
 import 'package:dentalApp/app/patientManagement/data/keys/patientProcedureKeys.dart';
 
 class PatientManagementFirebaseWrapper {
-  final int _documentBatchSize = 2;
+  final int _documentBatchSize = 15;
 
   final String _keyPatientProceduresSubCollection = 'procedures';
   final CollectionReference patientsCollection =
@@ -13,7 +13,7 @@ class PatientManagementFirebaseWrapper {
     final List<Map<String, dynamic>> patientsRawData = [];
 
     final querySnapshot = await patientsCollection
-        .orderBy(PatientManagementKeys.keyCreatedAt, descending: true)
+        .orderBy(PatientManagementKeys.keyUpdatedAt, descending: true)
         .limit(_documentBatchSize)
         .get();
 
@@ -32,7 +32,7 @@ class PatientManagementFirebaseWrapper {
     final documentSnapshot = await patientsCollection.doc(lastDocumentId).get();
 
     final querySnapshot = await patientsCollection
-        .orderBy(PatientManagementKeys.keyCreatedAt, descending: true)
+        .orderBy(PatientManagementKeys.keyUpdatedAt, descending: true)
         .limit(_documentBatchSize)
         .startAfterDocument(documentSnapshot)
         .get();

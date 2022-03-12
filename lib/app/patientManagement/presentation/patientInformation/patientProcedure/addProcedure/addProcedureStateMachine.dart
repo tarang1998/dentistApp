@@ -15,15 +15,15 @@ class AddProcedureStateMachine
       case AddProcedureInitializedEvent:
         AddProcedureInitializedEvent initializedEvent =
             event as AddProcedureInitializedEvent;
-        DateTime dob =
-            initializedEvent.patientInformation.patientMetaInformation.dob;
+        DateTime dob = initializedEvent.patientInformation
+            .patientPersonalInformation.patientMetaInformation.dob;
         int age = DateTime.now().year - dob.year;
         TeethChartType teethChartType =
             (age >= 18) ? TeethChartType.ADULT : TeethChartType.CHILD;
 
         newState = AddProcedureInitializedState(
-            patientId: initializedEvent
-                .patientInformation.patientMetaInformation.patientId,
+            patientId: initializedEvent.patientInformation
+                .patientPersonalInformation.patientMetaInformation.patientId,
             procedurePerformed: null,
             teethChartType: teethChartType,
             selectedAdultTeeth: [],
