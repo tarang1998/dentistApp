@@ -33,7 +33,47 @@ class AppTheme {
 
   static final OutlineInputBorder textFieldInputFocusedBorder =
       OutlineInputBorder(
-    borderSide: const BorderSide(color: RawColors.red300, width: 0.5),
+    borderSide: const BorderSide(
+      color: RawColors.red300,
+    ),
     borderRadius: BorderRadius.circular(10),
+  );
+
+  static final BoxDecoration pageButtonBox = BoxDecoration(
+    color: RawColors.red300,
+    borderRadius: BorderRadius.circular(6),
+    boxShadow: [
+      BoxShadow(
+        color: RawColors.grey90.withOpacity(.1),
+        blurRadius: 40.0,
+        spreadRadius: 0.0,
+        offset: const Offset(
+          0.0,
+          0.0,
+        ),
+      ),
+    ],
+  );
+
+  static final BoxDecoration pageDisabledButtonBox = BoxDecoration(
+    color: const Color(0xFFD1D3D5),
+    borderRadius: BorderRadius.circular(6),
+    boxShadow: [
+      BoxShadow(
+        color: RawColors.grey90.withOpacity(.1),
+        blurRadius: 40.0,
+        spreadRadius: 0.0,
+        offset: const Offset(
+          0.0,
+          0.0,
+        ),
+      ),
+    ],
+  );
+
+  static const TextStyle pageButtonText = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
 }

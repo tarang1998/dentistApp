@@ -26,13 +26,14 @@ class AddEditPatientPresenter extends Presenter {
         observer, GetPatientsInformationUsecaseParams(patientId: patientId));
   }
 
-  void addPatientData(UseCaseObserver observer,
-      {required PatientInformation patientInformation}) {
-    _addPatientDataUsecase.execute(observer, patientInformation);
-  }
-
   void editPatientData(UseCaseObserver observer,
       {required PatientInformation patientInformation}) {
     _editPatientDataUsecase.execute(observer, patientInformation);
+  }
+
+  void addPatientData(UseCaseObserver observer,
+      {required PatientInformation patientInformation}) {
+    print('add pateint data presenter');
+    _addPatientDataUsecase.execute(observer, patientInformation);
   }
 }

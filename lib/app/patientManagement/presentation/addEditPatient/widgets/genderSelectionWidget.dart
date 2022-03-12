@@ -5,7 +5,7 @@ import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 
 class GenderSelectionWidget extends StatefulWidget {
-  final Sex? selectedSex;
+  final Sex selectedSex;
   final Function(Sex) handleUserSexToggled;
 
   const GenderSelectionWidget({

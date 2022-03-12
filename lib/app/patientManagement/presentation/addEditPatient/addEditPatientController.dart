@@ -14,14 +14,38 @@ class AddEditPatientController extends Controller {
 
   final AddEditPatientStateMachine _stateMachine = AddEditPatientStateMachine();
 
+  //Personal Information
   final TextEditingController nameTextEditingController =
       TextEditingController();
   final TextEditingController emailTextEditingController =
       TextEditingController();
-  final TextEditingController phoneNoTextEditingController =
+  final TextEditingController professionTextEditingController =
+      TextEditingController();
+  final TextEditingController telephoneNoTextEditingController =
+      TextEditingController();
+  final TextEditingController mobileNumberTextEditingController =
       TextEditingController();
   final TextEditingController addressTextEditingController =
       TextEditingController();
+  final TextEditingController officeInformationTextEditingController =
+      TextEditingController();
+  final TextEditingController refferedByTextEditingController =
+      TextEditingController();
+
+  //Medical Informatiom
+  final TextEditingController familyDoctorsName = TextEditingController();
+  final TextEditingController familyDoctorsAddressAndTelephoneNo =
+      TextEditingController();
+
+  //Medication Information
+  final TextEditingController medicationInformationTextEditingController =
+      TextEditingController();
+  final TextEditingController allergiesInformation = TextEditingController();
+
+  //Dental Information
+  final TextEditingController mainDentalComplain = TextEditingController();
+  final TextEditingController pastDentalInformation = TextEditingController();
+
   final TextEditingController additionalInformationTextEditingController =
       TextEditingController();
 
@@ -50,24 +74,78 @@ class AddEditPatientController extends Controller {
             _stateMachine.onEvent(AddEditPatientErrorEvent());
             refreshUI();
           }, onNextFunc: (final PatientInformation patientInformation) {
-            nameTextEditingController.text =
-                patientInformation.patientMetaInformation.name;
-            emailTextEditingController.text =
-                patientInformation.patientMetaInformation.emailId;
-            phoneNoTextEditingController.text = patientInformation.phoneNo;
-            addressTextEditingController.text = patientInformation.address;
+            nameTextEditingController.text = patientInformation
+                .patientPersonalInformation.patientMetaInformation.name;
+            emailTextEditingController.text = patientInformation
+                .patientPersonalInformation.patientMetaInformation.emailId;
+            professionTextEditingController.text =
+                patientInformation.patientPersonalInformation.profession;
+            mobileNumberTextEditingController.text = patientInformation
+                .patientPersonalInformation.mobileNo
+                .toString();
+            telephoneNoTextEditingController.text = patientInformation
+                .patientPersonalInformation.telephoneNo
+                .toString();
+            addressTextEditingController.text =
+                patientInformation.patientPersonalInformation.address;
+            officeInformationTextEditingController.text =
+                patientInformation.patientPersonalInformation.officeInformation;
+            refferedByTextEditingController.text =
+                patientInformation.patientPersonalInformation.refferedBy;
+
+            familyDoctorsName.text =
+                patientInformation.patientMedicalInformation.familyDoctorsName;
+            familyDoctorsAddressAndTelephoneNo.text = patientInformation
+                .patientMedicalInformation.familyDoctorsAddressInformation;
+
+            medicationInformationTextEditingController.text = patientInformation
+                .patientMedicationInformation.medicationInformation;
+            allergiesInformation.text = patientInformation
+                .patientMedicationInformation.allergiesInformation;
+
+            mainDentalComplain.text =
+                patientInformation.patientDentalInformation.mainComplain;
+            pastDentalInformation.text = patientInformation
+                .patientDentalInformation.pastDentalTreatmentInformation;
+
             additionalInformationTextEditingController.text =
                 patientInformation.additionalInformation;
+
             _stateMachine.onEvent(AddEditPatientInitializedEvent(
-                dob: patientInformation.patientMetaInformation.dob,
-                sex: patientInformation.patientMetaInformation.sex,
-                createdAt: patientInformation.createdAt));
+                dob: patientInformation
+                    .patientPersonalInformation.patientMetaInformation.dob,
+                sex: patientInformation
+                    .patientPersonalInformation.patientMetaInformation.sex,
+                createdAt: patientInformation.createdAt,
+                maritialStatus: patientInformation
+                    .patientPersonalInformation.maritialStatus,
+                bloodGroup:
+                    patientInformation.patientPersonalInformation.bloodGroup,
+                diseases: patientInformation.patientMedicalInformation.diseases,
+                pregnancyStatus: patientInformation
+                    .patientMedicalInformation.pregnancyStatus,
+                childNursingStatus: patientInformation
+                    .patientMedicalInformation.childNursingStatus,
+                habits: patientInformation.patientMedicalInformation.habits,
+                allergies:
+                    patientInformation.patientMedicationInformation.allergies));
             refreshUI();
           }),
           patientId: patientId!);
     } else {
-      _stateMachine.onEvent(AddEditPatientInitializedEvent(
-          dob: DateTime.now(), sex: Sex.MALE, createdAt: DateTime.now()));
+      _stateMachine.onEvent(
+        AddEditPatientInitializedEvent(
+            dob: DateTime.now(),
+            sex: Sex.MALE,
+            createdAt: DateTime.now(),
+            maritialStatus: MaritialStatus.SINGLE,
+            bloodGroup: BloodGroup.AP,
+            diseases: [],
+            pregnancyStatus: PregnancyStatus.NOT_PREGNANT,
+            childNursingStatus: ChildNursingStatus.NOT_NURSING_CHILD,
+            habits: [],
+            allergies: []),
+      );
       refreshUI();
     }
   }
@@ -86,30 +164,63 @@ class AddEditPatientController extends Controller {
     refreshUI();
   }
 
-  validateUserData(
+  void handlePatientMaritialStatusToggledEvent(MaritialStatus maritialStatus) {
+    _stateMachine.onEvent(AddEditPatientMaritialStatusToggledEvent(
+        maritialStatus: maritialStatus));
+    refreshUI();
+  }
+
+  void handlePatientBloodGroupToggledEvent(BloodGroup bloodGroup) {
+    _stateMachine.onEvent(
+        AddEditPatientBloodGroupSelectionEvent(bloodGroup: bloodGroup));
+    refreshUI();
+  }
+
+  void handlePatientDiseaseSelectionEvent(List<Diseases> diseases) {
+    _stateMachine
+        .onEvent(AddEditPatientDiseaseSelectionEvent(diseases: diseases));
+    refreshUI();
+  }
+
+  void handlePatientPregnancyStatusInput(PregnancyStatus status) {
+    _stateMachine
+        .onEvent(AddEditPatientPregnancySelectionEvent(status: status));
+    refreshUI();
+  }
+
+  void handlePatientChildNursingStatus(ChildNursingStatus status) {
+    _stateMachine
+        .onEvent(AddEditPatientChildNursingSelectionEvent(status: status));
+    refreshUI();
+  }
+
+  void handlePatientHabitSelection(List<Habits> habits) {
+    _stateMachine.onEvent(AddEditPatientHabitSelectionEvent(habits: habits));
+    refreshUI();
+  }
+
+  void handlePatientAllergiesSelectionEvent(List<Allergies> allergies) {
+    _stateMachine
+        .onEvent(AddEditPatientAllergiesSelectionEvent(allergies: allergies));
+    refreshUI();
+  }
+
+  void submitUserData(
       DateTime dob,
       Sex sex,
       DateTime createdAt,
+      MaritialStatus maritialStatus,
+      BloodGroup bloodGroup,
+      List<Diseases> diseases,
+      PregnancyStatus pregnancyStatus,
+      ChildNursingStatus childNursingStatus,
+      List<Habits> habits,
+      List<Allergies> allergies,
       bool isInEditMode,
       Function reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition,
       String? patientId) {
-    if (nameTextEditingController.text.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter a name ');
-      return;
-    }
-
-    if (emailTextEditingController.text.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter an email Id ');
-      return;
-    }
-
-    //TODO : Perform email validation
-
-    if (phoneNoTextEditingController.text.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter phone Number ');
-      return;
-    }
-
+    _stateMachine.onEvent(AddEditPatientLoadingEvent());
+    refreshUI();
     if (isInEditMode) {
       _presenter.editPatientData(
           UseCaseObserver(() {
@@ -117,16 +228,54 @@ class AddEditPatientController extends Controller {
             reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition();
             _navigationService
                 .navigateBackUntil(NavigationService.patientsManagementPage);
-          }, (error) {}),
+          }, (error) {
+            Fluttertoast.showToast(
+                msg:
+                    'Error while editing patient Data. Please try again later');
+            _stateMachine.onEvent(AddEditPatientErrorEvent());
+            refreshUI();
+          }),
           patientInformation: PatientInformation(
-              patientMetaInformation: PatientMetaInformation(
-                  patientId: patientId!,
-                  name: nameTextEditingController.text,
-                  dob: dob,
-                  emailId: emailTextEditingController.text,
-                  sex: sex),
-              address: addressTextEditingController.text,
-              phoneNo: phoneNoTextEditingController.text,
+              patientPersonalInformation: PatientPersonalInformation(
+                patientMetaInformation: PatientMetaInformation(
+                    patientId: patientId!,
+                    name: nameTextEditingController.text,
+                    dob: dob,
+                    emailId: emailTextEditingController.text,
+                    sex: sex),
+                address: addressTextEditingController.text,
+                mobileNo: int.parse(mobileNumberTextEditingController.text),
+                bloodGroup: bloodGroup,
+                maritialStatus: maritialStatus,
+                officeInformation: officeInformationTextEditingController.text,
+                profession: professionTextEditingController.text,
+                refferedBy: refferedByTextEditingController.text,
+                telephoneNo: telephoneNoTextEditingController.text.isEmpty
+                    ? null
+                    : int.parse(telephoneNoTextEditingController.text),
+              ),
+              updatedAt: DateTime.now(),
+              patientDentalInformation: PatientDentalInformation(
+                  mainComplain: mainDentalComplain.text,
+                  pastDentalTreatmentInformation: pastDentalInformation.text),
+              patientMedicalInformation: PatientMedicalInformation(
+                childNursingStatus: sex == Sex.MALE
+                    ? ChildNursingStatus.NOT_APPLICABLE
+                    : childNursingStatus,
+                diseases: diseases,
+                familyDoctorsAddressInformation:
+                    familyDoctorsAddressAndTelephoneNo.text,
+                familyDoctorsName: familyDoctorsName.text,
+                habits: habits,
+                pregnancyStatus: sex == Sex.MALE
+                    ? PregnancyStatus.NOT_APPLICABLE
+                    : pregnancyStatus,
+              ),
+              patientMedicationInformation: PatientMedicationInformation(
+                  allergies: allergies,
+                  allergiesInformation: allergiesInformation.text,
+                  medicationInformation:
+                      medicationInformationTextEditingController.text),
               additionalInformation:
                   additionalInformationTextEditingController.text,
               createdAt: createdAt));
@@ -135,7 +284,7 @@ class AddEditPatientController extends Controller {
           UseCaseObserver(() {
             //Reloading the patients meta Information page on successfull add ition
 
-            // reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition();
+            reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition();
             _navigationService.navigateBack();
           }, (error) {
             Fluttertoast.showToast(
@@ -144,14 +293,46 @@ class AddEditPatientController extends Controller {
             refreshUI();
           }),
           patientInformation: PatientInformation(
-              patientMetaInformation: PatientMetaInformation(
-                  patientId: 'id',
-                  name: nameTextEditingController.text,
-                  dob: dob,
-                  emailId: emailTextEditingController.text,
-                  sex: sex),
-              address: addressTextEditingController.text,
-              phoneNo: phoneNoTextEditingController.text,
+              patientPersonalInformation: PatientPersonalInformation(
+                patientMetaInformation: PatientMetaInformation(
+                    patientId: '',
+                    name: nameTextEditingController.text,
+                    dob: dob,
+                    emailId: emailTextEditingController.text,
+                    sex: sex),
+                address: addressTextEditingController.text,
+                mobileNo: int.parse(mobileNumberTextEditingController.text),
+                bloodGroup: bloodGroup,
+                maritialStatus: maritialStatus,
+                officeInformation: officeInformationTextEditingController.text,
+                profession: professionTextEditingController.text,
+                refferedBy: refferedByTextEditingController.text,
+                telephoneNo: telephoneNoTextEditingController.text.isEmpty
+                    ? null
+                    : int.parse(telephoneNoTextEditingController.text),
+              ),
+              updatedAt: DateTime.now(),
+              patientDentalInformation: PatientDentalInformation(
+                  mainComplain: mainDentalComplain.text,
+                  pastDentalTreatmentInformation: pastDentalInformation.text),
+              patientMedicalInformation: PatientMedicalInformation(
+                childNursingStatus: sex == Sex.MALE
+                    ? ChildNursingStatus.NOT_APPLICABLE
+                    : childNursingStatus,
+                diseases: diseases,
+                familyDoctorsAddressInformation:
+                    familyDoctorsAddressAndTelephoneNo.text,
+                familyDoctorsName: familyDoctorsName.text,
+                habits: habits,
+                pregnancyStatus: sex == Sex.MALE
+                    ? PregnancyStatus.NOT_APPLICABLE
+                    : pregnancyStatus,
+              ),
+              patientMedicationInformation: PatientMedicationInformation(
+                  allergies: allergies,
+                  allergiesInformation: allergiesInformation.text,
+                  medicationInformation:
+                      medicationInformationTextEditingController.text),
               additionalInformation:
                   additionalInformationTextEditingController.text,
               createdAt: DateTime.now()));
