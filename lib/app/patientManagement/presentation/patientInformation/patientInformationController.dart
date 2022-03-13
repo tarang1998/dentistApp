@@ -45,6 +45,10 @@ class PatientInformationController extends Controller {
         patientId);
   }
 
+  void navigateBack() {
+    _navigationService.navigateBack();
+  }
+
   void navigateToPatientProcedurePage({required String patientId}) {
     _navigationService.navigateTo(NavigationService.patientProcedurePage,
         arguments: patientId);

@@ -122,7 +122,6 @@ class AddEditPatientPageState
                     }
                     return null;
                   },
-
                   controller: controller.nameTextEditingController,
                   keyboardType: TextInputType.name,
                   textCapitalization: TextCapitalization.words,
@@ -134,7 +133,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Patient's Name",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -167,7 +165,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Patient's Email Id",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -202,7 +199,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Patient's Address",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -289,7 +285,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Patient's Profession",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -318,9 +313,7 @@ class AddEditPatientPageState
                       focusedErrorBorder: AppTheme.textFieldInputFocusedBorder,
                       hintStyle: AppTheme.hintTextStyle,
                       hintText: "Enter Mobile No.",
-                    )
-                    // onChanged: (val) => _subjectName = val.trim(),
-                    ),
+                    )),
               ),
               const SizedBox(height: 20),
               Padding(
@@ -341,9 +334,7 @@ class AddEditPatientPageState
                       errorBorder: AppTheme.textFieldInputFocusedBorder,
                       hintStyle: AppTheme.hintTextStyle,
                       hintText: "Enter Telephone No.",
-                    )
-                    // onChanged: (val) => _subjectName = val.trim(),
-                    ),
+                    )),
               ),
               const SizedBox(height: 20),
               bloodGroupSelectionWidget(
@@ -365,7 +356,6 @@ class AddEditPatientPageState
                 child: TextFormField(
                   controller: controller.officeInformationTextEditingController,
                   keyboardType: TextInputType.streetAddress,
-
                   minLines: getScreenHeight(context) ~/ 50,
                   maxLines: null,
                   decoration: new InputDecoration(
@@ -377,7 +367,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Office Address & Telephone No.",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -400,9 +389,7 @@ class AddEditPatientPageState
                       errorBorder: AppTheme.textFieldInputFocusedBorder,
                       hintStyle: AppTheme.hintTextStyle,
                       hintText: "Reffered By",
-                    )
-                    // onChanged: (val) => _subjectName = val.trim(),
-                    ),
+                    )),
               ),
               const SizedBox(height: 20),
               Padding(
@@ -431,7 +418,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Family Doctors Name",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -449,7 +435,6 @@ class AddEditPatientPageState
                   controller: controller.familyDoctorsAddressAndTelephoneNo,
                   textCapitalization: TextCapitalization.sentences,
                   keyboardType: TextInputType.streetAddress,
-
                   minLines: getScreenHeight(context) ~/ 50,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -459,7 +444,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Address & Telephone No.",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -507,7 +491,6 @@ class AddEditPatientPageState
                       controller.medicationInformationTextEditingController,
                   textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.text,
-
                   minLines: getScreenHeight(context) ~/ 50,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -517,7 +500,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter Medications",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -547,7 +529,6 @@ class AddEditPatientPageState
                   controller: controller.allergiesInformation,
                   textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.text,
-
                   minLines: getScreenHeight(context) ~/ 50,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -557,7 +538,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Other allergies",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -596,7 +576,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter your main complain",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -614,7 +593,6 @@ class AddEditPatientPageState
                   controller: controller.pastDentalInformation,
                   textCapitalization: TextCapitalization.sentences,
                   keyboardType: TextInputType.text,
-
                   minLines: getScreenHeight(context) ~/ 50,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -624,7 +602,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "List your dental treatments",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -643,7 +620,6 @@ class AddEditPatientPageState
                       controller.additionalInformationTextEditingController,
                   textCapitalization: TextCapitalization.sentences,
                   keyboardType: TextInputType.text,
-
                   minLines: getScreenHeight(context) ~/ 50,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -653,7 +629,6 @@ class AddEditPatientPageState
                     hintStyle: AppTheme.hintTextStyle,
                     hintText: "Enter any additional remarks",
                   ),
-                  // onChanged: (val) => _subjectName = val.trim(),
                 ),
               ),
               const SizedBox(height: 20),

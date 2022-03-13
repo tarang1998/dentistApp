@@ -96,7 +96,7 @@ class PatientManagementPageState extends ResponsiveViewState<
               ),
             ),
             Container(
-              height: getScreenHeight(context) * 0.85,
+              height: getScreenHeight(context) * 0.89,
               padding: const EdgeInsets.all(RawSpacing.extraSmall),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(
@@ -109,6 +109,9 @@ class PatientManagementPageState extends ResponsiveViewState<
                       return Container(
                         margin: const EdgeInsets.all(RawSpacing.extraSmall),
                         child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           elevation: RawElevation.high,
                           child: ListTile(
                             contentPadding: const EdgeInsets.all(18),

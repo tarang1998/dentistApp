@@ -76,4 +76,13 @@ class AppTheme {
     fontWeight: FontWeight.w500,
     color: Colors.white,
   );
+
+  static final BoxDecoration informationBox = BoxDecoration(
+    color: const Color(0xFFF1F2F3),
+    borderRadius: BorderRadius.circular(6),
+    border: Border.all(
+      width: 0.5,
+      color: const Color(0xFFE7E9E9),
+    ),
+  );
 }
