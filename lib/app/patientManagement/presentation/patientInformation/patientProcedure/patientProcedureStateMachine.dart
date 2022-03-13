@@ -14,7 +14,10 @@ class PatientProcedureStateMachine
         PatientProcedureInitializedEvent initEvent =
             event as PatientProcedureInitializedEvent;
         newState = PatientProcedureInitializedState(
-            initEvent.patientId, initEvent.patientProcedures);
+            initEvent.patientId,
+            initEvent.patientProcedures,
+            initEvent.totalEstimatedCost,
+            initEvent.totalAmountPaid);
         break;
 
       case PatientProcedureLoadingEvent:
@@ -38,7 +41,10 @@ class PatientProcedureErrorEvent extends PatientProcedureEvent {
 class PatientProcedureInitializedEvent extends PatientProcedureEvent {
   final String patientId;
   final List<PatientProcedureEnity> patientProcedures;
-  PatientProcedureInitializedEvent(this.patientId, this.patientProcedures);
+  final num totalEstimatedCost;
+  final num totalAmountPaid;
+  PatientProcedureInitializedEvent(this.patientId, this.patientProcedures,
+      this.totalEstimatedCost, this.totalAmountPaid);
 }
 
 class PatientProcedureLoadingEvent extends PatientProcedureEvent {}
@@ -52,7 +58,10 @@ class PatientProcedureLoadingState implements PatientProcedureState {}
 class PatientProcedureInitializedState implements PatientProcedureState {
   final String patientId;
   final List<PatientProcedureEnity> patientProcedures;
-  PatientProcedureInitializedState(this.patientId, this.patientProcedures);
+  final num totalEstimatedCost;
+  final num totalAmountPaid;
+  PatientProcedureInitializedState(this.patientId, this.patientProcedures,
+      this.totalEstimatedCost, this.totalAmountPaid);
 }
 
 class PatientProcedureErrorState implements PatientProcedureState {}

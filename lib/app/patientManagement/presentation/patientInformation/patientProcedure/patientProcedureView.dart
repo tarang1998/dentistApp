@@ -1,5 +1,10 @@
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureController.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureStateMachine.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/colors.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/elevation.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
+import 'package:dentalApp/core/presentation/screenDimensions.dart';
+import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -64,51 +69,103 @@ class PatientProcedurePageState extends ResponsiveViewState<
   ) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red[300],
         child: const Icon(Icons.add),
         onPressed: () {
-          controller.navigateToAddProcedurePage(
-              patientId: initializedState.patientId);
+          // controller.navigateToAddProcedurePage(
+          //     patientId: initializedState.patientId);
         },
       ),
       body: SafeArea(
-        child: Container(
-          width: 300,
-          margin: const EdgeInsets.all(5),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            child: Column(
-              children: <Widget>[
-                ...initializedState.patientProcedures.map((procedure) {
-                  return GestureDetector(
-                    onTap: () => {
-                      controller.navigateToViewPatientProcedureInformationPage(
-                          patientId: initializedState.patientId,
-                          patientProcedureId: procedure.procedureId)
-                    },
-                    child: Card(
-                      elevation: 6,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                'Procedure Performed : ${procedure.procedurePerformed}'),
-                            Text(
-                                'Procedure Performed At : ${procedure.performedAt}'),
-                            Text('Estimated Cost : ${procedure.estimatedCost}'),
-                            Text('Amount paid : ${procedure.amountPaid}'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }),
+        child: Column(children: [
+          Container(
+            height: getScreenHeight(context) * 0.05,
+            margin: const EdgeInsets.all(RawSpacing.extraSmall),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 25,
+                  ),
+                  onPressed: () => controller.navigateBack(),
+                ),
+                Text(
+                  'Patient Procedures',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
           ),
-        ),
+          Container(
+            margin: const EdgeInsets.all(RawSpacing.extraSmall),
+            width: getScreenWidth(context),
+            padding: const EdgeInsets.all(RawSpacing.extraSmall),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Total Estimated Cost : ${initializedState.totalEstimatedCost}',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: RawColors.grey50),
+                ),
+                Text(
+                  'Total Amount Cost : ${initializedState.totalAmountPaid}',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: RawColors.grey50),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: getScreenHeight(context) * 0.8,
+            padding: const EdgeInsets.all(RawSpacing.extraSmall),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              child: Column(
+                children: <Widget>[
+                  ...initializedState.patientProcedures
+                      .map((patientProcedures) {
+                    return Container(
+                      margin: const EdgeInsets.all(RawSpacing.extraSmall),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        elevation: RawElevation.high,
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(18),
+                          hoverColor: Colors.white,
+                          onTap: () => null,
+                          title: Text(
+                            '${enumValueToString(patientProcedures.procedurePerformed).capitalizeEnum}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          isThreeLine: true,
+                          subtitle: Text(
+                              'Estimated Cost : ${patientProcedures.estimatedCost} \nAmount Paid : ${patientProcedures.amountPaid} \nProcedure Performed : ${patientProcedures.performedAt.day}/${patientProcedures.performedAt.month}/${patientProcedures.performedAt.year}'),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

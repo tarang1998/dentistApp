@@ -233,6 +233,24 @@ class PatientInformationPageState extends ResponsiveViewState<
                         height: 20,
                       ),
                       const Text(
+                        'Age :',
+                        style: AppTheme.inputFieldTitleTextStyle,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(RawSpacing.extraSmall),
+                        decoration: AppTheme.informationBox,
+                        child: Text(
+                          '${DateTime.now().year - initializedState.patientInformation.patientPersonalInformation.patientMetaInformation.dob.year}',
+                          style: AppTheme.inputFieldTitleTextStyle,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
                         'Date Of Birth :',
                         style: AppTheme.inputFieldTitleTextStyle,
                       ),
