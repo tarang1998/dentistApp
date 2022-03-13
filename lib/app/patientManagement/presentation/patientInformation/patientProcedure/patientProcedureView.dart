@@ -72,8 +72,8 @@ class PatientProcedurePageState extends ResponsiveViewState<
         backgroundColor: Colors.red[300],
         child: const Icon(Icons.add),
         onPressed: () {
-          // controller.navigateToAddProcedurePage(
-          //     patientId: initializedState.patientId);
+          controller.navigateToAddProcedurePage(
+              patientId: initializedState.patientId);
         },
       ),
       body: SafeArea(
@@ -134,8 +134,7 @@ class PatientProcedurePageState extends ResponsiveViewState<
                   parent: AlwaysScrollableScrollPhysics()),
               child: Column(
                 children: <Widget>[
-                  ...initializedState.patientProcedures
-                      .map((patientProcedures) {
+                  ...initializedState.patientProcedures.map((patientProcedure) {
                     return Container(
                       margin: const EdgeInsets.all(RawSpacing.extraSmall),
                       child: Card(
@@ -146,9 +145,13 @@ class PatientProcedurePageState extends ResponsiveViewState<
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(18),
                           hoverColor: Colors.white,
-                          onTap: () => null,
+                          onTap: () => controller
+                              .navigateToViewPatientProcedureInformationPage(
+                                  patientId: initializedState.patientId,
+                                  patientProcedureId:
+                                      patientProcedure.procedureId),
                           title: Text(
-                            '${enumValueToString(patientProcedures.procedurePerformed).capitalizeEnum}',
+                            '${enumValueToString(patientProcedure.procedurePerformed).capitalizeEnum}',
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.normal,
@@ -156,7 +159,7 @@ class PatientProcedurePageState extends ResponsiveViewState<
                           ),
                           isThreeLine: true,
                           subtitle: Text(
-                              'Estimated Cost : ${patientProcedures.estimatedCost} \nAmount Paid : ${patientProcedures.amountPaid} \nProcedure Performed : ${patientProcedures.performedAt.day}/${patientProcedures.performedAt.month}/${patientProcedures.performedAt.year}'),
+                              'Estimated Cost : ${patientProcedure.estimatedCost} \nAmount Paid : ${patientProcedure.amountPaid} \nProcedure Performed : ${patientProcedure.performedAt.day}/${patientProcedure.performedAt.month}/${patientProcedure.performedAt.year}'),
                         ),
                       ),
                     );

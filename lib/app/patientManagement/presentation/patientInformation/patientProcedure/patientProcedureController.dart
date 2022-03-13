@@ -1,6 +1,8 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureStateMachine.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureView.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
 import 'package:dentalApp/core/navigationService.dart';
 import 'package:dentalApp/core/presentation/observer.dart';
@@ -55,22 +57,20 @@ class PatientProcedureController extends Controller {
         patientId: patientId);
   }
 
-  //combine the pages for viewing , adding and editing
+  void navigateToAddProcedurePage({required String patientId}) {
+    _navigationService.navigateTo(NavigationService.addPatientProcedure,
+        arguments: AddProcedurePageParams(
+            patientId: patientId,
+            reloadPatientProceduresPageOnSuccessfullProcedureAddition:
+                reloadPatientProceduresPageOnSuccessfullProcedureAddition));
+  }
 
-  // void navigateToAddProcedurePage({required String patientId}) {
-  //   _navigationService.navigateTo(NavigationService.addPatientProcedure,
-  //       arguments: AddProcedurePageParams(
-  //           patientId: patientId,
-  //           reloadPatientProceduresPageOnSuccessfullProcedureAddition:
-  //               reloadPatientProceduresPageOnSuccessfullProcedureAddition));
-  // }
-
-  // void navigateToViewPatientProcedureInformationPage(
-  //     {required String patientId, required String patientProcedureId}) {
-  //   _navigationService.navigateTo(
-  //       NavigationService.viewPatientProcedureInformation,
-  //       arguments: ViewProcedurePageParams(patientId, patientProcedureId));
-  // }
+  void navigateToViewPatientProcedureInformationPage(
+      {required String patientId, required String patientProcedureId}) {
+    _navigationService.navigateTo(
+        NavigationService.viewPatientProcedureInformation,
+        arguments: ViewProcedurePageParams(patientId, patientProcedureId));
+  }
 
   void reloadPatientProceduresPageOnSuccessfullProcedureAddition(
       String patientId) {
