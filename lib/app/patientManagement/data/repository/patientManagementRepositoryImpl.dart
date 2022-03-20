@@ -196,6 +196,25 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   }
 
   @override
+  Future<void> editPatientProcedure(
+      {required String patientId,
+      required String procedureId,
+      required PatientProcedureEnity patientProcedureEntity}) async {
+    Map<String, dynamic> patientProcedureData =
+        _addPatientProcedureSerializer.serialize(patientProcedureEntity);
+
+    await _patientManagementFirebaseWrapper.editPatientProcedureData(
+        patientId: patientId,
+        procedureId: procedureId,
+        procedureData: patientProcedureData);
+
+    final int index = _patientsProcedures[patientId]!
+        .indexWhere((element) => element.procedureId == procedureId);
+    _patientsProcedures[patientId]!.removeAt(index);
+    _patientsProcedures[patientId]!.insert(index, patientProcedureEntity);
+  }
+
+  @override
   PatientProcedureEnity getPatientProcedureInformation(
       {required String patientId, required String patientProcedureId}) {
     List<PatientProcedureEnity> procedures = _patientsProcedures[patientId]!;

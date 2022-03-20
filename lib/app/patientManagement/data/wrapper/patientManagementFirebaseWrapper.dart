@@ -84,4 +84,15 @@ class PatientManagementFirebaseWrapper {
         .add(patientProcedureSerializedData);
     return docReference.id;
   }
+
+  Future<void> editPatientProcedureData(
+      {required String patientId,
+      required String procedureId,
+      required Map<String, dynamic> procedureData}) async {
+    await patientsCollection
+        .doc(patientId)
+        .collection(_keyPatientProceduresSubCollection)
+        .doc(procedureId)
+        .update(procedureData);
+  }
 }

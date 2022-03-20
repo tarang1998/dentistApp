@@ -3,6 +3,9 @@ import 'package:dentalApp/app/patientManagement/presentation/patientInformation/
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureStateMachine.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/widgets/adultTeethChartWidget.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/widgets/childTeethChartWidget.dart';
+import 'package:dentalApp/core/designSystem/appTheme.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
+import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -65,28 +68,200 @@ class ViewProcedurePageState
       ViewProcedureController controller) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  "Procedure Performed  : ${initializedState.patientProcedureEnity.procedurePerformed}"),
-              Text(
-                  "Estimated Cost : ${initializedState.patientProcedureEnity.estimatedCost}"),
-              Text(
-                  "Amount Paid : ${initializedState.patientProcedureEnity.amountPaid}"),
-              Text(
-                  "Performed At : ${initializedState.patientProcedureEnity.performedAt}"),
-              Text(
-                  "Next Visit : ${initializedState.patientProcedureEnity.nextVisit}"),
-              Text(
-                  "Additional Remarks : ${initializedState.patientProcedureEnity.additionalRemarks}"),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text('Teeth Chart'),
+              Container(
+                margin: const EdgeInsets.all(RawSpacing.extraSmall),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        size: 25,
+                      ),
+                      onPressed: () => controller.navigateBack(),
+                    ),
+                    const Text(
+                      'Procedure Information',
+                      style: TextStyle(
+                        fontSize: 22,
+                        letterSpacing: 1,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        size: 25,
+                      ),
+                      onPressed: () =>
+                          controller.navigateToEditPatientProcedureView(
+                              patientId: initializedState.patientId,
+                              procedureId: initializedState
+                                  .patientProcedureEnity.procedureId),
+                    ),
+                  ],
+                ),
               ),
-              _displayTeethChart(initializedState)
+              Container(
+                  padding: const EdgeInsets.all(RawSpacing.extraSmall),
+                  child: Padding(
+                      padding: const EdgeInsets.all(RawSpacing.extraSmall),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Procedure Performed At :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(RawSpacing.extraSmall),
+                              decoration: AppTheme.informationBox,
+                              child: Text(
+                                '${initializedState.patientProcedureEnity.performedAt.day}/${initializedState.patientProcedureEnity.performedAt.month}/${initializedState.patientProcedureEnity.performedAt.year}',
+                                style: AppTheme.inputFieldTitleTextStyle,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Diagnosis :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(RawSpacing.extraSmall),
+                              decoration: AppTheme.informationBox,
+                              child: Text(
+                                '${enumValueToString(initializedState.patientProcedureEnity.diagnosis).capitalizeEnum}',
+                                style: AppTheme.inputFieldTitleTextStyle,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Procedure Performed :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(RawSpacing.extraSmall),
+                              decoration: AppTheme.informationBox,
+                              child: Text(
+                                '${enumValueToString(initializedState.patientProcedureEnity.procedurePerformed).capitalizeEnum}',
+                                style: AppTheme.inputFieldTitleTextStyle,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Teeth Chart :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            _displayTeethChart(initializedState),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Next Visit At :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(RawSpacing.extraSmall),
+                              decoration: AppTheme.informationBox,
+                              child: Text(
+                                '${initializedState.patientProcedureEnity.nextVisit.day}/${initializedState.patientProcedureEnity.nextVisit.month}/${initializedState.patientProcedureEnity.nextVisit.year}',
+                                style: AppTheme.inputFieldTitleTextStyle,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Estimated Cost :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(RawSpacing.extraSmall),
+                              decoration: AppTheme.informationBox,
+                              child: Text(
+                                '${initializedState.patientProcedureEnity.estimatedCost}',
+                                style: AppTheme.inputFieldTitleTextStyle,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Paid Amount :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(RawSpacing.extraSmall),
+                              decoration: AppTheme.informationBox,
+                              child: Text(
+                                '${initializedState.patientProcedureEnity.amountPaid}',
+                                style: AppTheme.inputFieldTitleTextStyle,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Additional Remarks :',
+                              style: AppTheme.inputFieldTitleTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(RawSpacing.extraSmall),
+                              decoration: AppTheme.informationBox,
+                              child: initializedState.patientProcedureEnity
+                                          .additionalRemarks !=
+                                      ''
+                                  ? Text(
+                                      '${initializedState.patientProcedureEnity.additionalRemarks}',
+                                      style: AppTheme.inputFieldTitleTextStyle,
+                                    )
+                                  : _emptyContainer(),
+                            ),
+                          ]))),
             ],
           ),
         ),
@@ -110,6 +285,17 @@ class ViewProcedurePageState
     } else {
       throw Exception('Unknown value of teeth Chart encountered');
     }
+  }
+
+  Widget _emptyContainer() {
+    return Container(
+      padding: const EdgeInsets.all(RawSpacing.extraSmall),
+      decoration: AppTheme.informationBox,
+      child: Text(
+        '                          ',
+        style: AppTheme.inputFieldTitleTextStyle,
+      ),
+    );
   }
 
   Widget _buildLoadingStateView(ViewProcedureController controller) {

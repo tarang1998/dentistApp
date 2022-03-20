@@ -31,7 +31,7 @@ class AppNavigationService extends NavigationService {
             builder: (_) =>
                 PatientProcedurePage(patientId: settings.arguments as String));
 
-      case NavigationService.addPatientProcedure:
+      case NavigationService.addEditPatientProcedure:
         return MaterialPageRoute(
             builder: (_) => AddEditProcedurePage(
                 params: settings.arguments as AddEditProcedurePageParams));
@@ -66,9 +66,11 @@ class AppNavigationService extends NavigationService {
   }
 
   @override
-  Future<void> navigateBackUntilAndPush(String newRoute, String untilRoute) {
+  Future<void> navigateBackUntilAndPush(String newRoute, String untilRoute,
+      {Object? argument}) {
     return navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        newRoute, (route) => route.settings.name == untilRoute);
+        newRoute, (route) => route.settings.name == untilRoute,
+        arguments: argument);
   }
 
   @override
@@ -98,7 +100,7 @@ abstract class NavigationService {
 
   static const String patientProcedurePage = '/patientProcedures';
 
-  static const String addPatientProcedure = '/addPatientProcedure';
+  static const String addEditPatientProcedure = '/addEditatientProcedure';
 
   static const String viewPatientProcedureInformation =
       '/patientProcedureInformationPage';
@@ -108,7 +110,8 @@ abstract class NavigationService {
 
   Future<void> navigateBackUntil(String untilRoute, {Object? arguments});
 
-  Future<void> navigateBackUntilAndPush(String newRoute, String untilRoute);
+  Future<void> navigateBackUntilAndPush(String newRoute, String untilRoute,
+      {Object? argument});
 
   void popUntil(String popUntilRoute);
 

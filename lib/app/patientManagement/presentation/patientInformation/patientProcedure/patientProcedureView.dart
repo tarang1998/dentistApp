@@ -126,6 +126,7 @@ class PatientProcedurePageState extends ResponsiveViewState<
             ),
           ),
           Container(
+            height: getScreenHeight(context) * 0.79,
             padding: const EdgeInsets.all(RawSpacing.extraSmall),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(
@@ -162,6 +163,9 @@ class PatientProcedurePageState extends ResponsiveViewState<
                       ),
                     );
                   }),
+                  SizedBox(
+                    height: 100,
+                  )
                 ],
               ),
             ),

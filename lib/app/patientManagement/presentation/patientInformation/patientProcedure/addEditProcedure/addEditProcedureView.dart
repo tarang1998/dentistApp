@@ -95,7 +95,10 @@ class AddEditProcedurePageState extends ResponsiveViewState<
                       ),
                       onPressed: () => controller.navigateBack(),
                     ),
-                    Text('Add Patient Procedure',
+                    Text(
+                        widget.params.isInEditMode
+                            ? 'Edit Patient Procedure'
+                            : 'Add Patient Procedure',
                         style: AppTheme.headingTextStyle),
                   ],
                 ),
@@ -333,21 +336,21 @@ class AddEditProcedurePageState extends ResponsiveViewState<
 
                       if (isValid) {
                         controller.addEditProcedure(
-                            patientId: initializedState.patientId,
-                            procedurePerformed:
-                                initializedState.procedurePerformed,
-                            diagnosis: initializedState.diagnosis,
-                            teethChartType: initializedState.teethChartType,
-                            selectedAdultTeeth:
-                                initializedState.selectedAdultTeeth,
-                            selectedChildTeeth:
-                                initializedState.selectedChildTeeth,
-                            procedurePerformedAt:
-                                initializedState.procedurePerformedAt,
-                            nextVisitAt: initializedState.nextVisitAt,
-                            reloadPatientProceduresPageOnSuccessfullProcedureAddition:
-                                widget.params
-                                    .reloadPatientProceduresPageOnSuccessfullProcedureAddition);
+                          isInEditMode: widget.params.isInEditMode,
+                          procedureId: widget.params.procedureId,
+                          patientId: initializedState.patientId,
+                          procedurePerformed:
+                              initializedState.procedurePerformed,
+                          diagnosis: initializedState.diagnosis,
+                          teethChartType: initializedState.teethChartType,
+                          selectedAdultTeeth:
+                              initializedState.selectedAdultTeeth,
+                          selectedChildTeeth:
+                              initializedState.selectedChildTeeth,
+                          procedurePerformedAt:
+                              initializedState.procedurePerformedAt,
+                          nextVisitAt: initializedState.nextVisitAt,
+                        );
                       } else {
                         Fluttertoast.showToast(
                             msg: 'Please enter all the required fields');
@@ -396,8 +399,11 @@ class AddEditProcedurePageState extends ResponsiveViewState<
 
   Widget _buildInitializationStateView(
       AddEditProcedureController controller, String patientId) {
-    WidgetsBinding.instance!.addPostFrameCallback(
-        (_) => controller.initializePage(patientId: patientId));
+    WidgetsBinding.instance!.addPostFrameCallback((_) =>
+        controller.initializePage(
+            isInEditMode: widget.params.isInEditMode,
+            patientId: patientId,
+            procedureId: widget.params.procedureId));
     return Scaffold(
         body: Center(
       child: CircularProgressIndicator(),
@@ -414,8 +420,8 @@ class AddEditProcedurePageState extends ResponsiveViewState<
 
 class AddEditProcedurePageParams {
   final String patientId;
-  final Function reloadPatientProceduresPageOnSuccessfullProcedureAddition;
+  final bool isInEditMode;
+  final String? procedureId;
   AddEditProcedurePageParams(
-      {required this.patientId,
-      required this.reloadPatientProceduresPageOnSuccessfullProcedureAddition});
+      {required this.patientId, required this.isInEditMode, this.procedureId});
 }

@@ -1,4 +1,5 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addEditProcedure/addEditProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureStateMachine.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
@@ -43,5 +44,18 @@ class ViewProcedureController extends Controller {
         }),
         patientId: patientId,
         patientProcedureId: procedureId);
+  }
+
+  void navigateBack() {
+    _navigationService.navigateBack();
+  }
+
+  void navigateToEditPatientProcedureView(
+      {required String patientId, required String procedureId}) {
+    _navigationService.navigateTo(NavigationService.addEditPatientProcedure,
+        arguments: AddEditProcedurePageParams(
+            patientId: patientId,
+            isInEditMode: true,
+            procedureId: procedureId));
   }
 }

@@ -23,6 +23,11 @@ abstract class PatientManagementRepository {
       {required String patientId,
       required PatientProcedureEnity patientProcedureEntity});
 
+  Future<void> editPatientProcedure(
+      {required String patientId,
+      required String procedureId,
+      required PatientProcedureEnity patientProcedureEntity});
+
   PatientProcedureEnity getPatientProcedureInformation(
       {required String patientId, required String patientProcedureId});
 }

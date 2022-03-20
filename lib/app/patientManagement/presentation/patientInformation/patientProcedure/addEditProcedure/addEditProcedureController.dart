@@ -42,30 +42,74 @@ class AddEditProcedureController extends Controller {
     return _stateMachine.getCurrentState();
   }
 
-  void initializePage({required String patientId}) {
-    _presenter.getPatientInformation(
-        UseCaseObserver(() {}, (error) {
-          _stateMachine.onEvent(AddEditProcedureErrorEvent());
-          refreshUI();
-        }, onNextFunc: (PatientInformation patientInformation) {
-          DateTime dob = patientInformation
-              .patientPersonalInformation.patientMetaInformation.dob;
-          int age = DateTime.now().year - dob.year;
-          TeethChartType teethChartType =
-              (age >= 18) ? TeethChartType.ADULT : TeethChartType.CHILD;
+  void initializePage(
+      {required bool isInEditMode,
+      required String patientId,
+      String? procedureId}) {
+    if (isInEditMode) {
+      _presenter.getPatientProcedureInformationUsecase(
+          UseCaseObserver(() {}, (error) {
+            _stateMachine.onEvent(AddEditProcedureErrorEvent());
+            refreshUI();
+          }, onNextFunc: (PatientProcedureEnity patientProcedureEnity) {
+            estimatedAmountTextEditingController.text =
+                patientProcedureEnity.estimatedCost.toString();
+            paidAmountTextEditingController.text =
+                patientProcedureEnity.amountPaid.toString();
+            additionalRemarksTextEditingController.text =
+                patientProcedureEnity.additionalRemarks.toString();
 
-          _stateMachine.onEvent(AddEditProcedureInitializedEvent(
-              patientId: patientId,
-              diagnosis: null,
-              procedurePerformed: null,
-              teethChartType: teethChartType,
-              selectedAdultTeeth: [],
-              selectedChildTeeth: [],
-              procedurePerformedAt: DateTime.now(),
-              nextVisitAt: DateTime.now()));
-          refreshUI();
-        }),
-        patientId: patientId);
+            _stateMachine.onEvent(AddEditProcedureInitializedEvent(
+                patientId: patientId,
+                diagnosis: patientProcedureEnity.diagnosis,
+                procedurePerformed: patientProcedureEnity.procedurePerformed,
+                teethChartType:
+                    patientProcedureEnity.selectedTeethChart is AdultTeethChart
+                        ? TeethChartType.ADULT
+                        : TeethChartType.CHILD,
+                selectedAdultTeeth:
+                    patientProcedureEnity.selectedTeethChart is AdultTeethChart
+                        ? (patientProcedureEnity.selectedTeethChart
+                                as AdultTeethChart)
+                            .selectedValues
+                        : [],
+                selectedChildTeeth:
+                    patientProcedureEnity.selectedTeethChart is ChildTeethChart
+                        ? (patientProcedureEnity.selectedTeethChart
+                                as ChildTeethChart)
+                            .selectedValues
+                        : [],
+                procedurePerformedAt: patientProcedureEnity.performedAt,
+                nextVisitAt: patientProcedureEnity.nextVisit));
+            refreshUI();
+          }),
+          patientId: patientId,
+          procedureId: procedureId!);
+    } else {
+      _presenter.getPatientInformation(
+          UseCaseObserver(() {}, (error) {
+            _stateMachine.onEvent(AddEditProcedureErrorEvent());
+            refreshUI();
+          }, onNextFunc: (PatientInformation patientInformation) {
+            DateTime dob = patientInformation
+                .patientPersonalInformation.patientMetaInformation.dob;
+            int age = DateTime.now().year - dob.year;
+            TeethChartType teethChartType =
+                (age >= 18) ? TeethChartType.ADULT : TeethChartType.CHILD;
+
+            _stateMachine.onEvent(AddEditProcedureInitializedEvent(
+                patientId: patientId,
+                diagnosis: null,
+                procedurePerformed: null,
+                teethChartType: teethChartType,
+                selectedAdultTeeth: [],
+                selectedChildTeeth: [],
+                procedurePerformedAt: DateTime.now(),
+                nextVisitAt: DateTime.now()));
+            refreshUI();
+          }),
+          patientId: patientId);
+    }
   }
 
   void navigateBack() {
@@ -114,17 +158,18 @@ class AddEditProcedureController extends Controller {
     refreshUI();
   }
 
-  void addEditProcedure(
-      {required String patientId,
-      required Diagnosis? diagnosis,
-      required Procedure? procedurePerformed,
-      required TeethChartType teethChartType,
-      required List<AdultTeethType> selectedAdultTeeth,
-      required List<ChildTeethType> selectedChildTeeth,
-      required DateTime procedurePerformedAt,
-      required DateTime nextVisitAt,
-      required Function
-          reloadPatientProceduresPageOnSuccessfullProcedureAddition}) async {
+  void addEditProcedure({
+    required bool isInEditMode,
+    required String patientId,
+    required String? procedureId,
+    required Diagnosis? diagnosis,
+    required Procedure? procedurePerformed,
+    required TeethChartType teethChartType,
+    required List<AdultTeethType> selectedAdultTeeth,
+    required List<ChildTeethType> selectedChildTeeth,
+    required DateTime procedurePerformedAt,
+    required DateTime nextVisitAt,
+  }) async {
     _stateMachine.onEvent(AddEditProcedureLoadingEvent());
     refreshUI();
 
@@ -154,26 +199,57 @@ class AddEditProcedureController extends Controller {
       }
     }
 
-    _presenter.addPatientProcedure(
-        UseCaseObserver(() {
-          reloadPatientProceduresPageOnSuccessfullProcedureAddition(patientId);
-          _navigationService.navigateBack();
-        }, (error) {
-          _stateMachine.onEvent(AddEditProcedureErrorEvent());
-          refreshUI();
-        }),
-        patientId: patientId,
-        patientProcedureEntity: PatientProcedureEnity(
-            procedureId: '',
-            diagnosis: diagnosis,
-            procedurePerformed: procedurePerformed,
-            estimatedCost: int.parse(estimatedAmountTextEditingController.text),
-            amountPaid: int.parse(paidAmountTextEditingController.text),
-            performedAt: procedurePerformedAt,
-            nextVisit: nextVisitAt,
-            additionalRemarks: additionalRemarksTextEditingController.text,
-            selectedTeethChart: (teethChartType == TeethChartType.ADULT)
-                ? AdultTeethChart(selectedValues: selectedAdultTeeth)
-                : ChildTeethChart(selectedValues: selectedChildTeeth)));
+    if (isInEditMode) {
+      _presenter.editPatientProcedure(
+          UseCaseObserver(() async {
+            await _navigationService.navigateBackUntilAndPush(
+                NavigationService.patientProcedurePage,
+                NavigationService.patientInformationPage,
+                argument: patientId);
+          }, (error) {
+            _stateMachine.onEvent(AddEditProcedureErrorEvent());
+            refreshUI();
+          }),
+          patientId: patientId,
+          procedureId: procedureId!,
+          patientProcedureEntity: PatientProcedureEnity(
+              procedureId: procedureId,
+              diagnosis: diagnosis,
+              procedurePerformed: procedurePerformed,
+              estimatedCost:
+                  int.parse(estimatedAmountTextEditingController.text),
+              amountPaid: int.parse(paidAmountTextEditingController.text),
+              performedAt: procedurePerformedAt,
+              nextVisit: nextVisitAt,
+              additionalRemarks: additionalRemarksTextEditingController.text,
+              selectedTeethChart: (teethChartType == TeethChartType.ADULT)
+                  ? AdultTeethChart(selectedValues: selectedAdultTeeth)
+                  : ChildTeethChart(selectedValues: selectedChildTeeth)));
+    } else {
+      _presenter.addPatientProcedure(
+          UseCaseObserver(() async {
+            await _navigationService.navigateBackUntilAndPush(
+                NavigationService.patientProcedurePage,
+                NavigationService.patientInformationPage,
+                argument: patientId);
+          }, (error) {
+            _stateMachine.onEvent(AddEditProcedureErrorEvent());
+            refreshUI();
+          }),
+          patientId: patientId,
+          patientProcedureEntity: PatientProcedureEnity(
+              procedureId: '',
+              diagnosis: diagnosis,
+              procedurePerformed: procedurePerformed,
+              estimatedCost:
+                  int.parse(estimatedAmountTextEditingController.text),
+              amountPaid: int.parse(paidAmountTextEditingController.text),
+              performedAt: procedurePerformedAt,
+              nextVisit: nextVisitAt,
+              additionalRemarks: additionalRemarksTextEditingController.text,
+              selectedTeethChart: (teethChartType == TeethChartType.ADULT)
+                  ? AdultTeethChart(selectedValues: selectedAdultTeeth)
+                  : ChildTeethChart(selectedValues: selectedChildTeeth)));
+    }
   }
 }

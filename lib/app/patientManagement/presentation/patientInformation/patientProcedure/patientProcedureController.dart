@@ -58,11 +58,11 @@ class PatientProcedureController extends Controller {
   }
 
   void navigateToAddProcedurePage({required String patientId}) {
-    _navigationService.navigateTo(NavigationService.addPatientProcedure,
+    _navigationService.navigateTo(NavigationService.addEditPatientProcedure,
         arguments: AddEditProcedurePageParams(
-            patientId: patientId,
-            reloadPatientProceduresPageOnSuccessfullProcedureAddition:
-                reloadPatientProceduresPageOnSuccessfullProcedureAddition));
+          patientId: patientId,
+          isInEditMode: false,
+        ));
   }
 
   void navigateToViewPatientProcedureInformationPage(
@@ -70,13 +70,6 @@ class PatientProcedureController extends Controller {
     _navigationService.navigateTo(
         NavigationService.viewPatientProcedureInformation,
         arguments: ViewProcedurePageParams(patientId, patientProcedureId));
-  }
-
-  void reloadPatientProceduresPageOnSuccessfullProcedureAddition(
-      String patientId) {
-    _stateMachine.onEvent(PatientProcedureLoadingEvent());
-    refreshUI();
-    initializePage(patientId: patientId);
   }
 
   void navigateBack() {
