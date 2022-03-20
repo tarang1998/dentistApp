@@ -1,7 +1,7 @@
 import 'package:dentalApp/app/home/presentation/homeView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationView.dart';
-import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addEditProcedure/addEditProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementView.dart';
@@ -33,8 +33,8 @@ class AppNavigationService extends NavigationService {
 
       case NavigationService.addPatientProcedure:
         return MaterialPageRoute(
-            builder: (_) => AddProcedurePage(
-                params: settings.arguments as AddProcedurePageParams));
+            builder: (_) => AddEditProcedurePage(
+                params: settings.arguments as AddEditProcedurePageParams));
 
       case NavigationService.viewPatientProcedureInformation:
         return MaterialPageRoute(

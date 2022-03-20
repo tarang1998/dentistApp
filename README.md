@@ -37,6 +37,8 @@ Procedure Tags : [ Root Canal Treatment , Extraction / GIC Fillings / Composite 
 > CHILD TEETH CHART
 > https://media.mydentalconsultant.com/media/dentaluploads/ToothChartChild.jpg
 
+Add time widget to the procedure page
+
 > > Prescriptions
 
 Date

@@ -2,7 +2,6 @@ import 'package:dentalApp/app/patientManagement/presentation/patientManagementCo
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementStateMachine.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/elevation.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
-import 'package:dentalApp/core/presentation/screenDimensions.dart';
 import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -71,37 +70,34 @@ class PatientManagementPageState extends ResponsiveViewState<
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async => controller.refreshPage(),
-          child: Column(children: [
-            Container(
-              height: getScreenHeight(context) * 0.05,
-              margin: const EdgeInsets.all(RawSpacing.extraSmall),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 25,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
+            child: Column(children: [
+              Container(
+                margin: const EdgeInsets.all(RawSpacing.extraSmall),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        size: 25,
+                      ),
+                      onPressed: () => controller.navigateBack(),
                     ),
-                    onPressed: () => controller.navigateBack(),
-                  ),
-                  Text(
-                    'Patient List',
-                    style: const TextStyle(
-                      fontSize: 22,
-                      letterSpacing: 1,
-                      fontWeight: FontWeight.w600,
+                    Text(
+                      'Patient List',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        letterSpacing: 1,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: getScreenHeight(context) * 0.89,
-              padding: const EdgeInsets.all(RawSpacing.extraSmall),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
-                controller: controller.scrollController,
+              Container(
+                padding: const EdgeInsets.all(RawSpacing.extraSmall),
                 child: Column(
                   children: <Widget>[
                     ...initializedState.patientsMetaInformation
@@ -145,8 +141,8 @@ class PatientManagementPageState extends ResponsiveViewState<
                   ],
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );

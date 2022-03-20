@@ -1,5 +1,5 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
-import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedureView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addEditProcedure/addEditProcedureView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedureStateMachine.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedureView.dart';
@@ -59,7 +59,7 @@ class PatientProcedureController extends Controller {
 
   void navigateToAddProcedurePage({required String patientId}) {
     _navigationService.navigateTo(NavigationService.addPatientProcedure,
-        arguments: AddProcedurePageParams(
+        arguments: AddEditProcedurePageParams(
             patientId: patientId,
             reloadPatientProceduresPageOnSuccessfullProcedureAddition:
                 reloadPatientProceduresPageOnSuccessfullProcedureAddition));

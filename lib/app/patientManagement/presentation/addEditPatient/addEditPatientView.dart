@@ -96,7 +96,10 @@ class AddEditPatientPageState
                       ),
                       onPressed: () => controller.navigateBack(),
                     ),
-                    Text('Patient Registration Form',
+                    Text(
+                        widget.params.inEditMode
+                            ? 'Edit Patient Information'
+                            : 'Patient Registration Form',
                         style: AppTheme.headingTextStyle),
                   ],
                 ),

@@ -3,7 +3,6 @@ import 'package:dentalApp/app/home/presentation/homeStateMachine.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/colors.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/elevation.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
-import 'package:dentalApp/core/presentation/screenDimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -74,8 +73,8 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     child: SizedBox(
-                        width: getScreenWidth(context) * 0.4,
-                        height: getScreenHeight(context) * 0.2,
+                        width: 200,
+                        height: 200,
                         child: Column(
                           children: [
                             const Expanded(
@@ -92,7 +91,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                             Expanded(
                               child: Container(
                                 color: Colors.red[300],
-                                height: getScreenHeight(context) * 0.2,
+                                height: 100,
                                 child: const Center(
                                   child: Text(
                                     'Patients',

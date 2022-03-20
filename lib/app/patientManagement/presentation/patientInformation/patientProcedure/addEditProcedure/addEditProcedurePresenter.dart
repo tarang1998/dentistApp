@@ -4,11 +4,11 @@ import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientInform
 import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-class AddProcedurePresenter extends Presenter {
+class AddEditProcedurePresenter extends Presenter {
   final GetPatientInformationUsecase _getPatientInformationUsecase;
   final AddPatientProcedureDataUsecase _addPatientProcedureDataUsecase;
 
-  AddProcedurePresenter(
+  AddEditProcedurePresenter(
       this._getPatientInformationUsecase, this._addPatientProcedureDataUsecase);
 
   @override

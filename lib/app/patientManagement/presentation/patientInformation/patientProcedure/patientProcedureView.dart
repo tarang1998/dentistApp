@@ -79,7 +79,6 @@ class PatientProcedurePageState extends ResponsiveViewState<
       body: SafeArea(
         child: Column(children: [
           Container(
-            height: getScreenHeight(context) * 0.05,
             margin: const EdgeInsets.all(RawSpacing.extraSmall),
             child: Row(
               children: [
@@ -127,7 +126,6 @@ class PatientProcedurePageState extends ResponsiveViewState<
             ),
           ),
           Container(
-            height: getScreenHeight(context) * 0.8,
             padding: const EdgeInsets.all(RawSpacing.extraSmall),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(

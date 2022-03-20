@@ -17,7 +17,7 @@ class AddPatientProcedureDataUsecase
     try {
       String procedureId = await _repository.addPatientProcedure(
           patientId: params!.patientId,
-          patientProcedureEnity: params.patientProcedureEntity);
+          patientProcedureEntity: params.patientProcedureEntity);
       LoggingWrapper.print(
         "Added procedure : $procedureId,  Patient : ${params.patientId} Data Successful",
         name: 'AddPatientProcedureDataUsecase',

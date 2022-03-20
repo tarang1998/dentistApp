@@ -17,7 +17,7 @@ import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientProced
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientsMetaInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
-import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addProcedure/addProcedurePresenter.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addEditProcedure/addEditProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/patientProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/viewProcedure/viewProcedurePresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientManagementPresenter.dart';
@@ -55,7 +55,7 @@ Future<void> init() async {
       .registerFactory(() => PatientProcedurePresenter(serviceLocator()));
 
   serviceLocator.registerFactory(
-      () => AddProcedurePresenter(serviceLocator(), serviceLocator()));
+      () => AddEditProcedurePresenter(serviceLocator(), serviceLocator()));
 
   ///Domain - usecases
   serviceLocator.registerFactory(

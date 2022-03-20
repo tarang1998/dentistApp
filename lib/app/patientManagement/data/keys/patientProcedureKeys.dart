@@ -1,6 +1,7 @@
 class PatientProcedureKeys {
   static String keyProcedureId = 'id';
   static String keyProcedure = 'procedure';
+  static String keyDiagnosis = 'diagnosis';
   static String keyEstimatedCost = 'estimatedCost';
   static String keyAmountPaid = 'amountPaid';
   static String keyProcedurePerformedAt = 'performedAt';

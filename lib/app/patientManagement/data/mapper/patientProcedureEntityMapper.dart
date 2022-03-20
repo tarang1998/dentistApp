@@ -11,6 +11,10 @@ class PatientProcedureEntityMapper {
           Procedure.values,
           patientProcedureData[PatientProcedureKeys.keyProcedure],
         ),
+        diagnosis: convertStringToEnum(
+          Diagnosis.values,
+          patientProcedureData[PatientProcedureKeys.keyDiagnosis],
+        ),
         estimatedCost:
             patientProcedureData[PatientProcedureKeys.keyEstimatedCost],
         amountPaid: patientProcedureData[PatientProcedureKeys.keyAmountPaid],

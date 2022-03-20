@@ -1,4 +1,5 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/teethChart.dart';
+import 'package:dentalApp/core/designSystem/fundamentals/elevation.dart';
 import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 
@@ -42,69 +43,83 @@ Widget adultTeethChartWidget(final List<AdultTeethType> selectedAdultTeethType,
     AdultTeethType.RD8
   ];
 
-  return Column(
-    children: [
-      Row(
-        children: (upperJawAdultTeeth
-            .map((teeth) => Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        height: 120,
-                        width: 50,
-                        child: FittedBox(
-                          child: Image.asset(
-                            'assets/adultTeeth/${enumValueToString(teeth)}.jpeg',
-                            alignment: Alignment.topCenter,
-                          ),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Checkbox(
-                        value: selectedAdultTeethType.contains(teeth),
-                        onChanged: (value) {
-                          if (isEditable) {
-                            handleAdultToothSelectionInput!(teeth);
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                ))
-            .toList()),
+  return Padding(
+    padding: const EdgeInsets.all(4.0),
+    child: Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
       ),
-      SizedBox(
-        height: 10,
-      ),
-      Row(
-        children: (lowerJawAdultTeeth
-            .map((teeth) => Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Checkbox(
-                        value: selectedAdultTeethType.contains(teeth),
-                        onChanged: (value) {
-                          if (isEditable) {
-                            handleAdultToothSelectionInput!(teeth);
-                          }
-                        },
-                      ),
-                      Container(
-                        height: 120,
-                        width: 50,
-                        child: FittedBox(
-                          child: Image.asset(
-                            'assets/adultTeeth/${enumValueToString(teeth)}.jpeg',
-                            alignment: Alignment.topCenter,
-                          ),
-                          fit: BoxFit.fill,
+      elevation: RawElevation.high,
+      child: ClipPath(
+        clipper: ShapeBorderClipper(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20))),
+        child: Column(
+          children: [
+            Row(
+              children: (upperJawAdultTeeth
+                  .map((teeth) => Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: 110,
+                              width: 40,
+                              child: FittedBox(
+                                child: Image.asset(
+                                  'assets/adultTeeth/${enumValueToString(teeth)}.jpeg',
+                                  alignment: Alignment.topCenter,
+                                ),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Checkbox(
+                              value: selectedAdultTeethType.contains(teeth),
+                              onChanged: (value) {
+                                if (isEditable) {
+                                  handleAdultToothSelectionInput!(teeth);
+                                }
+                              },
+                            )
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ))
-            .toList()),
-      )
-    ],
+                      ))
+                  .toList()),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: (lowerJawAdultTeeth
+                  .map((teeth) => Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Checkbox(
+                              value: selectedAdultTeethType.contains(teeth),
+                              onChanged: (value) {
+                                if (isEditable) {
+                                  handleAdultToothSelectionInput!(teeth);
+                                }
+                              },
+                            ),
+                            Container(
+                              height: 120,
+                              width: 50,
+                              child: FittedBox(
+                                child: Image.asset(
+                                  'assets/adultTeeth/${enumValueToString(teeth)}.jpeg',
+                                  alignment: Alignment.topCenter,
+                                ),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ))
+                  .toList()),
+            )
+          ],
+        ),
+      ),
+    ),
   );
 }

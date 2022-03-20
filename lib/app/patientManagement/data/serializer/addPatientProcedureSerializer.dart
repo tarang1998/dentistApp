@@ -9,6 +9,8 @@ class AddPatientProcedureSerializer {
 
     _patientProcedureSerializedData[PatientProcedureKeys.keyProcedure] =
         enumValueToString(patientProcedureEntity.procedurePerformed);
+    _patientProcedureSerializedData[PatientProcedureKeys.keyDiagnosis] =
+        enumValueToString(patientProcedureEntity.diagnosis);
     _patientProcedureSerializedData[PatientProcedureKeys.keyEstimatedCost] =
         patientProcedureEntity.estimatedCost;
     _patientProcedureSerializedData[PatientProcedureKeys.keyAmountPaid] =

@@ -4,7 +4,6 @@ import 'package:dentalApp/app/patientManagement/presentation/patientInformation/
 import 'package:dentalApp/core/designSystem/appTheme.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/colors.dart';
 import 'package:dentalApp/core/designSystem/fundamentals/spacing.dart';
-import 'package:dentalApp/core/presentation/screenDimensions.dart';
 import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -90,65 +89,64 @@ class PatientInformationPageState extends ResponsiveViewState<
     };
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: getScreenHeight(context) * 0.05,
-              margin: const EdgeInsets.all(RawSpacing.extraSmall),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 25,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(RawSpacing.extraSmall),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        size: 25,
+                      ),
+                      onPressed: () => controller.navigateBack(),
                     ),
-                    onPressed: () => controller.navigateBack(),
-                  ),
-                  const Text(
-                    'Patient Information',
-                    style: TextStyle(
-                      fontSize: 22,
-                      letterSpacing: 1,
-                      fontWeight: FontWeight.w600,
+                    const Text(
+                      'Patient Information',
+                      style: TextStyle(
+                        fontSize: 22,
+                        letterSpacing: 1,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.list_alt,
-                      size: 25,
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.list_alt,
+                        size: 25,
+                      ),
+                      onPressed: () =>
+                          controller.navigateToPatientProcedurePage(
+                              patientId: initializedState
+                                  .patientInformation
+                                  .patientPersonalInformation
+                                  .patientMetaInformation
+                                  .patientId),
                     ),
-                    onPressed: () => controller.navigateToPatientProcedurePage(
-                        patientId: initializedState
-                            .patientInformation
-                            .patientPersonalInformation
-                            .patientMetaInformation
-                            .patientId),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.edit,
-                      size: 25,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.edit,
+                        size: 25,
+                      ),
+                      onPressed: () => controller.navigateToEditPatientPage(
+                          widget.params
+                              .reloadPatientMetaPageOnPatientInformationEdition,
+                          initializedState
+                              .patientInformation
+                              .patientPersonalInformation
+                              .patientMetaInformation
+                              .patientId),
                     ),
-                    onPressed: () => controller.navigateToEditPatientPage(
-                        widget.params
-                            .reloadPatientMetaPageOnPatientInformationEdition,
-                        initializedState
-                            .patientInformation
-                            .patientPersonalInformation
-                            .patientMetaInformation
-                            .patientId),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: getScreenHeight(context) * 0.89,
-              padding: const EdgeInsets.all(RawSpacing.extraSmall),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
+              Container(
+                padding: const EdgeInsets.all(RawSpacing.extraSmall),
                 child: Padding(
                   padding: const EdgeInsets.all(RawSpacing.extraSmall),
                   child: Column(
@@ -838,8 +836,8 @@ class PatientInformationPageState extends ResponsiveViewState<
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

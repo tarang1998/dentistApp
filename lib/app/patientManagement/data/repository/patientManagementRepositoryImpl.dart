@@ -170,9 +170,9 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   @override
   Future<String> addPatientProcedure(
       {required String patientId,
-      required PatientProcedureEnity patientProcedureEnity}) async {
+      required PatientProcedureEnity patientProcedureEntity}) async {
     Map<String, dynamic> patientProcedureData =
-        _addPatientProcedureSerializer.serialize(patientProcedureEnity);
+        _addPatientProcedureSerializer.serialize(patientProcedureEntity);
 
     String procedureId =
         await _patientManagementFirebaseWrapper.addPatientProcedureData(
@@ -183,13 +183,14 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
         0,
         PatientProcedureEnity(
             procedureId: procedureId,
-            procedurePerformed: patientProcedureEnity.procedurePerformed,
-            estimatedCost: patientProcedureEnity.estimatedCost,
-            amountPaid: patientProcedureEnity.amountPaid,
-            performedAt: patientProcedureEnity.performedAt,
-            nextVisit: patientProcedureEnity.nextVisit,
-            additionalRemarks: patientProcedureEnity.additionalRemarks,
-            selectedTeethChart: patientProcedureEnity.selectedTeethChart));
+            procedurePerformed: patientProcedureEntity.procedurePerformed,
+            diagnosis: patientProcedureEntity.diagnosis,
+            estimatedCost: patientProcedureEntity.estimatedCost,
+            amountPaid: patientProcedureEntity.amountPaid,
+            performedAt: patientProcedureEntity.performedAt,
+            nextVisit: patientProcedureEntity.nextVisit,
+            additionalRemarks: patientProcedureEntity.additionalRemarks,
+            selectedTeethChart: patientProcedureEntity.selectedTeethChart));
 
     return patientId;
   }
