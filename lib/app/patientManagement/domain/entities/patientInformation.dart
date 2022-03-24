@@ -43,6 +43,7 @@ class PatientPersonalInformation {
   final BloodGroup bloodGroup;
   final String officeInformation;
   final String refferedBy;
+  final String? userImagePath; // The user Image in cloud storage
 
   PatientPersonalInformation({
     required this.patientMetaInformation,
@@ -54,6 +55,7 @@ class PatientPersonalInformation {
     required this.bloodGroup,
     required this.officeInformation,
     required this.refferedBy,
+    required this.userImagePath,
   });
 }
 

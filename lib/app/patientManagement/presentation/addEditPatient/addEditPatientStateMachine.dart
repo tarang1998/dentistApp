@@ -23,7 +23,9 @@ class AddEditPatientStateMachine
             initializedEvent.pregnancyStatus,
             initializedEvent.childNursingStatus,
             initializedEvent.habits,
-            initializedEvent.allergies);
+            initializedEvent.allergies,
+            initializedEvent.userImagePath,
+            initializedEvent.storedUserImageFilePath);
         break;
 
       case AddEditPatientDOBUpdatedEvent:
@@ -124,6 +126,18 @@ class AddEditPatientStateMachine
         }
         break;
 
+      case AddEditPatientUserImageSelectionEvent:
+        AddEditPatientUserImageSelectionEvent
+            addEditPatientUserImageSelectionEvent =
+            event as AddEditPatientUserImageSelectionEvent;
+        if (newState.runtimeType == AddEditPatientInitializedState) {
+          newState = AddEditPatientInitializedState.clone(
+              newState as AddEditPatientInitializedState,
+              userImagePath:
+                  addEditPatientUserImageSelectionEvent.userImagePath);
+        }
+        break;
+
       case AddEditPatientErrorEvent:
         newState = AddEditPatientErrorState();
         break;
@@ -153,6 +167,8 @@ class AddEditPatientInitializedEvent extends AddEditPatientEvent {
   final ChildNursingStatus childNursingStatus;
   final List<Habits> habits;
   final List<Allergies> allergies;
+  final String? userImagePath; //image Path for the view
+  final String? storedUserImageFilePath; //user Image path stored in the cloud
   AddEditPatientInitializedEvent(
       {required this.dob,
       required this.sex,
@@ -163,7 +179,9 @@ class AddEditPatientInitializedEvent extends AddEditPatientEvent {
       required this.pregnancyStatus,
       required this.childNursingStatus,
       required this.habits,
-      required this.allergies});
+      required this.allergies,
+      required this.userImagePath,
+      required this.storedUserImageFilePath});
 }
 
 class AddEditPatientLoadingEvent extends AddEditPatientEvent {}
@@ -213,6 +231,11 @@ class AddEditPatientAllergiesSelectionEvent extends AddEditPatientEvent {
   AddEditPatientAllergiesSelectionEvent({required this.allergies});
 }
 
+class AddEditPatientUserImageSelectionEvent extends AddEditPatientEvent {
+  final String userImagePath;
+  AddEditPatientUserImageSelectionEvent({required this.userImagePath});
+}
+
 abstract class AddEditPatientState {}
 
 class AddEditPatientLoadingState implements AddEditPatientState {}
@@ -230,6 +253,8 @@ class AddEditPatientInitializedState implements AddEditPatientState {
   final ChildNursingStatus childNursingStatus;
   final List<Habits> habits;
   final List<Allergies> allergies;
+  final String? userImagePath; //image Path for the view
+  final String? storedUserImageFilePath; //user Image path stored in the cloud
 
   AddEditPatientInitializedState(
       this.dob,
@@ -241,7 +266,9 @@ class AddEditPatientInitializedState implements AddEditPatientState {
       this.pregnancyStatus,
       this.childNursingStatus,
       this.habits,
-      this.allergies);
+      this.allergies,
+      this.userImagePath,
+      this.storedUserImageFilePath);
 
   AddEditPatientInitializedState.clone(AddEditPatientInitializedState prevState,
       {DateTime? dob,
@@ -252,7 +279,9 @@ class AddEditPatientInitializedState implements AddEditPatientState {
       PregnancyStatus? pregnancyStatus,
       ChildNursingStatus? childNursingStatus,
       List<Habits>? habits,
-      List<Allergies>? allergies})
+      List<Allergies>? allergies,
+      String? userImagePath,
+      String? storedUserImageFilePath})
       : this(
             dob ?? prevState.dob,
             sex ?? prevState.sex,
@@ -263,7 +292,9 @@ class AddEditPatientInitializedState implements AddEditPatientState {
             pregnancyStatus ?? prevState.pregnancyStatus,
             childNursingStatus ?? prevState.childNursingStatus,
             habits ?? prevState.habits,
-            allergies ?? prevState.allergies);
+            allergies ?? prevState.allergies,
+            userImagePath ?? prevState.userImagePath,
+            storedUserImageFilePath ?? prevState.storedUserImageFilePath);
 }
 
 class AddEditPatientErrorState implements AddEditPatientState {}

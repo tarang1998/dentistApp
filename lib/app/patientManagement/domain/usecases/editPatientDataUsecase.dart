@@ -4,7 +4,8 @@ import 'package:dentalApp/app/patientManagement/domain/repository/patientManagem
 import 'package:dentalApp/core/loggingWrapper.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-class EditPatientDataUsecase extends CompletableUseCase<PatientInformation> {
+class EditPatientDataUsecase
+    extends CompletableUseCase<EditPatientDataUsecaseParams> {
   final PatientManagementRepository _repository;
 
   EditPatientDataUsecase(this._repository);
@@ -14,7 +15,9 @@ class EditPatientDataUsecase extends CompletableUseCase<PatientInformation> {
     final StreamController<void> streamController = StreamController();
 
     try {
-      await _repository.editPatientData(patientInformation: params!);
+      await _repository.editPatientData(
+          patientInformation: params!.patientInformation,
+          localUserImageFilePath: params.localUserImageFilePath);
       LoggingWrapper.print(
         "Editted Patient Data Successful",
         name: 'EditPatientDataUsecase',
@@ -27,4 +30,12 @@ class EditPatientDataUsecase extends CompletableUseCase<PatientInformation> {
     }
     return streamController.stream;
   }
+}
+
+class EditPatientDataUsecaseParams {
+  final PatientInformation patientInformation;
+  final String? localUserImageFilePath;
+
+  EditPatientDataUsecaseParams(
+      {required this.patientInformation, required this.localUserImageFilePath});
 }

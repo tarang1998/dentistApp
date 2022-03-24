@@ -119,7 +119,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
   }
 
   Widget _buildLoadingStateView(HomePageController controller) {
-    WidgetsBinding.instance!
+    WidgetsBinding.instance
         .addPostFrameCallback((_) => controller.initializePage());
 
     return const CircularProgressIndicator();

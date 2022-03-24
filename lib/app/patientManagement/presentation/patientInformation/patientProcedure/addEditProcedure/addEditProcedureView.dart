@@ -399,7 +399,7 @@ class AddEditProcedurePageState extends ResponsiveViewState<
 
   Widget _buildInitializationStateView(
       AddEditProcedureController controller, String patientId) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) =>
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
         controller.initializePage(
             isInEditMode: widget.params.isInEditMode,
             patientId: patientId,

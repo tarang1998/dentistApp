@@ -79,6 +79,7 @@ PatientMedicalInformation mapPatientMedicalInformation(
 PatientPersonalInformation mapPatientPersonalInformation(
     Map<String, dynamic> rawPatientData) {
   return PatientPersonalInformation(
+      userImagePath: rawPatientData[PatientManagementKeys.keyUserImage],
       address: rawPatientData[PatientManagementKeys.keyAddress],
       bloodGroup: convertStringToEnum(BloodGroup.values,
           rawPatientData[PatientManagementKeys.keyBloodGroup]),

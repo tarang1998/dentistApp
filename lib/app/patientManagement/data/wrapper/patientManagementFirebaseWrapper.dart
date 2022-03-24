@@ -44,11 +44,14 @@ class PatientManagementFirebaseWrapper {
     return patientsRawData;
   }
 
-  Future<String> addPatientData(
-      {required Map<String, dynamic> addPatientSerializedData}) async {
-    final DocumentReference docReference =
-        await patientsCollection.add(addPatientSerializedData);
-    return docReference.id;
+  Future<String> getPatientReference() async {
+    return patientsCollection.doc().id;
+  }
+
+  Future<void> addPatientData(
+      {required String patientId,
+      required Map<String, dynamic> addPatientSerializedData}) async {
+    await patientsCollection.doc(patientId).set(addPatientSerializedData);
   }
 
   Future<void> editPatientData(

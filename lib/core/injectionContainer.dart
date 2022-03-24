@@ -4,6 +4,7 @@ import 'package:dentalApp/app/patientManagement/data/mapper/patientProcedureEnti
 import 'package:dentalApp/app/patientManagement/data/repository/patientManagementRepositoryImpl.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addEditPatientEntitySerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addPatientProcedureSerializer.dart';
+import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseCloudStorageWrapper.dart';
 import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
 import 'package:dentalApp/app/patientManagement/domain/repository/patientManagementRepository.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
@@ -91,13 +92,20 @@ Future<void> init() async {
 
   ///Repository
   serviceLocator.registerLazySingleton<PatientManagementRepository>(() =>
-      PatientManagementRepositoryImpl(serviceLocator(), serviceLocator(),
-          serviceLocator(), serviceLocator(), serviceLocator()));
+      PatientManagementRepositoryImpl(
+          serviceLocator(),
+          serviceLocator(),
+          serviceLocator(),
+          serviceLocator(),
+          serviceLocator(),
+          serviceLocator()));
 
   ///Wrappers
   serviceLocator.registerFactory(() => PatientManagementFirebaseWrapper());
+  serviceLocator
+      .registerFactory(() => PatientManagementFirebaseStorageWrapper());
 }
 
 Future<void> reset() async {
-  serviceLocator.resetLazySingleton<PatientManagementFirebaseWrapper>();
+  serviceLocator.resetLazySingleton<PatientManagementFirebaseStorageWrapper>();
 }

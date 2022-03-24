@@ -7,6 +7,7 @@ import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddEditPatientController extends Controller {
   final AddEditPatientPresenter _presenter;
@@ -48,6 +49,8 @@ class AddEditPatientController extends Controller {
 
   final TextEditingController additionalInformationTextEditingController =
       TextEditingController();
+
+  final ImagePicker _picker = ImagePicker();
 
   AddEditPatientController()
       : _presenter = serviceLocator<AddEditPatientPresenter>(),
@@ -128,7 +131,10 @@ class AddEditPatientController extends Controller {
                     .patientMedicalInformation.childNursingStatus,
                 habits: patientInformation.patientMedicalInformation.habits,
                 allergies:
-                    patientInformation.patientMedicationInformation.allergies));
+                    patientInformation.patientMedicationInformation.allergies,
+                userImagePath: null,
+                storedUserImageFilePath: patientInformation
+                    .patientPersonalInformation.userImagePath));
             refreshUI();
           }),
           patientId: patientId!);
@@ -144,7 +150,9 @@ class AddEditPatientController extends Controller {
             pregnancyStatus: PregnancyStatus.NOT_PREGNANT,
             childNursingStatus: ChildNursingStatus.NOT_NURSING_CHILD,
             habits: [],
-            allergies: []),
+            allergies: [],
+            userImagePath: null,
+            storedUserImageFilePath: null),
       );
       refreshUI();
     }
@@ -216,6 +224,8 @@ class AddEditPatientController extends Controller {
       ChildNursingStatus childNursingStatus,
       List<Habits> habits,
       List<Allergies> allergies,
+      String? localUserImagePath,
+      String? storedUserImagePath,
       bool isInEditMode,
       Function reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition,
       String? patientId) {
@@ -235,8 +245,10 @@ class AddEditPatientController extends Controller {
             _stateMachine.onEvent(AddEditPatientErrorEvent());
             refreshUI();
           }),
+          localUserImagePath: localUserImagePath,
           patientInformation: PatientInformation(
               patientPersonalInformation: PatientPersonalInformation(
+                userImagePath: storedUserImagePath,
                 patientMetaInformation: PatientMetaInformation(
                     patientId: patientId!,
                     name: nameTextEditingController.text,
@@ -292,8 +304,10 @@ class AddEditPatientController extends Controller {
             _stateMachine.onEvent(AddEditPatientErrorEvent());
             refreshUI();
           }),
+          localUserImagePath: localUserImagePath,
           patientInformation: PatientInformation(
               patientPersonalInformation: PatientPersonalInformation(
+                userImagePath: null,
                 patientMetaInformation: PatientMetaInformation(
                     patientId: '',
                     name: nameTextEditingController.text,
@@ -336,6 +350,17 @@ class AddEditPatientController extends Controller {
               additionalInformation:
                   additionalInformationTextEditingController.text,
               createdAt: DateTime.now()));
+    }
+  }
+
+  Future<void> captureUserImage() async {
+    XFile? file = await _picker.pickImage(source: ImageSource.camera);
+
+    if (file != null) {
+      _stateMachine.onEvent(AddEditPatientUserImageSelectionEvent(
+        userImagePath: file.path,
+      ));
+      refreshUI();
     }
   }
 }

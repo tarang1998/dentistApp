@@ -11,10 +11,12 @@ abstract class PatientManagementRepository {
   PatientInformation getPatientInformation({required String patientId});
 
   Future<String> addPatientData(
-      {required PatientInformation patientInformation});
+      {required PatientInformation patientInformation,
+      required String? localUserImageFilePath});
 
   Future<void> editPatientData(
-      {required PatientInformation patientInformation});
+      {required PatientInformation patientInformation,
+      required String? localUserImageFilePath});
 
   Future<List<PatientProcedureEnity>> getPatientProcedures(
       {required String patientId});

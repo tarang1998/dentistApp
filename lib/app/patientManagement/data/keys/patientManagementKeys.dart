@@ -17,6 +17,7 @@ class PatientManagementKeys {
   static String keyBloodGroup = 'bloodGroup';
   static String keyOfficeInformation = 'officeInformation';
   static String keyRefferedBy = 'refferedBy';
+  static String keyUserImage = 'userImage';
 
   ///Patient Medical Information
   static String keyFamilyDoctorsName = 'familyDocName';

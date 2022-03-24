@@ -27,13 +27,22 @@ class AddEditPatientPresenter extends Presenter {
   }
 
   void editPatientData(UseCaseObserver observer,
-      {required PatientInformation patientInformation}) {
-    _editPatientDataUsecase.execute(observer, patientInformation);
+      {required PatientInformation patientInformation,
+      required String? localUserImagePath}) {
+    _editPatientDataUsecase.execute(
+        observer,
+        EditPatientDataUsecaseParams(
+            patientInformation: patientInformation,
+            localUserImageFilePath: localUserImagePath));
   }
 
   void addPatientData(UseCaseObserver observer,
-      {required PatientInformation patientInformation}) {
-    print('add pateint data presenter');
-    _addPatientDataUsecase.execute(observer, patientInformation);
+      {required PatientInformation patientInformation,
+      required String? localUserImagePath}) {
+    _addPatientDataUsecase.execute(
+        observer,
+        AddPatientDataUsecaseParams(
+            patientInformation: patientInformation,
+            localUserImageFilePath: localUserImagePath));
   }
 }

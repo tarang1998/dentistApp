@@ -4,7 +4,8 @@ import 'package:dentalApp/app/patientManagement/domain/repository/patientManagem
 import 'package:dentalApp/core/loggingWrapper.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-class AddPatientDataUsecase extends CompletableUseCase<PatientInformation> {
+class AddPatientDataUsecase
+    extends CompletableUseCase<AddPatientDataUsecaseParams> {
   final PatientManagementRepository _repository;
 
   AddPatientDataUsecase(this._repository);
@@ -14,8 +15,9 @@ class AddPatientDataUsecase extends CompletableUseCase<PatientInformation> {
     final StreamController<void> streamController = StreamController();
 
     try {
-      String patientId =
-          await _repository.addPatientData(patientInformation: params!);
+      String patientId = await _repository.addPatientData(
+          patientInformation: params!.patientInformation,
+          localUserImageFilePath: params.localUserImageFilePath);
       LoggingWrapper.print(
         "Added Patient : $patientId Data Successful",
         name: 'AddPatientDataUsecase',
@@ -28,4 +30,12 @@ class AddPatientDataUsecase extends CompletableUseCase<PatientInformation> {
     }
     return streamController.stream;
   }
+}
+
+class AddPatientDataUsecaseParams {
+  final PatientInformation patientInformation;
+  final String? localUserImageFilePath;
+
+  AddPatientDataUsecaseParams(
+      {required this.patientInformation, required this.localUserImageFilePath});
 }

@@ -3,7 +3,8 @@ import 'package:dentalApp/app/patientManagement/domain/entities/patientInformati
 import 'package:dentalApp/core/utilities/EnumStringConvertor.dart';
 
 class AddEditPatientEntitySerializer {
-  Map<String, dynamic> serialize(PatientInformation patientInformation) {
+  Map<String, dynamic> serialize(
+      PatientInformation patientInformation, String? userImageStorageLocation) {
     Map<String, dynamic> _addPatientSerializedData = {};
 
     ///PatientPersonalInforamtion
@@ -96,6 +97,11 @@ class AddEditPatientEntitySerializer {
         patientInformation.updatedAt;
     _addPatientSerializedData[PatientManagementKeys.keyAdditionalInformation] =
         enumValueToString(patientInformation.additionalInformation);
+
+    if (userImageStorageLocation != null) {
+      _addPatientSerializedData[PatientManagementKeys.keyUserImage] =
+          userImageStorageLocation;
+    }
 
     return _addPatientSerializedData;
   }

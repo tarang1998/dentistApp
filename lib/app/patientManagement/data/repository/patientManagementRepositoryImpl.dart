@@ -2,6 +2,7 @@ import 'package:dentalApp/app/patientManagement/data/mapper/patientInformationEn
 import 'package:dentalApp/app/patientManagement/data/mapper/patientProcedureEntityMapper.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addEditPatientEntitySerializer.dart';
 import 'package:dentalApp/app/patientManagement/data/serializer/addPatientProcedureSerializer.dart';
+import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseCloudStorageWrapper.dart';
 import 'package:dentalApp/app/patientManagement/data/wrapper/patientManagementFirebaseWrapper.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
@@ -9,6 +10,8 @@ import 'package:dentalApp/app/patientManagement/domain/repository/patientManagem
 
 class PatientManagementRepositoryImpl extends PatientManagementRepository {
   final PatientManagementFirebaseWrapper _patientManagementFirebaseWrapper;
+  final PatientManagementFirebaseStorageWrapper
+      _patientManagementFirebaseStorageWrapper;
   final PatientInformationMapperEntity _patientInformationMapperEntity;
   final PatientProcedureEntityMapper _patientProcedureEntityMapper;
   final AddEditPatientEntitySerializer _addEditPatientEntitySerializer;
@@ -16,6 +19,7 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
 
   PatientManagementRepositoryImpl(
       this._patientManagementFirebaseWrapper,
+      this._patientManagementFirebaseStorageWrapper,
       this._patientInformationMapperEntity,
       this._addEditPatientEntitySerializer,
       this._patientProcedureEntityMapper,
@@ -74,11 +78,28 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
 
   @override
   Future<String> addPatientData(
-      {required PatientInformation patientInformation}) async {
+      {required PatientInformation patientInformation,
+      required String? localUserImageFilePath}) async {
+    //Getting a reference for the patient
+    final String patientId =
+        await _patientManagementFirebaseWrapper.getPatientReference();
+
+    String? userImageStorageLocation;
+
+    if (localUserImageFilePath != null) {
+      userImageStorageLocation = 'patients/$patientId/userImage.jpeg';
+
+      await _patientManagementFirebaseStorageWrapper.uploadUserImageFile(
+          userImageStorageLocation, localUserImageFilePath);
+    }
+
     Map<String, dynamic> _addPatientSerializedData =
-        _addEditPatientEntitySerializer.serialize(patientInformation);
-    final String patientId = await _patientManagementFirebaseWrapper
-        .addPatientData(addPatientSerializedData: _addPatientSerializedData);
+        _addEditPatientEntitySerializer.serialize(
+            patientInformation, userImageStorageLocation);
+
+    await _patientManagementFirebaseWrapper.addPatientData(
+        patientId: patientId,
+        addPatientSerializedData: _addPatientSerializedData);
 
     //Adding the patient data to the cached patient data's List
     _patientsInformation!.insert(
@@ -92,6 +113,7 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
                 patientInformation.patientMedicationInformation,
             updatedAt: patientInformation.updatedAt,
             patientPersonalInformation: PatientPersonalInformation(
+              userImagePath: userImageStorageLocation,
               address: patientInformation.patientPersonalInformation.address,
               mobileNo: patientInformation.patientPersonalInformation.mobileNo,
               bloodGroup:
@@ -125,9 +147,22 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
 
   @override
   Future<void> editPatientData(
-      {required PatientInformation patientInformation}) async {
+      {required PatientInformation patientInformation,
+      required String? localUserImageFilePath}) async {
+    String? userImageStorageLocation;
+
+    if (localUserImageFilePath != null) {
+      String userImageStorageLocation =
+          'patients/${patientInformation.patientPersonalInformation.patientMetaInformation.patientId}/userImage.jpeg';
+
+      await _patientManagementFirebaseStorageWrapper.uploadUserImageFile(
+          userImageStorageLocation, localUserImageFilePath);
+    }
+
     Map<String, dynamic> _editPatientSerializedData =
-        _addEditPatientEntitySerializer.serialize(patientInformation);
+        _addEditPatientEntitySerializer.serialize(
+            patientInformation, userImageStorageLocation);
+
     await _patientManagementFirebaseWrapper.editPatientData(
         patientId: patientInformation
             .patientPersonalInformation.patientMetaInformation.patientId,
@@ -140,7 +175,37 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
         patientInformation
             .patientPersonalInformation.patientMetaInformation.patientId);
     _patientsInformation!.removeAt(index);
-    _patientsInformation!.insert(0, patientInformation);
+    _patientsInformation!.insert(
+        0,
+        PatientInformation(
+            patientDentalInformation:
+                patientInformation.patientDentalInformation,
+            patientMedicalInformation:
+                patientInformation.patientMedicalInformation,
+            patientMedicationInformation:
+                patientInformation.patientMedicationInformation,
+            updatedAt: patientInformation.updatedAt,
+            patientPersonalInformation: PatientPersonalInformation(
+              userImagePath: userImageStorageLocation,
+              address: patientInformation.patientPersonalInformation.address,
+              mobileNo: patientInformation.patientPersonalInformation.mobileNo,
+              bloodGroup:
+                  patientInformation.patientPersonalInformation.bloodGroup,
+              maritialStatus:
+                  patientInformation.patientPersonalInformation.maritialStatus,
+              officeInformation: patientInformation
+                  .patientPersonalInformation.officeInformation,
+              profession:
+                  patientInformation.patientPersonalInformation.profession,
+              refferedBy:
+                  patientInformation.patientPersonalInformation.refferedBy,
+              telephoneNo:
+                  patientInformation.patientPersonalInformation.telephoneNo,
+              patientMetaInformation: patientInformation
+                  .patientPersonalInformation.patientMetaInformation,
+            ),
+            createdAt: patientInformation.createdAt,
+            additionalInformation: patientInformation.additionalInformation));
   }
 
   @override

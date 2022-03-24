@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
 import 'package:dentalApp/app/patientManagement/presentation/AddEditPatient/AddEditPatientController.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientStateMachine.dart';
@@ -108,6 +110,33 @@ class AddEditPatientPageState
                 padding: EdgeInsets.all(RawSpacing.extraSmall),
                 child: Text('Personal Information : ',
                     style: AppTheme.subHeadingTextStyle),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () => controller.captureUserImage(),
+                    child: CircleAvatar(
+                      backgroundImage: (initializedState.userImagePath != null)
+                          ? FileImage(File(initializedState.userImagePath!))
+                          : null,
+                      backgroundColor: RawColors.grey20,
+                      minRadius: 100,
+                      maxRadius: 150,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('+',
+                              style: TextStyle(
+                                  fontSize: 30, color: RawColors.white100)),
+                          Text('Add User Image',
+                              style: TextStyle(
+                                  fontSize: 20, color: RawColors.white100))
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8),
@@ -666,6 +695,8 @@ class AddEditPatientPageState
                             initializedState.childNursingStatus,
                             initializedState.habits,
                             initializedState.allergies,
+                            initializedState.userImagePath,
+                            initializedState.storedUserImageFilePath,
                             widget.params.inEditMode,
                             widget.params
                                 .reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition,
@@ -716,7 +747,7 @@ class AddEditPatientPageState
 
   Widget _buildInitializationStateView(AddEditPatientController controller,
       bool isInEditMode, String? patientId) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) => controller
+    WidgetsBinding.instance.addPostFrameCallback((_) => controller
         .initializePage(isInEditMode: isInEditMode, patientId: patientId));
     return Scaffold(
         body: Center(
