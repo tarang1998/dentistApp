@@ -15,8 +15,8 @@ class PatientInformationStateMachine
         PatientInformationInitializedEvent initEvent =
             event as PatientInformationInitializedEvent;
 
-        newState =
-            PatientInformationInitializedState(initEvent.patientInformation);
+        newState = PatientInformationInitializedState(
+            initEvent.patientInformation, initEvent.storageImagePath);
         break;
 
       case PatientInformationErrorEvent:
@@ -35,7 +35,9 @@ class PatientInformationErrorEvent extends PatientInformationEvent {
 
 class PatientInformationInitializedEvent extends PatientInformationEvent {
   final PatientInformation patientInformation;
-  PatientInformationInitializedEvent(this.patientInformation);
+  final String? storageImagePath;
+  PatientInformationInitializedEvent(
+      this.patientInformation, this.storageImagePath);
 }
 
 class PatientInformationLoadingEvent extends PatientInformationEvent {}
@@ -49,7 +51,9 @@ class PatientInformationInitializationState implements PatientInformationState {
 
 class PatientInformationInitializedState implements PatientInformationState {
   final PatientInformation patientInformation;
-  PatientInformationInitializedState(this.patientInformation);
+  final String? storageImagePath;
+  PatientInformationInitializedState(
+      this.patientInformation, this.storageImagePath);
 }
 
 class PatientInformationErrorState implements PatientInformationState {}

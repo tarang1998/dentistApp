@@ -158,6 +158,22 @@ class PatientInformationPageState extends ResponsiveViewState<
                       const SizedBox(
                         height: 20,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Center(
+                            child: CircleAvatar(
+                          backgroundImage: (initializedState.storageImagePath !=
+                                  null)
+                              ? NetworkImage(initializedState.storageImagePath!)
+                              : null,
+                          backgroundColor: RawColors.grey20,
+                          minRadius: 100,
+                          maxRadius: 150,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                        )),
+                      ),
                       const Text(
                         'Name :',
                         style: AppTheme.inputFieldTitleTextStyle,

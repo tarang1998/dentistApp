@@ -38,9 +38,23 @@ class PatientInformationController extends Controller {
           _stateMachine.onEvent(PatientInformationErrorEvent());
           refreshUI();
         }, onNextFunc: (PatientInformation patientInformation) {
-          _stateMachine
-              .onEvent(PatientInformationInitializedEvent(patientInformation));
-          refreshUI();
+          if (patientInformation.patientPersonalInformation.userImagePath !=
+              null) {
+            _presenter.getUserImageRef(
+                UseCaseObserver(() {}, (error) {
+                  _stateMachine.onEvent(PatientInformationErrorEvent());
+                  refreshUI();
+                }, onNextFunc: (String downloadableImageUri) {
+                  _stateMachine.onEvent(PatientInformationInitializedEvent(
+                      patientInformation, downloadableImageUri));
+                  refreshUI();
+                }),
+                patientId);
+          } else {
+            _stateMachine.onEvent(
+                PatientInformationInitializedEvent(patientInformation, null));
+            refreshUI();
+          }
         }),
         patientId);
   }

@@ -46,6 +46,7 @@ Future<void> init() async {
 
   serviceLocator.registerFactory(() => PatientInformationPresenter(
         serviceLocator(),
+        serviceLocator(),
       ));
 
   serviceLocator.registerFactory(() => AddEditPatientPresenter(
