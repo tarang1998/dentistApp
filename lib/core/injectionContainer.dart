@@ -17,6 +17,7 @@ import 'package:dentalApp/app/patientManagement/domain/usecases/fetchPatientsMet
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientProcedureInformationUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientsMetaInformationUsecase.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/getUserImageRefUsecase.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientProcedure/addEditProcedure/addEditProcedurePresenter.dart';
@@ -48,7 +49,7 @@ Future<void> init() async {
       ));
 
   serviceLocator.registerFactory(() => AddEditPatientPresenter(
-      serviceLocator(), serviceLocator(), serviceLocator()));
+      serviceLocator(), serviceLocator(), serviceLocator(), serviceLocator()));
 
   serviceLocator
       .registerFactory(() => ViewProcedurePresenter(serviceLocator()));
@@ -79,6 +80,8 @@ Future<void> init() async {
       .registerFactory(() => EditPatientDataUsecase(serviceLocator()));
   serviceLocator
       .registerFactory(() => EditPatientProcedureUsecase(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => GetUserImageRefUsecase(serviceLocator()));
 
   ///Data
 

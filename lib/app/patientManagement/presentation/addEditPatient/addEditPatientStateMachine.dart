@@ -253,7 +253,8 @@ class AddEditPatientInitializedState implements AddEditPatientState {
   final ChildNursingStatus childNursingStatus;
   final List<Habits> habits;
   final List<Allergies> allergies;
-  final String? userImagePath; //image Path for the view
+  final String?
+      userImagePath; //image Path for the view , the cache file location
   final String? storedUserImageFilePath; //user Image path stored in the cloud
 
   AddEditPatientInitializedState(

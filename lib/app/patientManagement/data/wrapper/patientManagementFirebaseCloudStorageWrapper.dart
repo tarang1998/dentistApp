@@ -17,4 +17,14 @@ class PatientManagementFirebaseStorageWrapper {
 
     await _storageReference.putData(fileBytes);
   }
+
+  Future<String> getDownloadableUri(
+      {required String userImageStorageLocation}) async {
+    Reference _storgaeReference =
+        _storage.refFromURL(_storageBucket + userImageStorageLocation);
+
+    String downloadableUserImage = await _storgaeReference.getDownloadURL();
+
+    return downloadableUserImage;
+  }
 }

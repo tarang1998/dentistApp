@@ -116,25 +116,67 @@ class AddEditPatientPageState
                 child: Center(
                   child: GestureDetector(
                     onTap: () => controller.captureUserImage(),
-                    child: CircleAvatar(
-                      backgroundImage: (initializedState.userImagePath != null)
-                          ? FileImage(File(initializedState.userImagePath!))
-                          : null,
-                      backgroundColor: RawColors.grey20,
-                      minRadius: 100,
-                      maxRadius: 150,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('+',
-                              style: TextStyle(
-                                  fontSize: 30, color: RawColors.white100)),
-                          Text('Add User Image',
-                              style: TextStyle(
-                                  fontSize: 20, color: RawColors.white100))
-                        ],
-                      ),
-                    ),
+                    child: (initializedState.userImagePath != null)
+                        ? CircleAvatar(
+                            backgroundImage: FileImage(
+                                File(initializedState.userImagePath!)),
+                            backgroundColor: RawColors.grey20,
+                            minRadius: 100,
+                            maxRadius: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('+',
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        color: RawColors.white100)),
+                                Text('Update User Image',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: RawColors.white100))
+                              ],
+                            ),
+                          )
+                        : (initializedState.storedUserImageFilePath != null)
+                            ? CircleAvatar(
+                                backgroundImage: NetworkImage((initializedState
+                                    .storedUserImageFilePath!)),
+                                backgroundColor: RawColors.grey20,
+                                minRadius: 100,
+                                maxRadius: 150,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('+',
+                                        style: TextStyle(
+                                            fontSize: 30,
+                                            color: RawColors.white100)),
+                                    Text('Update User Image',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: RawColors.white100))
+                                  ],
+                                ),
+                              )
+                            : CircleAvatar(
+                                backgroundImage: null,
+                                backgroundColor: RawColors.grey20,
+                                minRadius: 100,
+                                maxRadius: 150,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('+',
+                                        style: TextStyle(
+                                            fontSize: 30,
+                                            color: RawColors.white100)),
+                                    Text('Add User Image',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: RawColors.white100))
+                                  ],
+                                ),
+                              ),
                   ),
                 ),
               ),

@@ -2,6 +2,7 @@ import 'package:dentalApp/app/patientManagement/domain/entities/patientInformati
 import 'package:dentalApp/app/patientManagement/domain/usecases/addPatientDataUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/editPatientDataUsecase.dart';
 import 'package:dentalApp/app/patientManagement/domain/usecases/getPatientInformationUsecase.dart';
+import 'package:dentalApp/app/patientManagement/domain/usecases/getUserImageRefUsecase.dart';
 import 'package:dentalApp/core/presentation/observer.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -9,15 +10,20 @@ class AddEditPatientPresenter extends Presenter {
   final AddPatientDataUsecase _addPatientDataUsecase;
   final GetPatientInformationUsecase _getPatientInformationUsecase;
   final EditPatientDataUsecase _editPatientDataUsecase;
+  final GetUserImageRefUsecase _getImageRefUsecase;
 
-  AddEditPatientPresenter(this._addPatientDataUsecase,
-      this._getPatientInformationUsecase, this._editPatientDataUsecase);
+  AddEditPatientPresenter(
+      this._addPatientDataUsecase,
+      this._getPatientInformationUsecase,
+      this._editPatientDataUsecase,
+      this._getImageRefUsecase);
 
   @override
   void dispose() {
     _addPatientDataUsecase.dispose();
     _getPatientInformationUsecase.dispose();
     _editPatientDataUsecase.dispose();
+    _getImageRefUsecase.dispose();
   }
 
   void getPatientInformation(UseCaseObserver observer,
@@ -44,5 +50,10 @@ class AddEditPatientPresenter extends Presenter {
         AddPatientDataUsecaseParams(
             patientInformation: patientInformation,
             localUserImageFilePath: localUserImagePath));
+  }
+
+  void getuserImageRef(UseCaseObserver observer, {required String patientId}) {
+    _getImageRefUsecase.execute(
+        observer, GetUserImageRefUsecaseParams(patientId: patientId));
   }
 }

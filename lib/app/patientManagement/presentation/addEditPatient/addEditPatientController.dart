@@ -86,9 +86,12 @@ class AddEditPatientController extends Controller {
             mobileNumberTextEditingController.text = patientInformation
                 .patientPersonalInformation.mobileNo
                 .toString();
-            telephoneNoTextEditingController.text = patientInformation
-                .patientPersonalInformation.telephoneNo
-                .toString();
+            telephoneNoTextEditingController.text =
+                (patientInformation.patientPersonalInformation.telephoneNo ==
+                        null)
+                    ? ''
+                    : patientInformation.patientPersonalInformation.telephoneNo
+                        .toString();
             addressTextEditingController.text =
                 patientInformation.patientPersonalInformation.address;
             officeInformationTextEditingController.text =
@@ -114,28 +117,65 @@ class AddEditPatientController extends Controller {
             additionalInformationTextEditingController.text =
                 patientInformation.additionalInformation;
 
-            _stateMachine.onEvent(AddEditPatientInitializedEvent(
-                dob: patientInformation
-                    .patientPersonalInformation.patientMetaInformation.dob,
-                sex: patientInformation
-                    .patientPersonalInformation.patientMetaInformation.sex,
-                createdAt: patientInformation.createdAt,
-                maritialStatus: patientInformation
-                    .patientPersonalInformation.maritialStatus,
-                bloodGroup:
-                    patientInformation.patientPersonalInformation.bloodGroup,
-                diseases: patientInformation.patientMedicalInformation.diseases,
-                pregnancyStatus: patientInformation
-                    .patientMedicalInformation.pregnancyStatus,
-                childNursingStatus: patientInformation
-                    .patientMedicalInformation.childNursingStatus,
-                habits: patientInformation.patientMedicalInformation.habits,
-                allergies:
-                    patientInformation.patientMedicationInformation.allergies,
-                userImagePath: null,
-                storedUserImageFilePath: patientInformation
-                    .patientPersonalInformation.userImagePath));
-            refreshUI();
+            //Creating a downloadable Image Uri in case user Photo is uploaded
+            if (patientInformation.patientPersonalInformation.userImagePath !=
+                null) {
+              _presenter.getuserImageRef(
+                  UseCaseObserver(() {}, (error) {
+                    _stateMachine.onEvent(AddEditPatientErrorEvent());
+                    refreshUI();
+                  }, onNextFunc: (String downloadableUserImageUri) {
+                    _stateMachine.onEvent(AddEditPatientInitializedEvent(
+                        dob: patientInformation.patientPersonalInformation
+                            .patientMetaInformation.dob,
+                        sex: patientInformation.patientPersonalInformation
+                            .patientMetaInformation.sex,
+                        createdAt: patientInformation.createdAt,
+                        maritialStatus: patientInformation
+                            .patientPersonalInformation.maritialStatus,
+                        bloodGroup: patientInformation
+                            .patientPersonalInformation.bloodGroup,
+                        diseases: patientInformation
+                            .patientMedicalInformation.diseases,
+                        pregnancyStatus: patientInformation
+                            .patientMedicalInformation.pregnancyStatus,
+                        childNursingStatus: patientInformation
+                            .patientMedicalInformation.childNursingStatus,
+                        habits:
+                            patientInformation.patientMedicalInformation.habits,
+                        allergies: patientInformation
+                            .patientMedicationInformation.allergies,
+                        userImagePath: null,
+                        storedUserImageFilePath: downloadableUserImageUri));
+                  }),
+                  patientId: patientInformation.patientPersonalInformation
+                      .patientMetaInformation.patientId);
+              refreshUI();
+            } else {
+              _stateMachine.onEvent(AddEditPatientInitializedEvent(
+                  dob: patientInformation
+                      .patientPersonalInformation.patientMetaInformation.dob,
+                  sex: patientInformation
+                      .patientPersonalInformation.patientMetaInformation.sex,
+                  createdAt: patientInformation.createdAt,
+                  maritialStatus: patientInformation
+                      .patientPersonalInformation.maritialStatus,
+                  bloodGroup:
+                      patientInformation.patientPersonalInformation.bloodGroup,
+                  diseases:
+                      patientInformation.patientMedicalInformation.diseases,
+                  pregnancyStatus: patientInformation
+                      .patientMedicalInformation.pregnancyStatus,
+                  childNursingStatus: patientInformation
+                      .patientMedicalInformation.childNursingStatus,
+                  habits: patientInformation.patientMedicalInformation.habits,
+                  allergies:
+                      patientInformation.patientMedicationInformation.allergies,
+                  userImagePath: null,
+                  storedUserImageFilePath: patientInformation
+                      .patientPersonalInformation.userImagePath));
+              refreshUI();
+            }
           }),
           patientId: patientId!);
     } else {

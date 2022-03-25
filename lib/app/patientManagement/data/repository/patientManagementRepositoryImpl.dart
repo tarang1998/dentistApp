@@ -28,7 +28,10 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   List<PatientInformation>? _patientsInformation;
 
   //key : patientId
-  final Map<String, List<PatientProcedureEnity>> _patientsProcedures = {};
+  Map<String, List<PatientProcedureEnity>> _patientsProcedures = {};
+
+  //key : patientId , value : downloadable User Image Uri
+  Map<String, String> _downloadableUserImageUri = {};
 
   @override
   Future<List<PatientMetaInformation>> getListOfPatientsMeta(
@@ -47,7 +50,10 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
 
   @override
   Future<void> fetchPatientsData() async {
+    //Clearing the cache for patient Information, downloadable User images and the patient Procedures on page refresh
     _patientsInformation = [];
+    _patientsProcedures = {};
+    _downloadableUserImageUri = {};
 
     final List<Map<String, dynamic>> patientsRawData =
         await _patientManagementFirebaseWrapper.fetchPatients();
@@ -152,7 +158,7 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
     String? userImageStorageLocation;
 
     if (localUserImageFilePath != null) {
-      String userImageStorageLocation =
+      userImageStorageLocation =
           'patients/${patientInformation.patientPersonalInformation.patientMetaInformation.patientId}/userImage.jpeg';
 
       await _patientManagementFirebaseStorageWrapper.uploadUserImageFile(
@@ -288,5 +294,21 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
         .singleWhere((element) => element.procedureId == patientProcedureId);
 
     return procedure;
+  }
+
+  @override
+  Future<String> getUserImageRef({required String patientId}) async {
+    if (_downloadableUserImageUri[patientId] != null) {
+      return _downloadableUserImageUri[patientId]!;
+    } else {
+      final String userImageStorageLocation =
+          'patients/$patientId/userImage.jpeg';
+
+      final String downloadableImageUri =
+          await _patientManagementFirebaseStorageWrapper.getDownloadableUri(
+              userImageStorageLocation: userImageStorageLocation);
+
+      return downloadableImageUri;
+    }
   }
 }

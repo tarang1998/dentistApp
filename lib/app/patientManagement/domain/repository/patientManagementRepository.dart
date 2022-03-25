@@ -32,4 +32,6 @@ abstract class PatientManagementRepository {
 
   PatientProcedureEnity getPatientProcedureInformation(
       {required String patientId, required String patientProcedureId});
+
+  Future<String> getUserImageRef({required String patientId});
 }
