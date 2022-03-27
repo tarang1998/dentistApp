@@ -10,13 +10,17 @@ abstract class PatientManagementRepository {
 
   PatientInformation getPatientInformation({required String patientId});
 
-  Future<String> addPatientData(
-      {required PatientInformation patientInformation,
-      required String? localUserImageFilePath});
+  Future<String> addPatientData({
+    required PatientInformation patientInformation,
+    required String? localUserImageFilePath,
+    required List<String> localImagesPath,
+  });
 
   Future<void> editPatientData(
       {required PatientInformation patientInformation,
-      required String? localUserImageFilePath});
+      required String? localUserImageFilePath,
+      required List<String> localImagesPath,
+      required List<String> uploadedImagesRef});
 
   Future<List<PatientProcedureEnity>> getPatientProcedures(
       {required String patientId});
@@ -34,4 +38,7 @@ abstract class PatientManagementRepository {
       {required String patientId, required String patientProcedureId});
 
   Future<String> getUserImageRef({required String patientId});
+
+  Future<List<String>> getUserAdditionalImagesRef(
+      {required List<String> uploadedImagePaths});
 }

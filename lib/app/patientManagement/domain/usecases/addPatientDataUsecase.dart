@@ -17,7 +17,8 @@ class AddPatientDataUsecase
     try {
       String patientId = await _repository.addPatientData(
           patientInformation: params!.patientInformation,
-          localUserImageFilePath: params.localUserImageFilePath);
+          localUserImageFilePath: params.localUserImageFilePath,
+          localImagesPath: params.localImagesPath);
       LoggingWrapper.print(
         "Added Patient : $patientId Data Successful",
         name: 'AddPatientDataUsecase',
@@ -35,7 +36,10 @@ class AddPatientDataUsecase
 class AddPatientDataUsecaseParams {
   final PatientInformation patientInformation;
   final String? localUserImageFilePath;
+  final List<String> localImagesPath;
 
   AddPatientDataUsecaseParams(
-      {required this.patientInformation, required this.localUserImageFilePath});
+      {required this.patientInformation,
+      required this.localUserImageFilePath,
+      required this.localImagesPath});
 }

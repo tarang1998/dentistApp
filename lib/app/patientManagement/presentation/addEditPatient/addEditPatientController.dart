@@ -117,14 +117,50 @@ class AddEditPatientController extends Controller {
             additionalInformationTextEditingController.text =
                 patientInformation.additionalInformation;
 
-            //Creating a downloadable Image Uri in case user Photo is uploaded
-            if (patientInformation.patientPersonalInformation.userImagePath !=
-                null) {
-              _presenter.getuserImageRef(
-                  UseCaseObserver(() {}, (error) {
-                    _stateMachine.onEvent(AddEditPatientErrorEvent());
-                    refreshUI();
-                  }, onNextFunc: (String downloadableUserImageUri) {
+            //Getting downloadable Uris for additional images
+            _presenter.getAdditionalImageRefs(
+                UseCaseObserver(() {}, (error) {
+                  _stateMachine.onEvent(AddEditPatientErrorEvent());
+                  refreshUI();
+                }, onNextFunc: (List<String> downloadableUris) {
+                  //Creating a downloadable Image Uri in case user Photo is uploaded
+                  if (patientInformation
+                          .patientPersonalInformation.userImagePath !=
+                      null) {
+                    _presenter.getuserImageRef(
+                        UseCaseObserver(() {}, (error) {
+                          _stateMachine.onEvent(AddEditPatientErrorEvent());
+                          refreshUI();
+                        }, onNextFunc: (String downloadableUserImageUri) {
+                          _stateMachine.onEvent(AddEditPatientInitializedEvent(
+                              dob: patientInformation.patientPersonalInformation
+                                  .patientMetaInformation.dob,
+                              sex: patientInformation.patientPersonalInformation
+                                  .patientMetaInformation.sex,
+                              createdAt: patientInformation.createdAt,
+                              maritialStatus: patientInformation
+                                  .patientPersonalInformation.maritialStatus,
+                              bloodGroup: patientInformation
+                                  .patientPersonalInformation.bloodGroup,
+                              diseases: patientInformation
+                                  .patientMedicalInformation.diseases,
+                              pregnancyStatus: patientInformation
+                                  .patientMedicalInformation.pregnancyStatus,
+                              childNursingStatus: patientInformation
+                                  .patientMedicalInformation.childNursingStatus,
+                              habits: patientInformation
+                                  .patientMedicalInformation.habits,
+                              allergies: patientInformation
+                                  .patientMedicationInformation.allergies,
+                              userImagePath: null,
+                              storedUserImageFilePath: downloadableUserImageUri,
+                              localImagePaths: [],
+                              uploadedImageRefs: downloadableUris));
+                          refreshUI();
+                        }),
+                        patientId: patientInformation.patientPersonalInformation
+                            .patientMetaInformation.patientId);
+                  } else {
                     _stateMachine.onEvent(AddEditPatientInitializedEvent(
                         dob: patientInformation.patientPersonalInformation
                             .patientMetaInformation.dob,
@@ -146,36 +182,15 @@ class AddEditPatientController extends Controller {
                         allergies: patientInformation
                             .patientMedicationInformation.allergies,
                         userImagePath: null,
-                        storedUserImageFilePath: downloadableUserImageUri));
-                  }),
-                  patientId: patientInformation.patientPersonalInformation
-                      .patientMetaInformation.patientId);
-              refreshUI();
-            } else {
-              _stateMachine.onEvent(AddEditPatientInitializedEvent(
-                  dob: patientInformation
-                      .patientPersonalInformation.patientMetaInformation.dob,
-                  sex: patientInformation
-                      .patientPersonalInformation.patientMetaInformation.sex,
-                  createdAt: patientInformation.createdAt,
-                  maritialStatus: patientInformation
-                      .patientPersonalInformation.maritialStatus,
-                  bloodGroup:
-                      patientInformation.patientPersonalInformation.bloodGroup,
-                  diseases:
-                      patientInformation.patientMedicalInformation.diseases,
-                  pregnancyStatus: patientInformation
-                      .patientMedicalInformation.pregnancyStatus,
-                  childNursingStatus: patientInformation
-                      .patientMedicalInformation.childNursingStatus,
-                  habits: patientInformation.patientMedicalInformation.habits,
-                  allergies:
-                      patientInformation.patientMedicationInformation.allergies,
-                  userImagePath: null,
-                  storedUserImageFilePath: patientInformation
-                      .patientPersonalInformation.userImagePath));
-              refreshUI();
-            }
+                        storedUserImageFilePath: patientInformation
+                            .patientPersonalInformation.userImagePath,
+                        //
+                        localImagePaths: [],
+                        uploadedImageRefs: downloadableUris));
+                    refreshUI();
+                  }
+                }),
+                uploadedAdditionalImages: patientInformation.additionalImages);
           }),
           patientId: patientId!);
     } else {
@@ -192,7 +207,10 @@ class AddEditPatientController extends Controller {
             habits: [],
             allergies: [],
             userImagePath: null,
-            storedUserImageFilePath: null),
+            storedUserImageFilePath: null,
+            //
+            localImagePaths: [],
+            uploadedImageRefs: []),
       );
       refreshUI();
     }
@@ -266,6 +284,8 @@ class AddEditPatientController extends Controller {
       List<Allergies> allergies,
       String? localUserImagePath,
       String? storedUserImagePath,
+      List<String> localImagesPath,
+      List<String> uploadedImagesRef,
       bool isInEditMode,
       Function reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition,
       String? patientId) {
@@ -285,6 +305,8 @@ class AddEditPatientController extends Controller {
             _stateMachine.onEvent(AddEditPatientErrorEvent());
             refreshUI();
           }),
+          localImagesPath: localImagesPath,
+          updatedUploadedImagesRef: uploadedImagesRef,
           localUserImagePath: localUserImagePath,
           patientInformation: PatientInformation(
               patientPersonalInformation: PatientPersonalInformation(
@@ -330,7 +352,9 @@ class AddEditPatientController extends Controller {
                       medicationInformationTextEditingController.text),
               additionalInformation:
                   additionalInformationTextEditingController.text,
-              createdAt: createdAt));
+              createdAt: createdAt,
+              //***Passing empty list, would be filled in the data layer
+              additionalImages: []));
     } else {
       _presenter.addPatientData(
           UseCaseObserver(() {
@@ -344,6 +368,7 @@ class AddEditPatientController extends Controller {
             _stateMachine.onEvent(AddEditPatientErrorEvent());
             refreshUI();
           }),
+          localImagesPath: localImagesPath,
           localUserImagePath: localUserImagePath,
           patientInformation: PatientInformation(
               patientPersonalInformation: PatientPersonalInformation(
@@ -389,12 +414,15 @@ class AddEditPatientController extends Controller {
                       medicationInformationTextEditingController.text),
               additionalInformation:
                   additionalInformationTextEditingController.text,
-              createdAt: DateTime.now()));
+              createdAt: DateTime.now(),
+              //
+              additionalImages: []));
     }
   }
 
   Future<void> captureUserImage() async {
-    XFile? file = await _picker.pickImage(source: ImageSource.camera);
+    XFile? file = await _picker.pickImage(
+        source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear);
 
     if (file != null) {
       _stateMachine.onEvent(AddEditPatientUserImageSelectionEvent(
@@ -402,5 +430,34 @@ class AddEditPatientController extends Controller {
       ));
       refreshUI();
     }
+  }
+
+  Future<void> captureUserAdditionalImages(
+      List<String> localAdditionalImages) async {
+    XFile? file = await _picker.pickImage(
+        source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear);
+
+    if (file != null) {
+      localAdditionalImages.add(file.path);
+      _stateMachine.onEvent(AddEditPatientAdditionalImageSelectionEvent(
+          localAdditionalImagesPath: localAdditionalImages));
+      refreshUI();
+    }
+  }
+
+  void deleteUserCapturedImage(
+      String imageFilePath, List<String> localAdditionalImages) {
+    localAdditionalImages.remove(imageFilePath);
+    _stateMachine.onEvent(AddEditPatientAdditionalImageSelectionEvent(
+        localAdditionalImagesPath: localAdditionalImages));
+    refreshUI();
+  }
+
+  void deleteUserUploadedImages(
+      String imageRef, List<String> uploadedImageRefs) {
+    uploadedImageRefs.remove(imageRef);
+    _stateMachine.onEvent(AddEditPatientUpdateUploadedImageRefs(
+        uploadedImageRefs: uploadedImageRefs));
+    refreshUI();
   }
 }

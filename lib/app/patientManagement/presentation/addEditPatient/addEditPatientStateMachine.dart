@@ -25,7 +25,9 @@ class AddEditPatientStateMachine
             initializedEvent.habits,
             initializedEvent.allergies,
             initializedEvent.userImagePath,
-            initializedEvent.storedUserImageFilePath);
+            initializedEvent.storedUserImageFilePath,
+            initializedEvent.localImagePaths,
+            initializedEvent.uploadedImageRefs);
         break;
 
       case AddEditPatientDOBUpdatedEvent:
@@ -138,6 +140,30 @@ class AddEditPatientStateMachine
         }
         break;
 
+      case AddEditPatientAdditionalImageSelectionEvent:
+        AddEditPatientAdditionalImageSelectionEvent
+            addEditPatientAdditionalImageSelectionEvent =
+            event as AddEditPatientAdditionalImageSelectionEvent;
+        if (newState.runtimeType == AddEditPatientInitializedState) {
+          newState = AddEditPatientInitializedState.clone(
+              newState as AddEditPatientInitializedState,
+              localImagePath: addEditPatientAdditionalImageSelectionEvent
+                  .localAdditionalImagesPath);
+        }
+        break;
+
+      case AddEditPatientUpdateUploadedImageRefs:
+        AddEditPatientUpdateUploadedImageRefs
+            addEditPatientUpdateUploadedImageRefs =
+            event as AddEditPatientUpdateUploadedImageRefs;
+        if (newState.runtimeType == AddEditPatientInitializedState) {
+          newState = AddEditPatientInitializedState.clone(
+              newState as AddEditPatientInitializedState,
+              uploadedImageRefs:
+                  addEditPatientUpdateUploadedImageRefs.uploadedImageRefs);
+        }
+        break;
+
       case AddEditPatientErrorEvent:
         newState = AddEditPatientErrorState();
         break;
@@ -167,8 +193,14 @@ class AddEditPatientInitializedEvent extends AddEditPatientEvent {
   final ChildNursingStatus childNursingStatus;
   final List<Habits> habits;
   final List<Allergies> allergies;
+  ////User Image
   final String? userImagePath; //image Path for the view
-  final String? storedUserImageFilePath; //user Image path stored in the cloud
+  final String?
+      storedUserImageFilePath; //user Image path stored in the cloud storage - downloadable URI
+  ////Additional Images
+  final List<String> localImagePaths; //cached image paths for the view
+  final List<String>
+      uploadedImageRefs; // additional images in cloud storage - downloadable URI
   AddEditPatientInitializedEvent(
       {required this.dob,
       required this.sex,
@@ -181,7 +213,9 @@ class AddEditPatientInitializedEvent extends AddEditPatientEvent {
       required this.habits,
       required this.allergies,
       required this.userImagePath,
-      required this.storedUserImageFilePath});
+      required this.storedUserImageFilePath,
+      required this.localImagePaths,
+      required this.uploadedImageRefs});
 }
 
 class AddEditPatientLoadingEvent extends AddEditPatientEvent {}
@@ -236,6 +270,17 @@ class AddEditPatientUserImageSelectionEvent extends AddEditPatientEvent {
   AddEditPatientUserImageSelectionEvent({required this.userImagePath});
 }
 
+class AddEditPatientAdditionalImageSelectionEvent extends AddEditPatientEvent {
+  final List<String> localAdditionalImagesPath;
+  AddEditPatientAdditionalImageSelectionEvent(
+      {required this.localAdditionalImagesPath});
+}
+
+class AddEditPatientUpdateUploadedImageRefs extends AddEditPatientEvent {
+  final List<String> uploadedImageRefs;
+  AddEditPatientUpdateUploadedImageRefs({required this.uploadedImageRefs});
+}
+
 abstract class AddEditPatientState {}
 
 class AddEditPatientLoadingState implements AddEditPatientState {}
@@ -253,9 +298,14 @@ class AddEditPatientInitializedState implements AddEditPatientState {
   final ChildNursingStatus childNursingStatus;
   final List<Habits> habits;
   final List<Allergies> allergies;
+  ////User Image
   final String?
       userImagePath; //image Path for the view , the cache file location
-  final String? storedUserImageFilePath; //user Image path stored in the cloud
+  final String?
+      storedUserImageFilePath; //user Image path stored in the cloud storage - downloadable URI
+  ////Additional Images
+  final List<String> localImagePaths;
+  final List<String> uploadedImageRefs;
 
   AddEditPatientInitializedState(
       this.dob,
@@ -269,7 +319,9 @@ class AddEditPatientInitializedState implements AddEditPatientState {
       this.habits,
       this.allergies,
       this.userImagePath,
-      this.storedUserImageFilePath);
+      this.storedUserImageFilePath,
+      this.localImagePaths,
+      this.uploadedImageRefs);
 
   AddEditPatientInitializedState.clone(AddEditPatientInitializedState prevState,
       {DateTime? dob,
@@ -282,7 +334,9 @@ class AddEditPatientInitializedState implements AddEditPatientState {
       List<Habits>? habits,
       List<Allergies>? allergies,
       String? userImagePath,
-      String? storedUserImageFilePath})
+      String? storedUserImageFilePath,
+      List<String>? localImagePath,
+      List<String>? uploadedImageRefs})
       : this(
             dob ?? prevState.dob,
             sex ?? prevState.sex,
@@ -295,7 +349,9 @@ class AddEditPatientInitializedState implements AddEditPatientState {
             habits ?? prevState.habits,
             allergies ?? prevState.allergies,
             userImagePath ?? prevState.userImagePath,
-            storedUserImageFilePath ?? prevState.storedUserImageFilePath);
+            storedUserImageFilePath ?? prevState.storedUserImageFilePath,
+            localImagePath ?? prevState.localImagePaths,
+            uploadedImageRefs ?? prevState.uploadedImageRefs);
 }
 
 class AddEditPatientErrorState implements AddEditPatientState {}

@@ -33,6 +33,9 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   //key : patientId , value : downloadable User Image Uri
   Map<String, String> _downloadableUserImageUri = {};
 
+  //1st Key : uploaded firestore Image path
+  Map<String, String> _downloadableAdditionalImagesUri = {};
+
   @override
   Future<List<PatientMetaInformation>> getListOfPatientsMeta(
       {bool? fetchNextBatch}) async {
@@ -83,13 +86,16 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   }
 
   @override
-  Future<String> addPatientData(
-      {required PatientInformation patientInformation,
-      required String? localUserImageFilePath}) async {
+  Future<String> addPatientData({
+    required PatientInformation patientInformation,
+    required String? localUserImageFilePath,
+    required List<String> localImagesPath,
+  }) async {
     //Getting a reference for the patient
     final String patientId =
         await _patientManagementFirebaseWrapper.getPatientReference();
 
+    //uploading the user Image
     String? userImageStorageLocation;
 
     if (localUserImageFilePath != null) {
@@ -99,9 +105,24 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
           userImageStorageLocation, localUserImageFilePath);
     }
 
+    //uploading the additional Images
+    List<String> userAdditionalImagesStorageLocation = [];
+
+    await Future.wait(localImagesPath.map((element) async {
+      String storagePath =
+          'patients/$patientId/additionalImages/${DateTime.now().microsecondsSinceEpoch}';
+
+      await _patientManagementFirebaseStorageWrapper.uploadUserImageFile(
+          storagePath, element);
+
+      userAdditionalImagesStorageLocation.add(storagePath);
+    }));
+
     Map<String, dynamic> _addPatientSerializedData =
-        _addEditPatientEntitySerializer.serialize(
-            patientInformation, userImageStorageLocation);
+        _addEditPatientEntitySerializer.serialize(patientInformation,
+            userImageStorageLocation, userAdditionalImagesStorageLocation);
+
+    //Adding the patient Data
 
     await _patientManagementFirebaseWrapper.addPatientData(
         patientId: patientId,
@@ -146,7 +167,8 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
                       .patientPersonalInformation.patientMetaInformation.sex),
             ),
             createdAt: patientInformation.createdAt,
-            additionalInformation: patientInformation.additionalInformation));
+            additionalInformation: patientInformation.additionalInformation,
+            additionalImages: userAdditionalImagesStorageLocation));
 
     return patientId;
   }
@@ -154,20 +176,49 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
   @override
   Future<void> editPatientData(
       {required PatientInformation patientInformation,
-      required String? localUserImageFilePath}) async {
+      required String? localUserImageFilePath,
+      required List<String> localImagesPath,
+      required List<String> uploadedImagesRef}) async {
     String? userImageStorageLocation;
 
+    //uploading the user image
     if (localUserImageFilePath != null) {
       userImageStorageLocation =
           'patients/${patientInformation.patientPersonalInformation.patientMetaInformation.patientId}/userImage.jpeg';
 
       await _patientManagementFirebaseStorageWrapper.uploadUserImageFile(
           userImageStorageLocation, localUserImageFilePath);
+
+      _downloadableUserImageUri[patientInformation
+              .patientPersonalInformation.patientMetaInformation.patientId] =
+          await _patientManagementFirebaseStorageWrapper.getDownloadableUri(
+              userImageStorageLocation: userImageStorageLocation);
     }
 
+    //uploading the user additional images
+    List<String> userAdditionalImagesStorageLocation = [];
+
+    await Future.wait(localImagesPath.map((element) async {
+      String storagePath =
+          'patients/${patientInformation.patientPersonalInformation.patientMetaInformation.patientId}/additionalImages/${DateTime.now().microsecondsSinceEpoch}';
+
+      await _patientManagementFirebaseStorageWrapper.uploadUserImageFile(
+          storagePath, element);
+
+      userAdditionalImagesStorageLocation.add(storagePath);
+    }));
+
+    //Checking for the already updated images
+    uploadedImagesRef.forEach((element) {
+      final String key = _downloadableAdditionalImagesUri.keys.firstWhere(
+        (k) => _downloadableAdditionalImagesUri[k] == element,
+      );
+      userAdditionalImagesStorageLocation.add(key);
+    });
+
     Map<String, dynamic> _editPatientSerializedData =
-        _addEditPatientEntitySerializer.serialize(
-            patientInformation, userImageStorageLocation);
+        _addEditPatientEntitySerializer.serialize(patientInformation,
+            userImageStorageLocation, userAdditionalImagesStorageLocation);
 
     await _patientManagementFirebaseWrapper.editPatientData(
         patientId: patientInformation
@@ -192,7 +243,13 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
                 patientInformation.patientMedicationInformation,
             updatedAt: patientInformation.updatedAt,
             patientPersonalInformation: PatientPersonalInformation(
-              userImagePath: userImageStorageLocation,
+              userImagePath: userImageStorageLocation ??
+                  _downloadableUserImageUri.keys.firstWhere(
+                      (element) =>
+                          _downloadableUserImageUri[element] ==
+                          patientInformation
+                              .patientPersonalInformation.userImagePath,
+                      orElse: null),
               address: patientInformation.patientPersonalInformation.address,
               mobileNo: patientInformation.patientPersonalInformation.mobileNo,
               bloodGroup:
@@ -211,7 +268,8 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
                   .patientPersonalInformation.patientMetaInformation,
             ),
             createdAt: patientInformation.createdAt,
-            additionalInformation: patientInformation.additionalInformation));
+            additionalInformation: patientInformation.additionalInformation,
+            additionalImages: userAdditionalImagesStorageLocation));
   }
 
   @override
@@ -307,8 +365,27 @@ class PatientManagementRepositoryImpl extends PatientManagementRepository {
       final String downloadableImageUri =
           await _patientManagementFirebaseStorageWrapper.getDownloadableUri(
               userImageStorageLocation: userImageStorageLocation);
-
+      _downloadableUserImageUri[patientId] = downloadableImageUri;
       return downloadableImageUri;
     }
+  }
+
+  @override
+  Future<List<String>> getUserAdditionalImagesRef(
+      {required List<String> uploadedImagePaths}) async {
+    final List<String> downloadableUris = [];
+
+    await Future.wait(uploadedImagePaths.map((element) async {
+      if (_downloadableAdditionalImagesUri[element] != null) {
+        downloadableUris.add(_downloadableAdditionalImagesUri[element]!);
+      } else {
+        String uri = await _patientManagementFirebaseStorageWrapper
+            .getDownloadableUri(userImageStorageLocation: element);
+        _downloadableAdditionalImagesUri[element] = uri;
+        downloadableUris.add(uri);
+      }
+    }));
+
+    return downloadableUris;
   }
 }

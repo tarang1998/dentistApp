@@ -14,7 +14,12 @@ class PatientInformationMapperEntity {
         updatedAt: rawPatientData[PatientManagementKeys.keyUpdatedAt].toDate(),
         createdAt: rawPatientData[PatientManagementKeys.keyCreatedAt].toDate(),
         additionalInformation:
-            rawPatientData[PatientManagementKeys.keyAdditionalInformation]);
+            rawPatientData[PatientManagementKeys.keyAdditionalInformation],
+        additionalImages:
+            (rawPatientData[PatientManagementKeys.keyAdditionalImages] != null)
+                ? List<String>.from(
+                    rawPatientData[PatientManagementKeys.keyAdditionalImages])
+                : []);
   }
 }
 

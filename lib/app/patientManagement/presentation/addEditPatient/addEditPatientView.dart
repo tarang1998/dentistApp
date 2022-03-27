@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
-import 'package:dentalApp/app/patientManagement/presentation/AddEditPatient/AddEditPatientController.dart';
+import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientController.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientStateMachine.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/widgets/allergiesSelectionWidget.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/widgets/bloodGroupSelectionWidget.dart';
@@ -706,6 +706,129 @@ class AddEditPatientPageState
                 ),
               ),
               const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  "Additional Images",
+                  style: AppTheme.inputFieldTitleTextStyle,
+                ),
+              ),
+              Container(
+                color: Colors.white60,
+                alignment: Alignment.topCenter,
+                child: Container(
+                  width: getScreenWidth(context),
+                  height: getScreenHeight(context) * 0.45,
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFE7E9E9), width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: (initializedState.localImagePaths.isEmpty &&
+                          initializedState.uploadedImageRefs.isEmpty)
+                      ? _buildInitialCameraButton(
+                          controller, initializedState.localImagePaths)
+                      : SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Wrap(
+                            direction: Axis.horizontal,
+                            children: [
+                              //Uploaded Captured Images
+                              ...initializedState.uploadedImageRefs.map(
+                                (media) => Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 5),
+                                  child: GestureDetector(
+                                    onTap: () => null,
+                                    child: Stack(
+                                      children: [
+                                        ClipRRect(
+                                          // borderRadius:
+                                          //     BorderRadius.circular(15),
+                                          child: Container(
+                                            height:
+                                                getScreenHeight(context) * 0.45,
+                                            width:
+                                                getScreenWidth(context) * 0.45,
+                                            child: Image.network(media),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          right: -15,
+                                          top: -15,
+                                          child: InkWell(
+                                            onTap: () => controller
+                                                .deleteUserUploadedImages(
+                                                    media,
+                                                    initializedState
+                                                        .uploadedImageRefs),
+                                            child: Container(
+                                                height: 50,
+                                                width: 50,
+                                                child: Icon(
+                                                  Icons.clear,
+                                                  size: 25,
+                                                  color: Colors.red,
+                                                )),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              //Local User Images
+                              ...initializedState.localImagePaths.map(
+                                (media) => Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 5),
+                                  child: GestureDetector(
+                                    onTap: () => null,
+                                    child: Stack(
+                                      children: [
+                                        ClipRRect(
+                                          // borderRadius:
+                                          //     BorderRadius.circular(15),
+                                          child: Container(
+                                            height:
+                                                getScreenHeight(context) * 0.45,
+                                            width:
+                                                getScreenWidth(context) * 0.45,
+                                            child: Image.file(File(media)),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          right: -15,
+                                          top: -15,
+                                          child: InkWell(
+                                            onTap: () => controller
+                                                .deleteUserCapturedImage(
+                                                    media,
+                                                    initializedState
+                                                        .localImagePaths),
+                                            child: Container(
+                                                height: 50,
+                                                width: 50,
+                                                child: Icon(
+                                                  Icons.clear,
+                                                  size: 25,
+                                                  color: Colors.red,
+                                                )),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              _buildAddPageContainer(context, controller,
+                                  initializedState.localImagePaths),
+                            ],
+                          ),
+                        ),
+                ),
+              ),
               Center(
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.7,
@@ -739,6 +862,8 @@ class AddEditPatientPageState
                             initializedState.allergies,
                             initializedState.userImagePath,
                             initializedState.storedUserImageFilePath,
+                            initializedState.localImagePaths,
+                            initializedState.uploadedImageRefs,
                             widget.params.inEditMode,
                             widget.params
                                 .reloadPatientsMetaPageOnSuccessFullPatientAdditionOrEdition,
@@ -756,6 +881,69 @@ class AddEditPatientPageState
           ),
         ),
       )),
+    );
+  }
+
+  Container _buildInitialCameraButton(
+      AddEditPatientController controller, List<String> localAdditionalImages) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          InkWell(
+            onTap: () =>
+                controller.captureUserAdditionalImages(localAdditionalImages),
+            child: CircleAvatar(
+              backgroundColor: RawColors.red300,
+              radius: 35,
+              child: Icon(
+                Icons.photo_camera,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildAddPageContainer(
+    BuildContext context,
+    AddEditPatientController controller,
+    List<String> locallyAddedImages,
+  ) {
+    return Container(
+      height: getScreenHeight(context) * 0.4,
+      width: getScreenWidth(context) * 0.4,
+      margin: EdgeInsets.symmetric(vertical: 30, horizontal: 5),
+      child: GestureDetector(
+        onTap: () => controller.captureUserAdditionalImages(locallyAddedImages),
+        child: Center(
+          child: Container(
+            // height: getScreenHeight(context) * 0.21,
+            // width: getScreenWidth(context) * 0.25,
+            decoration: BoxDecoration(
+              border: Border.all(color: Color(0xFFE7E9E9), width: 2),
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Add Image',
+                  style: AppTheme.hintTextStyle,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

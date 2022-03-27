@@ -6,6 +6,7 @@ class PatientInformation {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String additionalInformation;
+  final List<String> additionalImages;
 
   PatientInformation(
       {required this.patientPersonalInformation,
@@ -14,7 +15,8 @@ class PatientInformation {
       required this.patientDentalInformation,
       required this.createdAt,
       required this.updatedAt,
-      required this.additionalInformation});
+      required this.additionalInformation,
+      required this.additionalImages});
 }
 
 class PatientMetaInformation {
@@ -43,7 +45,7 @@ class PatientPersonalInformation {
   final BloodGroup bloodGroup;
   final String officeInformation;
   final String refferedBy;
-  final String? userImagePath; // The user Image in cloud storage
+  final String? userImagePath; // The user Image in cloud firestore
 
   PatientPersonalInformation({
     required this.patientMetaInformation,

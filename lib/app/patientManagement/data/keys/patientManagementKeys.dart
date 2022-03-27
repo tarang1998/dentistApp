@@ -39,4 +39,5 @@ class PatientManagementKeys {
   static String keyCreatedAt = 'createdAt';
   static String keyUpdatedAt = 'updatedAt';
   static String keyAdditionalInformation = 'additionalInformation';
+  static String keyAdditionalImages = 'additionalImages';
 }

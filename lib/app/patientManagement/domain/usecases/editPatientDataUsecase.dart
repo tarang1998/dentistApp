@@ -17,7 +17,9 @@ class EditPatientDataUsecase
     try {
       await _repository.editPatientData(
           patientInformation: params!.patientInformation,
-          localUserImageFilePath: params.localUserImageFilePath);
+          localUserImageFilePath: params.localUserImageFilePath,
+          localImagesPath: params.localImagesPath,
+          uploadedImagesRef: params.uploadedImagesRef);
       LoggingWrapper.print(
         "Editted Patient Data Successful",
         name: 'EditPatientDataUsecase',
@@ -35,7 +37,12 @@ class EditPatientDataUsecase
 class EditPatientDataUsecaseParams {
   final PatientInformation patientInformation;
   final String? localUserImageFilePath;
+  final List<String> localImagesPath;
+  final List<String> uploadedImagesRef;
 
   EditPatientDataUsecaseParams(
-      {required this.patientInformation, required this.localUserImageFilePath});
+      {required this.patientInformation,
+      required this.localUserImageFilePath,
+      required this.localImagesPath,
+      required this.uploadedImagesRef});
 }
