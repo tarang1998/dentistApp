@@ -80,7 +80,11 @@ class AddEditProcedureController extends Controller {
                             .selectedValues
                         : [],
                 procedurePerformedAt: patientProcedureEnity.performedAt,
-                nextVisitAt: patientProcedureEnity.nextVisit));
+                procedurePerformedAtTime:
+                    TimeOfDay.fromDateTime(patientProcedureEnity.performedAt),
+                nextVisitAt: patientProcedureEnity.nextVisit,
+                nextVisitAtTime:
+                    TimeOfDay.fromDateTime(patientProcedureEnity.nextVisit)));
             refreshUI();
           }),
           patientId: patientId,
@@ -105,7 +109,9 @@ class AddEditProcedureController extends Controller {
                 selectedAdultTeeth: [],
                 selectedChildTeeth: [],
                 procedurePerformedAt: DateTime.now(),
-                nextVisitAt: DateTime.now()));
+                procedurePerformedAtTime: TimeOfDay.now(),
+                nextVisitAt: DateTime.now(),
+                nextVisitAtTime: TimeOfDay.now()));
             refreshUI();
           }),
           patientId: patientId);
@@ -123,9 +129,22 @@ class AddEditProcedureController extends Controller {
     refreshUI();
   }
 
+  void handleProcedurePerformedAtTimeInputEvent(
+      {required TimeOfDay procedurePerformedAtTime}) {
+    _stateMachine.onEvent(AddEditProcedurePerformedAtTimeInputEvent(
+        procedurePerformedAtTime: procedurePerformedAtTime));
+    refreshUI();
+  }
+
   void handleNextVisitInput({required DateTime nextVisitAt}) {
     _stateMachine
         .onEvent(AddEditProcedureNextVisitInputEvent(nextVisitAt: nextVisitAt));
+    refreshUI();
+  }
+
+  void handleNextVisitAtTimeInputEvent({required TimeOfDay nextVisitAtTime}) {
+    _stateMachine.onEvent(AddEditProcedureNextVisitAtTimeInputEvent(
+        nextVisitAtTime: nextVisitAtTime));
     refreshUI();
   }
 
@@ -168,7 +187,9 @@ class AddEditProcedureController extends Controller {
     required List<AdultTeethType> selectedAdultTeeth,
     required List<ChildTeethType> selectedChildTeeth,
     required DateTime procedurePerformedAt,
+    required TimeOfDay procedurePerformedAtTime,
     required DateTime nextVisitAt,
+    required TimeOfDay nextVisitAtTime,
   }) async {
     _stateMachine.onEvent(AddEditProcedureLoadingEvent());
     refreshUI();
@@ -219,8 +240,20 @@ class AddEditProcedureController extends Controller {
               estimatedCost:
                   int.parse(estimatedAmountTextEditingController.text),
               amountPaid: int.parse(paidAmountTextEditingController.text),
-              performedAt: procedurePerformedAt,
-              nextVisit: nextVisitAt,
+              performedAt: DateTime(
+                procedurePerformedAt.year,
+                procedurePerformedAt.month,
+                procedurePerformedAt.day,
+                procedurePerformedAtTime.hour,
+                procedurePerformedAtTime.minute,
+              ),
+              nextVisit: DateTime(
+                nextVisitAt.year,
+                nextVisitAt.month,
+                nextVisitAt.day,
+                nextVisitAtTime.hour,
+                nextVisitAtTime.minute,
+              ),
               additionalRemarks: additionalRemarksTextEditingController.text,
               selectedTeethChart: (teethChartType == TeethChartType.ADULT)
                   ? AdultTeethChart(selectedValues: selectedAdultTeeth)
@@ -244,8 +277,20 @@ class AddEditProcedureController extends Controller {
               estimatedCost:
                   int.parse(estimatedAmountTextEditingController.text),
               amountPaid: int.parse(paidAmountTextEditingController.text),
-              performedAt: procedurePerformedAt,
-              nextVisit: nextVisitAt,
+              performedAt: DateTime(
+                procedurePerformedAt.year,
+                procedurePerformedAt.month,
+                procedurePerformedAt.day,
+                procedurePerformedAtTime.hour,
+                procedurePerformedAtTime.minute,
+              ),
+              nextVisit: DateTime(
+                nextVisitAt.year,
+                nextVisitAt.month,
+                nextVisitAt.day,
+                nextVisitAtTime.hour,
+                nextVisitAtTime.minute,
+              ),
               additionalRemarks: additionalRemarksTextEditingController.text,
               selectedTeethChart: (teethChartType == TeethChartType.ADULT)
                   ? AdultTeethChart(selectedValues: selectedAdultTeeth)

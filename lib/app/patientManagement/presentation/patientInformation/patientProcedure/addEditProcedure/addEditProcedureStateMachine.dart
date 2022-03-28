@@ -1,6 +1,7 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientProcedureEntity.dart';
 import 'package:dentalApp/app/patientManagement/domain/entities/teethChart.dart';
 import 'package:dentalApp/core/presentation/stateMachine.dart';
+import 'package:flutter/material.dart';
 
 class AddEditProcedureStateMachine
     extends StateMachine<AddEditProcedureState?, AddEditProcedureEvent> {
@@ -23,7 +24,9 @@ class AddEditProcedureStateMachine
             selectedAdultTeeth: initializedEvent.selectedAdultTeeth,
             selectedChildTeeth: initializedEvent.selectedChildTeeth,
             procedurePerformedAt: initializedEvent.procedurePerformedAt,
-            nextVisitAt: initializedEvent.nextVisitAt);
+            procedurePerformedAtTime: initializedEvent.procedurePerformedAtTime,
+            nextVisitAt: initializedEvent.nextVisitAt,
+            nextVisitAtTime: initializedEvent.nextVisitAtTime);
         break;
 
       case ProcedurePerformedInputEvent:
@@ -94,12 +97,30 @@ class AddEditProcedureStateMachine
             procedurePerformedAt: inputEvent.procedurePerformedAt);
         break;
 
+      case AddEditProcedurePerformedAtTimeInputEvent:
+        AddEditProcedurePerformedAtTimeInputEvent
+            addEditProcedurePerformedAtTimeInputEvent =
+            event as AddEditProcedurePerformedAtTimeInputEvent;
+        newState = AddEditProcedureInitializedState.clone(
+            newState as AddEditProcedureInitializedState,
+            procedurePerformedAtTime: addEditProcedurePerformedAtTimeInputEvent
+                .procedurePerformedAtTime);
+        break;
+
       case AddEditProcedureNextVisitInputEvent:
         AddEditProcedureNextVisitInputEvent inputEvent =
             event as AddEditProcedureNextVisitInputEvent;
         newState = AddEditProcedureInitializedState.clone(
             newState as AddEditProcedureInitializedState,
             nextVisitAt: inputEvent.nextVisitAt);
+        break;
+
+      case AddEditProcedureNextVisitAtTimeInputEvent:
+        AddEditProcedureNextVisitAtTimeInputEvent inputEvent =
+            event as AddEditProcedureNextVisitAtTimeInputEvent;
+        newState = AddEditProcedureInitializedState.clone(
+            newState as AddEditProcedureInitializedState,
+            nextVisitAtTime: inputEvent.nextVisitAtTime);
         break;
 
       case AddEditProcedureErrorEvent:
@@ -124,18 +145,21 @@ class AddEditProcedureInitializedEvent extends AddEditProcedureEvent {
   final List<AdultTeethType> selectedAdultTeeth;
   final List<ChildTeethType> selectedChildTeeth;
   final DateTime procedurePerformedAt;
+  final TimeOfDay procedurePerformedAtTime;
   final DateTime nextVisitAt;
+  final TimeOfDay nextVisitAtTime;
 
-  AddEditProcedureInitializedEvent({
-    required this.patientId,
-    required this.diagnosis,
-    required this.procedurePerformed,
-    required this.teethChartType,
-    required this.selectedAdultTeeth,
-    required this.selectedChildTeeth,
-    required this.procedurePerformedAt,
-    required this.nextVisitAt,
-  });
+  AddEditProcedureInitializedEvent(
+      {required this.patientId,
+      required this.diagnosis,
+      required this.procedurePerformed,
+      required this.teethChartType,
+      required this.selectedAdultTeeth,
+      required this.selectedChildTeeth,
+      required this.procedurePerformedAt,
+      required this.procedurePerformedAtTime,
+      required this.nextVisitAt,
+      required this.nextVisitAtTime});
 }
 
 class AddEditProcedureLoadingEvent extends AddEditProcedureEvent {}
@@ -174,9 +198,20 @@ class AddEditProcedureProcedurePerformedAtInputEvent
       {required this.procedurePerformedAt});
 }
 
+class AddEditProcedurePerformedAtTimeInputEvent extends AddEditProcedureEvent {
+  final TimeOfDay procedurePerformedAtTime;
+  AddEditProcedurePerformedAtTimeInputEvent(
+      {required this.procedurePerformedAtTime});
+}
+
 class AddEditProcedureNextVisitInputEvent extends AddEditProcedureEvent {
   final DateTime nextVisitAt;
   AddEditProcedureNextVisitInputEvent({required this.nextVisitAt});
+}
+
+class AddEditProcedureNextVisitAtTimeInputEvent extends AddEditProcedureEvent {
+  final TimeOfDay nextVisitAtTime;
+  AddEditProcedureNextVisitAtTimeInputEvent({required this.nextVisitAtTime});
 }
 
 abstract class AddEditProcedureState {}
@@ -193,7 +228,10 @@ class AddEditProcedureInitializedState implements AddEditProcedureState {
   final List<AdultTeethType> selectedAdultTeeth;
   final List<ChildTeethType> selectedChildTeeth;
   final DateTime procedurePerformedAt;
+  final TimeOfDay procedurePerformedAtTime;
   final DateTime nextVisitAt;
+  final TimeOfDay nextVisitAtTime;
+
   AddEditProcedureInitializedState(
       {required this.patientId,
       required this.diagnosis,
@@ -202,18 +240,22 @@ class AddEditProcedureInitializedState implements AddEditProcedureState {
       required this.selectedAdultTeeth,
       required this.selectedChildTeeth,
       required this.procedurePerformedAt,
-      required this.nextVisitAt});
+      required this.procedurePerformedAtTime,
+      required this.nextVisitAt,
+      required this.nextVisitAtTime});
 
   AddEditProcedureInitializedState.clone(
-    AddEditProcedureInitializedState prevState, {
-    Diagnosis? diagnosis,
-    Procedure? procedurePerformed,
-    TeethChartType? teethChartType,
-    List<AdultTeethType>? selectedAdultTeeth,
-    List<ChildTeethType>? selectedChildTeeth,
-    DateTime? procedurePerformedAt,
-    DateTime? nextVisitAt,
-  }) : this(
+      AddEditProcedureInitializedState prevState,
+      {Diagnosis? diagnosis,
+      Procedure? procedurePerformed,
+      TeethChartType? teethChartType,
+      List<AdultTeethType>? selectedAdultTeeth,
+      List<ChildTeethType>? selectedChildTeeth,
+      DateTime? procedurePerformedAt,
+      TimeOfDay? procedurePerformedAtTime,
+      DateTime? nextVisitAt,
+      TimeOfDay? nextVisitAtTime})
+      : this(
             patientId: prevState.patientId,
             diagnosis: diagnosis ?? prevState.diagnosis,
             procedurePerformed:
@@ -225,7 +267,10 @@ class AddEditProcedureInitializedState implements AddEditProcedureState {
                 selectedChildTeeth ?? prevState.selectedChildTeeth,
             procedurePerformedAt:
                 procedurePerformedAt ?? prevState.procedurePerformedAt,
-            nextVisitAt: nextVisitAt ?? prevState.nextVisitAt);
+            procedurePerformedAtTime:
+                procedurePerformedAtTime ?? prevState.procedurePerformedAtTime,
+            nextVisitAt: nextVisitAt ?? prevState.nextVisitAt,
+            nextVisitAtTime: nextVisitAtTime ?? prevState.nextVisitAtTime);
 }
 
 class AddEditProcedureErrorState implements AddEditProcedureState {}

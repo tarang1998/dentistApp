@@ -128,7 +128,7 @@ class ViewProcedurePageState
                                   const EdgeInsets.all(RawSpacing.extraSmall),
                               decoration: AppTheme.informationBox,
                               child: Text(
-                                '${initializedState.patientProcedureEnity.performedAt.day}/${initializedState.patientProcedureEnity.performedAt.month}/${initializedState.patientProcedureEnity.performedAt.year}',
+                                '${initializedState.patientProcedureEnity.performedAt.day}/${initializedState.patientProcedureEnity.performedAt.month}/${initializedState.patientProcedureEnity.performedAt.year}  ${initializedState.patientProcedureEnity.performedAt.hour}:${initializedState.patientProcedureEnity.performedAt.minute}',
                                 style: AppTheme.inputFieldTitleTextStyle,
                               ),
                             ),
@@ -196,7 +196,7 @@ class ViewProcedurePageState
                                   const EdgeInsets.all(RawSpacing.extraSmall),
                               decoration: AppTheme.informationBox,
                               child: Text(
-                                '${initializedState.patientProcedureEnity.nextVisit.day}/${initializedState.patientProcedureEnity.nextVisit.month}/${initializedState.patientProcedureEnity.nextVisit.year}',
+                                '${initializedState.patientProcedureEnity.nextVisit.day}/${initializedState.patientProcedureEnity.nextVisit.month}/${initializedState.patientProcedureEnity.nextVisit.year}  ${initializedState.patientProcedureEnity.performedAt.hour}:${initializedState.patientProcedureEnity.performedAt.minute}',
                                 style: AppTheme.inputFieldTitleTextStyle,
                               ),
                             ),

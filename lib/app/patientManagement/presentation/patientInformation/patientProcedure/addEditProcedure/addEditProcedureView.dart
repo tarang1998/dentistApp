@@ -110,42 +110,94 @@ class AddEditProcedurePageState extends ResponsiveViewState<
                   style: AppTheme.inputFieldTitleTextStyle,
                 ),
               ),
-              GestureDetector(
-                child: Container(
-                  height: 50,
-                  margin: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: RawColors.grey20,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          child: Text(
-                            "${initializedState.procedurePerformedAt.year}/${initializedState.procedurePerformedAt.month}/${initializedState.procedurePerformedAt.day}",
-                            style: TextStyle(
-                                color: RawColors.grey70, fontSize: 16),
+              Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: GestureDetector(
+                      child: Container(
+                        height: 50,
+                        margin: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: RawColors.grey20,
                           ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                child: Text(
+                                  "${initializedState.procedurePerformedAt.year}/${initializedState.procedurePerformedAt.month}/${initializedState.procedurePerformedAt.day}",
+                                  style: TextStyle(
+                                      color: RawColors.grey70, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 30,
-                        ),
-                      ),
-                    ],
+                      onTap: () => _pickProcedurePerformedAt(controller,
+                          context, initializedState.procedurePerformedAt),
+                    ),
                   ),
-                ),
-                onTap: () => _pickProcedurePerformedAt(
-                    controller, context, initializedState.procedurePerformedAt),
+                  Flexible(
+                    flex: 2,
+                    child: GestureDetector(
+                      child: Container(
+                        height: 50,
+                        margin: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: RawColors.grey20,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                child: Text(
+                                  initializedState.procedurePerformedAtTime
+                                      .format(context),
+                                  style: TextStyle(
+                                      color: RawColors.grey70, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () => _pickProcedurePerformedAtTime(
+                          controller: controller,
+                          context: context,
+                          procedurePerformedAtTime:
+                              initializedState.procedurePerformedAtTime),
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: EdgeInsets.all(RawSpacing.extraSmall),
@@ -193,42 +245,93 @@ class AddEditProcedurePageState extends ResponsiveViewState<
                   style: AppTheme.inputFieldTitleTextStyle,
                 ),
               ),
-              GestureDetector(
-                child: Container(
-                  height: 50,
-                  margin: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: RawColors.grey20,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          child: Text(
-                            "${initializedState.nextVisitAt.year}/${initializedState.nextVisitAt.month}/${initializedState.nextVisitAt.day}",
-                            style: TextStyle(
-                                color: RawColors.grey70, fontSize: 16),
+              Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: GestureDetector(
+                      child: Container(
+                        height: 50,
+                        margin: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: RawColors.grey20,
                           ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                child: Text(
+                                  "${initializedState.nextVisitAt.year}/${initializedState.nextVisitAt.month}/${initializedState.nextVisitAt.day}",
+                                  style: TextStyle(
+                                      color: RawColors.grey70, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 30,
-                        ),
-                      ),
-                    ],
+                      onTap: () => _pickNextVisitAt(
+                          controller, context, initializedState.nextVisitAt),
+                    ),
                   ),
-                ),
-                onTap: () => _pickNextVisitAt(
-                    controller, context, initializedState.nextVisitAt),
+                  Flexible(
+                    flex: 2,
+                    child: GestureDetector(
+                      child: Container(
+                        height: 50,
+                        margin: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: RawColors.grey20,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                child: Text(
+                                  initializedState.nextVisitAtTime
+                                      .format(context),
+                                  style: TextStyle(
+                                      color: RawColors.grey70, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () => _pickNextVisitAtTime(
+                          controller: controller,
+                          context: context,
+                          nextVisitAtTime: initializedState.nextVisitAtTime),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Padding(
@@ -336,21 +439,23 @@ class AddEditProcedurePageState extends ResponsiveViewState<
 
                       if (isValid) {
                         controller.addEditProcedure(
-                          isInEditMode: widget.params.isInEditMode,
-                          procedureId: widget.params.procedureId,
-                          patientId: initializedState.patientId,
-                          procedurePerformed:
-                              initializedState.procedurePerformed,
-                          diagnosis: initializedState.diagnosis,
-                          teethChartType: initializedState.teethChartType,
-                          selectedAdultTeeth:
-                              initializedState.selectedAdultTeeth,
-                          selectedChildTeeth:
-                              initializedState.selectedChildTeeth,
-                          procedurePerformedAt:
-                              initializedState.procedurePerformedAt,
-                          nextVisitAt: initializedState.nextVisitAt,
-                        );
+                            isInEditMode: widget.params.isInEditMode,
+                            procedureId: widget.params.procedureId,
+                            patientId: initializedState.patientId,
+                            procedurePerformed:
+                                initializedState.procedurePerformed,
+                            diagnosis: initializedState.diagnosis,
+                            teethChartType: initializedState.teethChartType,
+                            selectedAdultTeeth:
+                                initializedState.selectedAdultTeeth,
+                            selectedChildTeeth:
+                                initializedState.selectedChildTeeth,
+                            procedurePerformedAt:
+                                initializedState.procedurePerformedAt,
+                            procedurePerformedAtTime:
+                                initializedState.procedurePerformedAtTime,
+                            nextVisitAt: initializedState.nextVisitAt,
+                            nextVisitAtTime: initializedState.nextVisitAtTime);
                       } else {
                         Fluttertoast.showToast(
                             msg: 'Please enter all the required fields');
@@ -379,6 +484,20 @@ class AddEditProcedurePageState extends ResponsiveViewState<
       controller.handleProcedurePerformedAtInput(procedurePerformedAt: date);
   }
 
+  _pickProcedurePerformedAtTime({
+    required AddEditProcedureController controller,
+    required BuildContext context,
+    required TimeOfDay procedurePerformedAtTime,
+  }) async {
+    TimeOfDay? time = await showTimePicker(
+        context: context, initialTime: procedurePerformedAtTime);
+
+    if (time != null) {
+      controller.handleProcedurePerformedAtTimeInputEvent(
+          procedurePerformedAtTime: time);
+    }
+  }
+
   _pickNextVisitAt(AddEditProcedureController controller, BuildContext context,
       DateTime nextVisitAt) async {
     DateTime? date = await showDatePicker(
@@ -388,6 +507,19 @@ class AddEditProcedurePageState extends ResponsiveViewState<
       initialDate: nextVisitAt,
     );
     if (date != null) controller.handleNextVisitInput(nextVisitAt: date);
+  }
+
+  _pickNextVisitAtTime({
+    required AddEditProcedureController controller,
+    required BuildContext context,
+    required TimeOfDay nextVisitAtTime,
+  }) async {
+    TimeOfDay? time =
+        await showTimePicker(context: context, initialTime: nextVisitAtTime);
+
+    if (time != null) {
+      controller.handleNextVisitAtTimeInputEvent(nextVisitAtTime: time);
+    }
   }
 
   Widget _buildLoadingStateView(AddEditProcedureController controller) {
