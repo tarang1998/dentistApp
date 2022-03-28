@@ -109,25 +109,12 @@ class PatientInformationPageState extends ResponsiveViewState<
                     const Text(
                       'Patient Information',
                       style: TextStyle(
-                        fontSize: 22,
-                        letterSpacing: 1,
+                        fontSize: 20,
+                        letterSpacing: 0,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const Spacer(),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.list_alt,
-                        size: 25,
-                      ),
-                      onPressed: () =>
-                          controller.navigateToPatientProcedurePage(
-                              patientId: initializedState
-                                  .patientInformation
-                                  .patientPersonalInformation
-                                  .patientMetaInformation
-                                  .patientId),
-                    ),
                     IconButton(
                       icon: const Icon(
                         Icons.edit,
@@ -143,6 +130,72 @@ class PatientInformationPageState extends ResponsiveViewState<
                               .patientId),
                     ),
                   ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(RawSpacing.extraSmall),
+                child: GestureDetector(
+                  onTap: () => controller.navigateToPatientProcedurePage(
+                      patientId: initializedState
+                          .patientInformation
+                          .patientPersonalInformation
+                          .patientMetaInformation
+                          .patientId),
+                  child: Card(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: const Icon(
+                            Icons.list_alt,
+                            size: 25,
+                          ),
+                        ),
+                        const Text(
+                          'View Procedures',
+                          style: AppTheme.inputFieldTitleTextStyle,
+                        ),
+                        Spacer(),
+                        const Icon(
+                          Icons.arrow_right,
+                          size: 45,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(RawSpacing.extraSmall),
+                child: GestureDetector(
+                  onTap: () => controller.navigateToPatientImages(
+                      initializedState
+                          .patientInformation
+                          .patientPersonalInformation
+                          .patientMetaInformation
+                          .patientId),
+                  child: Card(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: const Icon(
+                            Icons.list_alt,
+                            size: 25,
+                          ),
+                        ),
+                        const Text(
+                          'View Additional Images',
+                          style: AppTheme.inputFieldTitleTextStyle,
+                        ),
+                        Spacer(),
+                        const Icon(
+                          Icons.arrow_right,
+                          size: 45,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               Container(

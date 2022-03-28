@@ -751,7 +751,25 @@ class AddEditPatientPageState
                                                 getScreenHeight(context) * 0.45,
                                             width:
                                                 getScreenWidth(context) * 0.45,
-                                            child: Image.network(media),
+                                            child: Image.network(
+                                              media,
+                                              loadingBuilder: (BuildContext ctx,
+                                                  Widget child,
+                                                  ImageChunkEvent?
+                                                      loadingProgress) {
+                                                if (loadingProgress == null) {
+                                                  return child;
+                                                } else {
+                                                  return Container(
+                                                    height: 100,
+                                                    child: Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                            ),
                                           ),
                                         ),
                                         Positioned(
@@ -795,7 +813,9 @@ class AddEditPatientPageState
                                                 getScreenHeight(context) * 0.45,
                                             width:
                                                 getScreenWidth(context) * 0.45,
-                                            child: Image.file(File(media)),
+                                            child: Image.file(
+                                              File(media),
+                                            ),
                                           ),
                                         ),
                                         Positioned(

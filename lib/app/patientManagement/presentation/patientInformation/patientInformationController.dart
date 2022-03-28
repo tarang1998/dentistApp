@@ -1,5 +1,6 @@
 import 'package:dentalApp/app/patientManagement/domain/entities/patientInformation.dart';
 import 'package:dentalApp/app/patientManagement/presentation/addEditPatient/addEditPatientView.dart';
+import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientAdditionalImages/patientImagesView.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationPresenter.dart';
 import 'package:dentalApp/app/patientManagement/presentation/patientInformation/patientInformationStateMachine.dart';
 import 'package:dentalApp/core/injectionContainer.dart';
@@ -78,5 +79,11 @@ class PatientInformationController extends Controller {
                 reloadPatientMetaPageOnPatientInformationEdition,
             inEditMode: true,
             patientId: patientId));
+  }
+
+  void navigateToPatientImages(String patientId) {
+    _navigationService.navigateTo(NavigationService.viewAdditionalImages,
+        shouldReplace: false,
+        arguments: PatientImagePageParams(patientId: patientId));
   }
 }
