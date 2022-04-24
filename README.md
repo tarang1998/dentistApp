@@ -10,25 +10,17 @@ An app to manage patients for a dentist
 
 > > Personal Information
 
-Name : Mr/Mrs/Miss
-Contact : contact1 - contact 2
-User Photo : Camera enabled / Gallery
-Additional User Images : Camera Enabled / Gallery
+User Photo : Camera enabled / Gallery (TODO : Select Image from gallery)
+Additional User Images : Camera Enabled / Gallery (TODO : Select Image from gallery)
+
+Child Age : 14 years
 
 > > Procedures :
 
-Procedure Tags : [ Root Canal Treatment , Extraction / GIC Fillings / Composite Fillings / Dressing Fillings/ Scalling and Polishing / Surgery]
+Add Balance Amount
+Pateint Procedure List - Meta Information : Include teeth no
 
-- Can multiple of these tags be performed in a single Procedure
-  Teeth Chart : Child / Adult
-- Can the user select both the charts in one procedure
-  Add the images in the teeth chart as N/W images
-  estimated amount :
-  paid amount :
-  date :
-  next visit :
-  Photo :
-  additional remarks :
+Add the images in the teeth chart as N/W images
 
 > ADULT TEETH CHART
 > http://1y7exd3y0q9b2aqn6d2i9q42.wpengine.netdna-cdn.com/wp-content/uploads/2015/01/periodontal-charting.jpg  
@@ -37,9 +29,19 @@ Procedure Tags : [ Root Canal Treatment , Extraction / GIC Fillings / Composite 
 > CHILD TEETH CHART
 > https://media.mydentalconsultant.com/media/dentaluploads/ToothChartChild.jpg
 
-Add time widget to the procedure page
+Remove some field from procedures and create a visit section :
 
-> > Prescriptions
+> > Visit Section :
+
+- Date Time
+- Next Visit Date Time (Send by mail or SMS)
+- Money paid
+- Additional Remarks
+
+> > Prescriptions - (Add a new Tab in the Patient meta Information Page)
+
+- Save a record of the previous prescriptions
+- A way to add new prescriptions and send them to the user via email
 
 Date
 
@@ -55,3 +57,5 @@ Proper Standard
 > > Billing
 
 > > Teeth Chart Reference
+
+> > Messages tab for a particular patient
